@@ -1,17 +1,28 @@
-import { cards } from "../../data/data"
+import { useState, useEffect } from "react"
+import { getData } from "../../utils/utils"
+import ItemList from "./components/ItemList"
 
-const ItemListContainer = ( { title, children } ) => {
+const ItemListContainer = () => {
+  const [ cards, setCards ] = useState([])
+  const [loading, setLoading ] = useState(true)
+  
+  useEffect(() => {
+    setLoading(true)
+    getData()
+      .then((data) => { 
+        setCards(data)
+        setLoading(false)
+      })
+  }, [])
 
   return (
-    <div>
-      <h3>{title}</h3>
-      {children}
-      {cards.map((item) => ( 
-        <article key={item.id}>
-          <h3>{item.name}</h3>
-        </article>
-      ))}
-    </div>
+    <>
+      {
+        loading
+          ? <h2>Cargando...</h2>
+          : <ItemList cards={cards}/>
+      }
+    </>
   )
 }
 

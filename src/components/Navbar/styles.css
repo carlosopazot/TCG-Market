@@ -1,0 +1,37 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  height: 70px;
+}
+
+.logo {
+  width: 40px;
+  margin-right: 0.5rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo-title {
+  margin: 0;
+  line-height: 2rem;
+}
+
+.layout {
+  padding-top: 80px;
+}
+
+@media screen and (max-width: 992px) {
+  .logo-title {
+    display: none;
+  }
+}

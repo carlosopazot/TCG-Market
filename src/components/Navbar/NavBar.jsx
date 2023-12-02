@@ -1,8 +1,8 @@
 
 import { Layout, Flex } from 'antd'
-import CardWidget from './components/CardWidget';
-import UserMenu from './components/UserMenu';
-import NavMenu from './components/NavMenu';
+import CardWidget from './CardWidget/CardWidget';
+import UserMenu from './UserMenu/UserMenu';
+import NavMenu from './NavMenu/NavMenu';
 import Logo from '../../assets/images/card-games.png'
 import './styles.css'
 

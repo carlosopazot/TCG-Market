@@ -26,5 +26,26 @@ export const cards = [
     set: 'Edición 4',
     price: 9.99,
     image: 'https://cards.scryfall.io/large/front/6/7/67edf31f-ed67-4617-bf73-28a939a232a7.jpg?1674135550'
+  },
+  {
+    id: 5,
+    name: 'Gale, Waterdeep Prodigy',
+    set: 'Edición 4',
+    price: 9.99,
+    image: 'https://cards.scryfall.io/large/front/6/7/67edf31f-ed67-4617-bf73-28a939a232a7.jpg?1674135550'
+  },
+  {
+    id: 6,
+    name: 'Gale, Waterdeep Prodigy',
+    set: 'Edición 4',
+    price: 9.99,
+    image: 'https://cards.scryfall.io/large/front/6/7/67edf31f-ed67-4617-bf73-28a939a232a7.jpg?1674135550'
+  },
+  {
+    id: 7,
+    name: 'Gale, Waterdeep Prodigy',
+    set: 'Edición 4',
+    price: 9.99,
+    image: 'https://cards.scryfall.io/large/front/6/7/67edf31f-ed67-4617-bf73-28a939a232a7.jpg?1674135550'
   }
 ]

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { getData } from "../../utils/utils"
-import ItemList from "./components/ItemList"
+import ItemList from "../ItemList/ItemList"
 
 const ItemListContainer = () => {
   const [ cards, setCards ] = useState([])
@@ -20,7 +20,7 @@ const ItemListContainer = () => {
       {
         loading
           ? <h2>Cargando...</h2>
-          : <ItemList cards={cards}/>
+          : <ItemList title='Últimas cartas' cards={cards}/>
       }
     </>
   )

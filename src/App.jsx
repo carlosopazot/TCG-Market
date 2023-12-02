@@ -1,5 +1,5 @@
 import Navbar from './components/Navbar/NavBar'
-import ItemListContainer from './components/ItemListContainer'
+import ItemListContainer from './components/ItemListContainer/ItemListContainer'
 import { Layout } from 'antd'
 import './assets/css/App.css'
 

@@ -3,7 +3,7 @@ import { Card } from 'antd';
 const ItemCard = ({ item }) => {
   return (
     <Card 
-      style={{ width: '300px' }}
+      
       cover={<img alt={item.name} src={item.image} />}
     >
       <h3>{item.name}</h3>

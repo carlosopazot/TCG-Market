@@ -1,6 +1,6 @@
 
 import { Layout, Flex } from 'antd'
-import CardWidget from '../CardWidget/CardWidget';
+import CartWidget from '../CartWidget/CartWidget';
 import UserMenu from '../UserMenu/UserMenu';
 import NavMenu from '../NavMenu/NavMenu';
 import Logo from '../../assets/images/card-games.png'
@@ -21,7 +21,7 @@ const Navbar = () => {
           <NavMenu></NavMenu>
         </Flex>
         <Flex gap={10} align='center'>
-          <CardWidget/>
+          <CartWidget/>
           <UserMenu />
         </Flex>
       </Header>

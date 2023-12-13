@@ -7,7 +7,7 @@ const itemsMenu = [
   // }
 ];
 
-const CardWidget = () => {
+const CartWidget = () => {
   const content = () => {
     if(itemsMenu.length > 0 ) {
       return(
@@ -37,4 +37,4 @@ const CardWidget = () => {
   )
 }
 
-export default CardWidget
+export default CartWidget

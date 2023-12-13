@@ -1,10 +1,11 @@
 import { Button, Avatar, Dropdown } from 'antd'
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, ToolOutlined, LogoutOutlined } from '@ant-design/icons';
 const items = [
   {
     key: '1',
     label: (
       <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+        <ToolOutlined style={{ marginRight : '4px'}} />
        Configuración
       </a>
     ),
@@ -14,6 +15,7 @@ const items = [
     key: '2',
     label: (
       <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+        <UserOutlined style={{ marginRight : '4px'}} />
        Perfil
       </a>
     ),
@@ -23,6 +25,7 @@ const items = [
     key: '3',
     label: (
       <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+        <LogoutOutlined style={{ marginRight : '4px'}} />
         Cerrar sesión
       </a>
     ),

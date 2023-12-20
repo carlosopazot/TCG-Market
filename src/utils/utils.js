@@ -1,9 +1,9 @@
 import { cards } from "../data/data"
 
 export const getData = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(cards)
-    }, 3000)
+    }, 1000)
   })
 }

@@ -1,35 +1,31 @@
-import { useState } from 'react';
-import { Menu } from 'antd';
-const items = [
+import { Flex } from 'antd';
+import { Link } from 'react-router-dom';
+
+const links = [
   {
-    label: 'Inicio',
-    key: 'home',
+    label: 'Nuevas',
+    href: '/cards/NM',
   },
   {
-    label: 'Categorías',
-    key: 'categories',
-    children: [
-      {
-  
-        label: 'Últimas subidas',
-        key: 'setting:1',
-      },
-      {
-        label: 'En oferta',
-        key: 'setting:2',
-      },
-      {
-        label: 'En tu localidad',
-        key: 'setting:3',
-      },
-    ],
+    label: 'Usadas',
+    href: '/cards/PLD',
+  },
+  {
+    label: 'Altamente usadas',
+    href: '/cards/HP',
   },
 ];
+
 const NavMenu = () => {
-  const [current, setCurrent] = useState('home');
-  const onClick = (e) => {
-    setCurrent(e.key);
-  };
-  return <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />;
+  return (
+    <Flex gap={24}>
+      {links.map((link, index) => (
+        <Link key={index} to={link.href}>
+          {link.label}
+        </Link>
+      ))}
+    </Flex>
+  );
 };
+
 export default NavMenu;

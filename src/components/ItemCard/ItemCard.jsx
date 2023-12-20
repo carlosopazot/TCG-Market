@@ -1,29 +1,30 @@
-import { Card, Flex, Typography, Button, Tooltip } from 'antd'
-import { ShoppingCartOutlined, HeartOutlined } from '@ant-design/icons';
+import { Card, Flex, Typography, Button, Col, Tag } from 'antd'
+import { Link } from 'react-router-dom'
 import './styles.css'
 
 const { Title, Text } = Typography
 
 const ItemCard = ({ item }) => {
   return (
-    <Card 
-      className='card-item'
-      cover={<img alt={item.name} src={item.image} />}
-    >
-     <Flex vertical>
-        <Title style={{ margin: 0 }} level={4} ellipsis>{item.name}</Title>
-        <Text>{item.set}</Text>
-        <Title level={5}>${item.price}</Title>
-        <Flex gap="small">
-          <Tooltip title="Agregar al carro" >
-            <Button disabled icon={<ShoppingCartOutlined/>}></Button>
-          </Tooltip>
-          <Tooltip title="Agregar a favoritos" >
-            <Button icon={<HeartOutlined />} ></Button>
-          </Tooltip>
-        </Flex>
-     </Flex>
-    </Card>
+    <Col xs={24} sm={12} md={8} xl={6} xxl={4} style={{ marginBottom: '1rem'}}>
+      <Card 
+        className='card-item'
+        hoverable
+        cover={<img alt={item.name} src={item.image} className='card-item-img' />}
+      >
+      <Flex gap={4} vertical>
+          <Title style={{ margin: 0 }} level={4} ellipsis>{item.name}</Title>
+          <Text>{item.set}</Text>
+          <Flex>
+            <Tag>{item.state}</Tag>
+          </Flex>
+          <Title level={5}>${item.price}</Title>
+          <Link to={`/item/${item.id}`} style={{ display: 'block', width: '100%'}}>
+            <Button block>Ver detalle</Button>
+          </Link>
+      </Flex>
+      </Card>
+    </Col>
   )
 }
 

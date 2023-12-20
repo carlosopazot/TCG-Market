@@ -1,7 +1,5 @@
 import ItemCard from "../ItemCard/ItemCard";
-import { CardSlider } from '../CardSlider/CardSlider'
-import { Empty, Typography } from "antd";
-
+import { Empty, Typography, Row, Card } from "antd";
 import './styles.css'
 
 const { Title, Text } = Typography
@@ -13,11 +11,12 @@ const ItemList = ({cards, title }) => {
       <Title level={4}>{title}</Title>
       { cards.length > 0
         ? 
-          <CardSlider>
+          <Row gutter={16} wrap>
             {cards.map((item) => <ItemCard key={item.id} item={item}/>)}
-          </CardSlider> 
+          </Row>
         : 
-          <Empty 
+          <Card>
+            <Empty 
             image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
             description={
               <Text type="secondary">
@@ -25,6 +24,7 @@ const ItemList = ({cards, title }) => {
               </Text>
             }
           />
+          </Card>
       }
     </section>
   );

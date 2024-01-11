@@ -1,0 +1,17 @@
+.title-card {
+  margin-bottom: 0 !important;
+}
+
+.subtitle-card {
+  margin: 0 !important;
+  color: #9e9e9e !important;
+}
+
+.card-info {
+  height: 100%;
+}
+
+.quantity-wrapper {
+  width: 40px;
+  text-align: center;
+}

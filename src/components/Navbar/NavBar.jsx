@@ -1,7 +1,7 @@
 
 import { Layout, Flex } from 'antd'
-import CartWidget from '../CartWidget/CartWidget'
-import UserMenu from '../UserMenu/UserMenu'
+import CartWidget from './CartWidget'
+// import UserMenu from '../UserMenu/UserMenu'
 import NavMenu from '../NavMenu/NavMenu'
 import Logo from '../../assets/images/card-games.png'
 import { Link } from 'react-router-dom'
@@ -23,7 +23,7 @@ const Navbar = () => {
         </Flex>
         <Flex gap={10} align='center'>
           <CartWidget/>
-          <UserMenu />
+          {/* <UserMenu /> */}
         </Flex>
       </Header>
     </>

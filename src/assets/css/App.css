@@ -14,5 +14,19 @@ a {
 }
 
 .layout {
-  padding: 100px 50px 0 50px;
+  padding: 100px 1.25rem;
+}
+
+.layout-sider {
+  margin-left: 200px;
+}
+
+@media screen and (max-width: 992px) {
+  .layout {
+    width: 100%;
+    padding: 100px 1rem 100px 1rem;
+  }
+  .layout-sider {
+    margin-left: 0;
+  }
 }

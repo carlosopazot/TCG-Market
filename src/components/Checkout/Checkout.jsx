@@ -1,21 +1,53 @@
-import { Row, Col, Form, Input, Typography, Card, Button, Checkbox } from "antd"
-import { useState } from "react";
+import { Row, Col, Form, Input, Typography, Card, Button } from "antd"
+import { useContext, useState } from "react";
+import { CartContext } from '../../context/CartContext'
+import { db } from '../../firebase/config'
+import { collection, addDoc } from "firebase/firestore";
 
 const { Title } = Typography
 
-
-
 const Checkout = () => {
+  const { cart, totalCart, clearCart } = useContext(CartContext)
   const [values, setValues] = useState ({
     name: '',
     lastname: '',
-    email : ''
   })
+  const [ orderId, setOrderId] = useState(null)
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('Submit')
-    console.log(values)
+  const handleInputChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = (values) => {
+    const order = {
+      cliente: values,
+      items: cart,
+      total: totalCart(),
+      date: new Date()
+    }
+    
+    const ordersRef = collection(db, 'orders')
+    addDoc(ordersRef, order).then((doc) => {
+        setOrderId(doc.id)
+        clearCart()
+    })
+  }
+  
+  if(orderId) {
+    return(
+      <Row>
+        <Col>
+          <Card>
+            <h1>Listo</h1>
+            <h2>Hemos recibido tu orden de compra</h2>
+            <p>Tu codigo de orden es: <b>{orderId}</b> </p>
+          </Card>
+        </Col>
+      </Row>
+    )
   }
 
   return (
@@ -26,8 +58,7 @@ const Checkout = () => {
         <Form
             name="basic"
             layout="vertical"
-            initialValues={values}
-            onFinish={console.log(values)}
+            onFinish={handleSubmit}
             autoComplete="off"
           >
             <Form.Item
@@ -40,7 +71,7 @@ const Checkout = () => {
                 },
               ]}
             >
-              <Input />
+              <Input value={values.name} onChange={handleInputChange} name="name"/>
             </Form.Item>
             <Form.Item
               label="Apellido"
@@ -52,7 +83,7 @@ const Checkout = () => {
                 },
               ]}
             >
-              <Input />
+              <Input value={values.lastname} onChange={handleInputChange} name="lastname"/>
             </Form.Item>
 
             <Form.Item

@@ -1,4 +1,4 @@
-import { Popover, Badge, Button, List, Avatar } from "antd"
+import { Popover, Badge, Button, List, Avatar, Empty } from "antd"
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { useContext } from 'react'
 import { CartContext } from "../../context/CartContext";
@@ -8,6 +8,11 @@ import { Link } from "react-router-dom";
 const CartWidget = () => {
 
   const { itemsInCart, cart  } = useContext(CartContext)
+
+  const locale = {
+    emptyText: 'Tu carro está vacío'
+  }
+
   const LinkToCart = () => {
     return(
       <Link to='/cart' className="btn-checkout-wrapper">
@@ -21,22 +26,26 @@ const CartWidget = () => {
   const content = () => {
     return (
       <>
-        <List
-          itemLayout="horizontal"
-          dataSource={cart}
-          renderItem={(item, index) => (
-            <List.Item key={index}>
-              <List.Item.Meta
-                avatar={<Avatar src={item.image} />}
-                title={item.name}
-                description={`x ${item.quantity}`}
-              />
-            </List.Item>
-          )}
-        />
         { cart.length > 0 
-            ? <LinkToCart></LinkToCart>
-            : ''
+          ? <>
+              <List
+                className="cart-item-list"
+                itemLayout="horizontal"
+                dataSource={cart}
+                locale={locale}
+                renderItem={(item, index) => (
+                  <List.Item key={index}>
+                    <List.Item.Meta
+                      avatar={<Avatar src={item.image} />}
+                      title={item.name}
+                      description={`x ${item.quantity}`}
+                    />
+                  </List.Item>
+                )}
+              />
+              <LinkToCart></LinkToCart>
+            </>
+          : <Empty description='Tu carro de compra está vacío'></Empty>
         }
       </>
     )

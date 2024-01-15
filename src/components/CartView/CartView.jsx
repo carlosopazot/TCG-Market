@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import { Col, Row, Image, Typography, Card, Button, Empty, Flex } from "antd";
+import { Link } from "react-router-dom";
 
 const { Title } = Typography
 
@@ -52,7 +53,12 @@ const CartView = () => {
         <Card>
           <Flex justify="space-between">
             <Title level={2} style={{ margin: 0  }} >Total</Title>
-            <Title level={2} style={{ margin: 0  }} >{totalCart()}</Title>
+            <Title level={2} style={{ margin: 0  }} >$ {totalCart()}</Title>
+          </Flex>
+          <Flex justify='flex-end'>
+            <Link to='/checkout'>
+              <Button>Terminar Compra</Button>
+            </Link>
           </Flex>
         </Card>
       </Col>

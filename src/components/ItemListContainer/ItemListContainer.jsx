@@ -16,12 +16,11 @@ const ItemListContainer = () => {
   useEffect(() => {
     setLoading(true)
 
-    // 1.- Armar una referencia (sync)
     const productosRef = collection(db, 'cards')
     const docsRef = stateId
                       ? query( productosRef, where('state', '==', stateId))
                       : productosRef
-    // 2.- LLamar a esa referencia (async)
+
     getDocs(docsRef)
       .then((querySnapshot) => {
         const docs = querySnapshot.docs.map(doc => {
@@ -30,8 +29,6 @@ const ItemListContainer = () => {
             id: doc.id
           }
         })
-        
-        console.log( docs )
         setCards( docs )
       })
       .finally(() => setLoading(false))
@@ -45,7 +42,7 @@ const ItemListContainer = () => {
           ? <Spin tip="Cargando" indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}>
               <div className="content" />
             </Spin>
-          : <ItemList title='Últimas cartas' cards={cards}/>
+          : <ItemList cards={cards}/>
       }
     </>
   )

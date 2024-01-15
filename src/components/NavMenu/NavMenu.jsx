@@ -1,30 +1,41 @@
-import { Flex } from 'antd';
+import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
-const links = [
+const items = [
   {
-    label: 'Nuevas',
-    href: '/cards/NM',
+    label: (
+      <Link to='/cards/NM'>
+        Nuevas
+      </Link>
+    ),
+    key: 'nm',
   },
   {
-    label: 'Usadas',
-    href: '/cards/PLD',
+    label: (
+      <Link to='/cards/PLD'>
+        Usadas
+      </Link>
+    ),
+    key: 'pld',
   },
   {
-    label: 'Altamente usadas',
-    href: '/cards/HP',
+    label: (
+      <Link to='/cards/HP'>
+        Altamente usadas
+      </Link>
+    ),
+    key: 'hp',
   },
-];
+]
 
-const NavMenu = () => {
+const NavMenu = ({ mode }) => {
+  const [current, setCurrent] = useState('nm');
+  const onClick = (e) => {
+    setCurrent(e.key);
+  };
   return (
-    <Flex gap={24}>
-      {links.map((link, index) => (
-        <Link key={index} to={link.href}>
-          {link.label}
-        </Link>
-      ))}
-    </Flex>
+    <Menu theme="light" onClick={onClick} selectedKeys={[current]} mode={mode} items={items} />
   );
 };
 

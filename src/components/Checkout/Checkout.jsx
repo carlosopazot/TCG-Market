@@ -2,7 +2,7 @@ import { Row, Col, Form, Input, Typography, Card, Button } from "antd"
 import { useContext, useState } from "react";
 import { CartContext } from '../../context/CartContext'
 import { db } from '../../firebase/config'
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, writeBatch, query, where, documentId } from "firebase/firestore";
 
 const { Title } = Typography
 
@@ -28,12 +28,18 @@ const Checkout = () => {
       total: totalCart(),
       date: new Date()
     }
-    
+
+
+    const batch = writeBatch(db)
     const ordersRef = collection(db, 'orders')
-    addDoc(ordersRef, order).then((doc) => {
-        setOrderId(doc.id)
-        clearCart()
-    })
+    const productRef = collection(db, 'productos')
+    const itemDocs = query(productRef, where( documentId(), 'in', cart.map(prod => prod.id) ) )
+    console.log(cart.map(prod => prod.id))
+    
+    // addDoc(ordersRef, order).then((doc) => {
+    //     setOrderId(doc.id)
+    //     clearCart()
+    // })
   }
   
   if(orderId) {

@@ -5,6 +5,14 @@ import { useState } from 'react';
 const items = [
   {
     label: (
+      <Link to='/'>
+        Todas
+      </Link>
+    ),
+    key: 'all',
+  },
+  {
+    label: (
       <Link to='/cards/NM'>
         Nuevas
       </Link>
@@ -30,7 +38,7 @@ const items = [
 ]
 
 const NavMenu = ({ mode }) => {
-  const [current, setCurrent] = useState('nm');
+  const [current, setCurrent] = useState('all');
   const onClick = (e) => {
     setCurrent(e.key);
   };

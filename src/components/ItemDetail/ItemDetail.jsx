@@ -32,7 +32,7 @@ const ItemDetail = ({ item }) => {
     <>
     <Row style={{ marginBottom: '16px'}}>
       <Col>
-        <Button onClick={handleBack} icon={<ArrowLeftOutlined/>}>Volver</Button>
+        <Button type="default" onClick={handleBack} icon={<ArrowLeftOutlined/>}>Volver</Button>
       </Col>
     </Row>
     <Row gutter={24}>

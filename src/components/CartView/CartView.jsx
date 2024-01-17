@@ -31,12 +31,12 @@ const CartView = () => {
           <Card 
           style={{ marginBottom: '1rem' }} >
             <Row gutter={16}>
-              <Col sm={6}>
-                <Image src={item.image}></Image>
+              <Col sm={2}>
+                <Image src={item.image} preview={false}></Image>
               </Col>
               <Col sm={13}>
                 <Title style={{ margin: 0 }} level={4}>{item.name}</Title>
-                <Title style={{ margin: 0, marginBottom: '1rem' }} level={4}>{item.set}</Title>
+                <Title style={{ margin: 0, marginBottom: '1rem' }} level={5}>{item.set}</Title>
                 <Button size="sm" onClick={() => removeItem(item.id)}>Eliminar</Button>
               </Col>
               <Col sm={5}>

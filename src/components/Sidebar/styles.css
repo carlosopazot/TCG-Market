@@ -1,5 +1,5 @@
 .sidebar {
-  min-height: 400px;
+  height: auto;
   position: fixed !important;
   left: '1rem' !important;
   top: '100px' !important;
@@ -10,6 +10,7 @@
 
 .sidebar .ant-menu {
   border-inline-end: 0 !important;
+  border-radius: 0.5rem;
 }
 
 @media screen and (max-width: 992px) {

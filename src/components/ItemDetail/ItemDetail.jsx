@@ -36,10 +36,10 @@ const ItemDetail = ({ item }) => {
         </Col>
       </Row>
       <Row gutter={24}>
-        <Col xs={24} md={8} lg={6}>
+        <Col xs={24} sm={10} md={8} lg={8}>
           <Image className="img-card" src={item.image} alt={item.name} preview={false} placeholder/>
         </Col>
-        <Col xs={24} md={16} lg={18}>
+        <Col xs={24} sm={14} md={16} lg={16}>
           <Card className="card-info" bodyStyle={{ height: '100%' }}>
             <Flex justify="space-between" style={{ height: '100%'}} vertical>
               <Flex vertical gap={4} align='flex-start' justify='flex-start' >

@@ -9,7 +9,6 @@ import CartView from "../components/CartView/CartView"
 import Checkout from "../components/Checkout/Checkout"
 import NotFound from "../components/NotFound/NotFound"
 import Login from "../components/Login/Login"
-import Register from "../components/Register/Register"
 
 const AppRouter = () => {
   const { user } = useContext(UserContext)
@@ -29,7 +28,6 @@ const AppRouter = () => {
                   <Route path='/checkout' element={<Checkout />}></Route>
                   <Route path='/not-found' element={ <NotFound/>}></Route>
                   <Route path='*' element={ <Navigate to={'not-found'} />}></Route>
-                  <Route path="/register" element={<Register />}></Route>
                   <Route path="/login" element={<Login />}></Route>
                 </Routes>
             </Col>

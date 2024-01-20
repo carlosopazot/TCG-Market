@@ -10,16 +10,7 @@ const UserMenu = ({ name }) => {
 
   const items = [
     {
-      key: '2',
-      label: (
-        <Link to='/'>
-          <UserOutlined style={{ marginRight : '4px'}} />
-        Perfil
-        </Link>
-      ),
-    },
-    {
-      key: '3',
+      key: '1',
       label: (
         <Link onClick={logout}>
           <LogoutOutlined style={{ marginRight : '4px'}} />

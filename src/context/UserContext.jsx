@@ -32,7 +32,6 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log("User:" , user)
       if (user) {
         const username = user.displayName.split(' ')[0]
         setUser({

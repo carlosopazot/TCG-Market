@@ -1,0 +1,11 @@
+
+.ant-menu.nav-menu  {
+  width: 500px;
+  justify-content: center;
+}
+
+@media screen and (max-width:480px) {
+  .ant-menu.nav-menu {
+    width: 100px;
+  }
+}

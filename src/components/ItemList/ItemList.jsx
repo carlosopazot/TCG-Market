@@ -1,6 +1,5 @@
 import ItemCard from "../ItemCard/ItemCard";
 import { Empty, Typography, Row, Card } from "antd";
-import './styles.css'
 
 const { Title, Text } = Typography
 
@@ -19,7 +18,7 @@ const ItemList = ({cards, title }) => {
             <Empty 
             image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
             description={
-              <Text type="secondary">
+              <Text level={3} type="secondary">
                 No hay cartas para mostrar
               </Text>
             }

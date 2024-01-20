@@ -1,5 +1,3 @@
-
-
 body, .layout {
   background-color: rgb(247, 249, 251);
   margin: 0;
@@ -15,18 +13,4 @@ a {
 
 .layout {
   padding: 100px 1.25rem;
-}
-
-.layout-sider {
-  margin-left: 200px;
-}
-
-@media screen and (max-width: 992px) {
-  .layout {
-    width: 100%;
-    padding: 100px 1rem 100px 1rem;
-  }
-  .layout-sider {
-    margin-left: 0;
-  }
 }

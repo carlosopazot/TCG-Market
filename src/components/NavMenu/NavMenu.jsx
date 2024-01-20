@@ -1,6 +1,7 @@
-import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Menu } from 'antd'
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import './styles.css'
 
 const items = [
   {
@@ -9,7 +10,7 @@ const items = [
         Todas
       </Link>
     ),
-    key: 'all',
+    key: 'all'
   },
   {
     label: (
@@ -17,7 +18,7 @@ const items = [
         Nuevas
       </Link>
     ),
-    key: 'nm',
+    key: 'nm'
   },
   {
     label: (
@@ -25,7 +26,7 @@ const items = [
         Usadas
       </Link>
     ),
-    key: 'pld',
+    key: 'pld'
   },
   {
     label: (
@@ -33,18 +34,27 @@ const items = [
         Altamente usadas
       </Link>
     ),
-    key: 'hp',
-  },
+    key: 'hp'
+  }
 ]
 
 const NavMenu = ({ mode }) => {
-  const [current, setCurrent] = useState('all');
-  const onClick = (e) => {
-    setCurrent(e.key);
-  };
-  return (
-    <Menu theme="light" onClick={onClick} selectedKeys={[current]} mode={mode} items={items} />
-  );
-};
 
-export default NavMenu;
+  const [current, setCurrent] = useState('all')
+
+  const onClick = (e) => {
+    setCurrent(e.key)
+  }
+  return (
+    <Menu 
+      theme="light" 
+      onClick={onClick} 
+      selectedKeys={[current]} 
+      mode={mode} 
+      items={items}
+      className='nav-menu' 
+    />
+  )
+}
+
+export default NavMenu

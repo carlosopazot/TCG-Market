@@ -15,3 +15,13 @@
   width: 40px;
   text-align: center;
 }
+
+.img-card {
+  border-radius: 0.5rem;
+}
+
+@media screen and (max-width:768px) {
+  .img-card {
+    margin-bottom: 1rem;
+  }
+}

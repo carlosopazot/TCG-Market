@@ -22,7 +22,7 @@ const ItemDetail = ({ item }) => {
   const handleAdd = () => {
     const itemToCart = {
       ...item,
-      quantity, // => cantidad: cantidad
+      quantity,
     }
 
     addToCart(itemToCart)
@@ -30,46 +30,49 @@ const ItemDetail = ({ item }) => {
 
   return (
     <>
-    <Row style={{ marginBottom: '16px'}}>
-      <Col>
-        <Button type="default" onClick={handleBack} icon={<ArrowLeftOutlined/>}>Volver</Button>
-      </Col>
-    </Row>
-    <Row gutter={24}>
-      <Col md={8}>
-        <Image src={item.image} alt={item.name} preview={false} placeholder/>
-      </Col>
-      <Col md={16}>
-        <Card className="card-info">
-          <Flex vertical>
-            <Flex vertical gap={4} align='flex-start' justify='flex-start' >
-              <Title level={2} className="title-card">{item.name}</Title>
-              <Title level={3} className="subtitle-card">{item.set}</Title>
-              <TagsState item={item}></TagsState>
-              <p>{item.description} </p>
+      <Row style={{ marginBottom: '16px'}}>
+        <Col>
+          <Button type="default" onClick={handleBack} icon={<ArrowLeftOutlined/>}>Volver</Button>
+        </Col>
+      </Row>
+      <Row gutter={24}>
+        <Col xs={24} md={8} lg={6}>
+          <Image className="img-card" src={item.image} alt={item.name} preview={false} placeholder/>
+        </Col>
+        <Col xs={24} md={16} lg={18}>
+          <Card className="card-info" bodyStyle={{ height: '100%' }}>
+            <Flex justify="space-between" style={{ height: '100%'}} vertical>
+              <Flex vertical gap={4} align='flex-start' justify='flex-start' >
+                <Title level={2} className="title-card">{item.name}</Title>
+                <Title level={3} className="subtitle-card">{item.set}</Title>
+                <TagsState item={item}></TagsState>
+                <p>{item.description} </p>
+              </Flex>
+              <Flex vertical align='flex-start' gap={8}>
+                {item.stock === 0 
+                  ? <Alert message='Agotado' type="error" /> 
+                  : <Alert message={`Stock: ${item.stock}`} type="info" /> 
+                }
+                <Title level={2}>$ {item.price}</Title>
+              </Flex>
+              <Flex justify="space-between" className="">
+                <QuantitySelector quantity={quantity} stock={item.stock} setQuantity={setQuantity}/>
+                { isInCart (item.stock)
+                  ? <Button>Terminar compra</Button> 
+                  : <Button 
+                    type="primary" 
+                    onClick={handleAdd}
+                    disabled={item.stock === 0}
+                    icon={<ShoppingCartOutlined />}
+                    >
+                    Agregar al carro
+                    </Button>
+                }
+              </Flex>
             </Flex>
-            <Flex vertical align='flex-start' gap={8}>
-              <Alert message={`Stock: ${item.stock}`} type="info" />
-              <Title level={2}>$ {item.price}</Title>
-            </Flex>
-            <Flex justify="space-between" className="">
-              <QuantitySelector quantity={quantity} stock={item.stock} setQuantity={setQuantity}/>
-              { isInCart (item.stock)
-                ? <Button>Terminar compra</Button> 
-                : <Button 
-                  type="primary" 
-                  onClick={handleAdd}
-                  disabled={item.stock === 0}
-                  icon={<ShoppingCartOutlined />}
-                  >
-                  Agregar al carro
-                  </Button>
-              }
-            </Flex>
-          </Flex>
-        </Card>
-      </Col>
-    </Row>
+          </Card>
+        </Col>
+      </Row>
     </>
    
   )

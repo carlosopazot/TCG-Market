@@ -1,62 +1,57 @@
-import { Popover, Badge, Button, List, Avatar, Empty } from "antd"
+import { Badge, Button, Drawer, Flex, Typography } from "antd"
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { CartContext } from "../../context/CartContext";
 import { Link } from "react-router-dom";
+import CartView from "../CartView/CartView";
+
+const { Title } = Typography
 
 
 const CartWidget = () => {
 
-  const { itemsInCart, cart  } = useContext(CartContext)
+  const { itemsInCart, totalCart, clearCart, cart } = useContext(CartContext)
+  const [open, setOpen ] = useState(false)
 
-  const locale = {
-    emptyText: 'Tu carro está vacío'
+  const showDrawer = () => {
+    setOpen(true)
   }
 
-  const LinkToCart = () => {
-    return(
-      <Link to='/cart' className="btn-checkout-wrapper">
-        <Button block>
-          Ir a checkout
-        </Button>
-      </Link>
-    )
-  }
-
-  const content = () => {
-    return (
-      <>
-        { cart.length > 0 
-          ? <>
-              <List
-                className="cart-item-list"
-                itemLayout="horizontal"
-                dataSource={cart}
-                locale={locale}
-                renderItem={(item, index) => (
-                  <List.Item key={index}>
-                    <List.Item.Meta
-                      avatar={<Avatar src={item.image} />}
-                      title={item.name}
-                      description={`x ${item.quantity}`}
-                    />
-                  </List.Item>
-                )}
-              />
-              <LinkToCart></LinkToCart>
-            </>
-          : <Empty description='Tu carro de compra está vacío'></Empty>
-        }
-      </>
-    )
+  const closeDrawer = () => {
+    setOpen(false)
   }
 
   return(
-    <Popover title="Carro de compras" content={content} trigger="click" placement='bottomRight'>
+    <>
       <Badge count={itemsInCart()}>
-        <Button size='large'><ShoppingCartOutlined /></Button>
+        <Button size='large' onClick={showDrawer}><ShoppingCartOutlined /></Button>
       </Badge>
-    </Popover>
+      <Drawer 
+        title='Carro de compras' 
+        onClose={closeDrawer} 
+        open={open}
+        extra={
+          cart.length > 0
+           ? <Button onClick={clearCart}>Vaciar carro</Button>
+           : null
+        }
+        footer={
+          cart.length > 0 ?
+            <Flex gap={8} vertical>
+              <Flex justify="space-between">
+                <Title style={{ margin: 0 }} level={4}>Total</Title>
+                <Title style={{ margin: 0 }} level={3}>${totalCart()}</Title>
+              </Flex>
+              <Link to='/checkout' onClick={closeDrawer}>
+                <Button size="large" type="primary" block disabled={cart.length === 0}>Ir a checkout</Button>
+              </Link>
+            </Flex> : null
+        }
+      >
+        <CartView></CartView>
+      </Drawer>
+    </>
+
   )
 }
 

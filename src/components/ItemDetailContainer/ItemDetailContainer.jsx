@@ -10,7 +10,6 @@ import { doc, getDoc } from "firebase/firestore";
 const ItemDetailContainer = () => {
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState(null);
-
   const { itemId } = useParams()
 
   useEffect(() => {
@@ -18,7 +17,6 @@ const ItemDetailContainer = () => {
     const docRef = doc(db, 'cards', itemId)
     getDoc( docRef )
       .then((docSnapshot) => {
-        console.log(docSnapshot)
         const doc = {
           ...docSnapshot.data(),
           id: docSnapshot.id

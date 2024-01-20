@@ -34,7 +34,7 @@ const Login = () => {
           <Title level={3}>Inicia sesión</Title>
           <Flex vertical>
             <Title level={5}>Ingresa con tus redes sociales</Title>
-            <Button onClick={googleLogin} size="large"><GoogleOutlined />Ingresa con Google</Button>
+            <Button onClick={googleLogin} size="large"><GoogleOutlined style={{ color: 'red' }} />Ingresa con Google</Button>
           </Flex>
           <Divider></Divider>
           <Title level={5}>Ingresa con tu correo</Title>

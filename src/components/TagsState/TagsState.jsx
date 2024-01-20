@@ -14,7 +14,7 @@ const TagsState = ({ item }) => {
   return (
     <Flex>
       <Tag bordered={false} color={tagColor} >{item.state}</Tag>
-      {item.foil === true ? <Tag bordered={false} color='gold'>FOIL</Tag> : ''}
+      {item.foil === true ? <Tag bordered={false} color='gold'>FOIL</Tag> : null}
     </Flex>
   )
 }

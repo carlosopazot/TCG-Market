@@ -1,13 +1,22 @@
 import { Button, Row, Col, Card, Typography, Flex, } from "antd"
-import { useContext, } from "react";
+import { useContext, useEffect, } from "react";
 import { UserContext } from "../../context/UserContext";
 import { GoogleOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography
 
 const Login = () => {
 
   const { googleLogin } = useContext(UserContext)
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    if(user.logged === true) {
+      navigate('/')
+    }
+  },[user.logged, navigate])
 
   return (
     <Row justify='center'>

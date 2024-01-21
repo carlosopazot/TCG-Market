@@ -1,5 +1,5 @@
 import { Button, Avatar, Dropdown } from 'antd'
-import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
+import { LogoutOutlined } from '@ant-design/icons'
 import { useContext } from "react"
 import { UserContext } from '../../context/UserContext'
 import { Link } from 'react-router-dom'
@@ -7,7 +7,7 @@ import './styles.css'
 
 const UserMenu = ({ name }) => {
 
-  const { logout } = useContext(UserContext)
+  const { logout, user } = useContext(UserContext)
   const initial = name.split('')[0]
 
   const items = [
@@ -30,7 +30,7 @@ const UserMenu = ({ name }) => {
       trigger={['click']}
     >
       <Button size='large'>
-        <Avatar size="small">
+        <Avatar size="small" src={user.avatar}>
           {initial}
         </Avatar>
         <span className='text-user'>{ name }</span>

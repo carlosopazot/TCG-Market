@@ -1,4 +1,4 @@
-import { Row, Col, Form, Input, Typography, Card, Button, Result, List, Avatar, Flex, Empty } from "antd"
+import { Row, Col, Form, Input, Typography, Card, Button, Result, List, Avatar, Flex, Empty, Divider } from "antd"
 import { useContext, useState } from "react";
 import { CartContext } from '../../context/CartContext'
 import { Link } from "react-router-dom";
@@ -119,17 +119,17 @@ const Checkout = () => {
                 </List.Item>
               )}
             />
+            <Divider></Divider>
             <Flex justify="space-between">
               <Title style={{ margin: 0 }} level={4}>Total</Title>
-              <Title style={{ margin: 0 }} level={3}>${totalCart()}</Title>
-            </Flex>
-            <Flex>
-
+              
+              <Title style={{ margin: 0 }} level={4}>${totalCart()}</Title>
             </Flex>
           </Card>
         </Col>
         <Col xs={24} md={12}>
           <Card>
+            <Title level={4}>Ingresa tus datos</Title>
             <Form
               name="basic"
               layout="vertical"
@@ -146,7 +146,7 @@ const Checkout = () => {
                   },
                 ]}
               >
-                <Input value={values.name} onChange={handleInputChange} name="name"/>
+                <Input size="large" value={values.name} onChange={handleInputChange} name="name"/>
               </Form.Item>
               <Form.Item
                 label="Apellido"
@@ -158,13 +158,11 @@ const Checkout = () => {
                   },
                 ]}
               >
-                <Input value={values.lastname} onChange={handleInputChange} name="lastname"/>
+                <Input size="large"  value={values.lastname} onChange={handleInputChange} name="lastname"/>
               </Form.Item>
-              <Form.Item>
-                <Button type="primary" htmlType="submit" block>
-                  Finalizar compra
-                </Button>
-              </Form.Item>
+              <Button size="large" type="primary" htmlType="submit" block>
+                Finalizar compra
+              </Button>
             </Form>
           </Card>
         </Col>

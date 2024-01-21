@@ -11,7 +11,8 @@ export const UserProvider = ({ children }) => {
     email: null,
     logged: false,
     uid: null,
-    name: null
+    name: null,
+    avatar: null,
   })
 
   const logout = () => {
@@ -25,19 +26,22 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log("User:" , user)
         const username = user.displayName.split(' ')[0]
         setUser({
           email: user.email,
           uid: user.uid,
           logged: true,
-          name: username
+          name: username,
+          avatar: user.photoURL
         })
       } else {
         setUser({
           email: null,
           uid: null,
           logged: false,
-          name: null
+          name: null,
+          avatar: null
         }) 
       }
     })

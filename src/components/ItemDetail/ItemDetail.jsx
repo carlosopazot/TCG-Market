@@ -35,11 +35,11 @@ const ItemDetail = ({ item }) => {
           <Button type="default" onClick={handleBack} icon={<ArrowLeftOutlined/>}>Volver</Button>
         </Col>
       </Row>
-      <Row gutter={24}>
-        <Col xs={16} sm={10} md={8} lg={8}>
+      <Row justify='center'>
+        <Col xs={24} sm={9} md={8} lg={8} xl={6}>
           <Image className="img-card" src={item.image} alt={item.name} preview={false} placeholder/>
         </Col>
-        <Col xs={24} sm={14} md={16} lg={16}>
+        <Col xs={24} sm={15} md={16} lg={16} xl={18}>
           <Card className="card-info" bodyStyle={{ height: '100%' }}>
             <Flex justify="space-between" style={{ height: '100%'}} vertical>
               <Flex vertical gap={4} align='flex-start' justify='flex-start' >
@@ -47,13 +47,13 @@ const ItemDetail = ({ item }) => {
                 <Title level={3} className="subtitle-card">{item.set}</Title>
                 <TagsState item={item}></TagsState>
                 <p>{item.description} </p>
-              </Flex>
-              <Flex vertical align='flex-start' gap={8}>
-                {item.stock === 0 
-                  ? <Alert message='Agotado' type="error" /> 
-                  : <Alert message={`Stock: ${item.stock}`} type="info" /> 
-                }
-                <Title level={2}>$ {item.price}</Title>
+                <Flex vertical align='flex-start' gap={8}>
+                  {item.stock === 0 
+                    ? <Alert message='Agotado' type="error" /> 
+                    : <Alert message={`Stock: ${item.stock}`} type="info" /> 
+                  }
+                  <Title level={2}>$ {item.price}</Title>
+                </Flex>
               </Flex>
               <Flex justify="space-between" className="">
                 <QuantitySelector quantity={quantity} stock={item.stock} setQuantity={setQuantity}/>

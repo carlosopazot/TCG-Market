@@ -16,13 +16,13 @@ const CartView = () => {
           <Col xs={24} key={item.id}>
             <Card 
             style={{ marginBottom: '1rem' }} >
-              <Row gutter={16}>
+              <Row gutter={[16]}>
                 <Col xs={4}>
                   <Image src={item.image} preview={false}></Image>
                 </Col>
                 <Col xs={20}>
                   <Title style={{ margin: 0 }} level={4}>{item.name}</Title>
-                  <Title style={{ margin: 0, marginBottom: '1rem' }} level={5}>{item.set}</Title>
+                  <Title type="secondary" style={{ margin: 0, marginBottom: '1rem' }} level={5}>{item.set}</Title>
                   <Flex style={{ marginBottom: '1rem' }} justify="space-between" align="center">
                     <Title style={{ margin: 0  }} level={3}>${item.price}</Title>
                     <Badge count={`x${item.quantity}`} color="blue" size="large"></Badge>

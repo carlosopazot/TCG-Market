@@ -69,11 +69,16 @@ const Checkout = () => {
     return(
       <Result
         status="success"
-        title="Listo!"
-        subTitle={`Tu codigo de orden es: ${orderId}`}
+        title="¡Listo!"
+        subTitle={
+          <>
+            <p>Tu código de compra es:</p>
+            <Title level={5}><b>{orderId}</b></Title>
+          </>
+        }
         extra={[
           <Link to='/' key="buy">
-            <Button size="lg" type="primary" >
+            <Button size="large" type="primary" >
               Seguir comprando
             </Button>
           </Link>
@@ -157,7 +162,7 @@ const Checkout = () => {
               </Form.Item>
               <Form.Item>
                 <Button type="primary" htmlType="submit" block>
-                  Enviar
+                  Finalizar compra
                 </Button>
               </Form.Item>
             </Form>

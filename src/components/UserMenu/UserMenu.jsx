@@ -9,6 +9,7 @@ const UserMenu = ({ name }) => {
 
   const { logout, user } = useContext(UserContext)
   const initial = name.split('')[0]
+  const username = name.split(' ')[0]
 
   const items = [
     {
@@ -33,7 +34,7 @@ const UserMenu = ({ name }) => {
         <Avatar size="small" src={user.avatar}>
           {initial}
         </Avatar>
-        <span className='text-user'>{ name }</span>
+        <span className='text-user'>{ username }</span>
       </Button>
     </Dropdown>
   )

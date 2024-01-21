@@ -4,24 +4,28 @@ import { CartContext } from '../../context/CartContext'
 import { Link } from "react-router-dom";
 import { db } from '../../firebase/config'
 import { collection, addDoc, writeBatch, query, where, documentId, getDocs } from "firebase/firestore";
+import { UserContext } from "../../context/UserContext";
 
 const { Title } = Typography
 
 const Checkout = () => {
   const { cart, totalCart, clearCart } = useContext(CartContext)
+  const { user } = useContext(UserContext)
   const [values, setValues] = useState ({
-    name: '',
-    lastname: '',
+    name: user.name || '',
+    email: user.email || ''
   })
 
   const [ orderId, setOrderId] = useState(null)
 
   const handleInputChange = (e) => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value
-    })
-  }
+    const { name, value } = e.target;
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
 
   const handleSubmit = async () => {
     const order = {
@@ -134,7 +138,8 @@ const Checkout = () => {
               name="basic"
               layout="vertical"
               onFinish={handleSubmit}
-              autoComplete="off"
+              autoComplete="on"
+              initialValues={values}
             >
               <Form.Item
                 label="Nombre"
@@ -142,23 +147,24 @@ const Checkout = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Debes ingresar un nombre!',
+                    message: '¡Debes ingresar un nombre!',
                   },
                 ]}
               >
                 <Input size="large" value={values.name} onChange={handleInputChange} name="name"/>
               </Form.Item>
               <Form.Item
-                label="Apellido"
-                name="lastname"
+                label="Correo electrónico"
+                name="email"
                 rules={[
                   {
                     required: true,
-                    message: 'Debes ingresar un apellido!',
+                    message: '¡Debes ingresar un correo!',
+                    type: 'email'
                   },
                 ]}
               >
-                <Input size="large"  value={values.lastname} onChange={handleInputChange} name="lastname"/>
+                <Input size="large"  value={values.email} onChange={handleInputChange} name="email"/>
               </Form.Item>
               <Button size="large" type="primary" htmlType="submit" block>
                 Finalizar compra

@@ -27,12 +27,12 @@ export const UserProvider = ({ children }) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log("User:" , user)
-        const username = user.displayName.split(' ')[0]
+
         setUser({
           email: user.email,
           uid: user.uid,
           logged: true,
-          name: username,
+          name: user.displayName,
           avatar: user.photoURL
         })
       } else {

@@ -118,7 +118,7 @@ const Checkout = () => {
                     key={index}
                     avatar={<Avatar shape="square" src={item.image} />}
                     title={item.name}
-                    description={`$${item.price}`}
+                    description={`$${item.quantity*item.price}`}
                   />
                 </List.Item>
               )}

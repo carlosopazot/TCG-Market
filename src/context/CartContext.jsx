@@ -13,13 +13,22 @@ export const CartProvider = ({ children }) => {
       message: 'Listo',
       description: `La carta ${item.name} fue agregada con exito`,
       placement,
-    });
-  };
+    })
+  }
 
   const addToCart = (item) => {
-    setCart([...cart, item])
+    const existingItemIndex = cart.findIndex((cartItem) => cartItem.id === item.id);
+    if (existingItemIndex !== -1) {
+      const updatedCart = [...cart]
+      updatedCart[existingItemIndex].quantity += item.quantity
+      setCart(updatedCart)
+    } else {
+      setCart((prevCart) => [...prevCart, item])
+    }
     openNotification(item, 'topRight', 'success')
-  }
+  };
+
+  const calculateItemTotal = (quantity, price) => quantity * price;
 
   const isInCart = (id) => {
     return cart.some(item => item.id === id)
@@ -34,7 +43,8 @@ export const CartProvider = ({ children }) => {
   }
 
   const totalCart = () => {
-    return cart.reduce((acc, item) => acc + (item.quantity * item.price), 0)
+    const total = cart.reduce((acc, item) => acc + (item.quantity * item.price), 0)
+    return total.toFixed(2)
   }
 
   const removeItem = (id) => {
@@ -49,7 +59,7 @@ export const CartProvider = ({ children }) => {
       clearCart,
       itemsInCart,
       totalCart,
-      removeItem
+      removeItem,
     }}>
       {contextHolder}
       {children}

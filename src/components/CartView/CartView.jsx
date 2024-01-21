@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
-import { Col, Row, Image, Typography, Card, Button, Empty, Flex, Badge } from "antd";
+import { Col, Row, Image, Typography, Card, Button, Empty, Flex, Badge, Divider } from "antd";
 
 const { Title } = Typography
 
 const CartView = () => {
+  const calculateItemTotal = (quantity, price) => quantity * price;
   const { cart, removeItem } = useContext(CartContext);
   if (cart.length === 0) return (
     <Empty description='Tu carro de compra esta vacío'></Empty>
@@ -24,10 +25,12 @@ const CartView = () => {
                   <Title style={{ margin: 0 }} level={4}>{item.name}</Title>
                   <Title type="secondary" style={{ margin: 0, marginBottom: '1rem' }} level={5}>{item.set}</Title>
                   <Flex style={{ marginBottom: '1rem' }} justify="space-between" align="center">
-                    <Title style={{ margin: 0  }} level={3}>${item.price}</Title>
+                    <Title type="secondary" style={{ margin: 0  }} level={5}>${item.price}</Title>
                     <Badge count={`x${item.quantity}`} color="blue" size="large"></Badge>
                   </Flex>
-                  <Flex justify="flex-end">
+                  <Divider></Divider>
+                  <Flex justify="space-between">
+                    <Title level={4}>${calculateItemTotal(item.quantity,item.price).toFixed(2)}</Title>
                     <Button size="sm" onClick={() => removeItem(item.id)}>Eliminar</Button>
                   </Flex>
                 </Col>

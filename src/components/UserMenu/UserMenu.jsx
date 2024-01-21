@@ -27,7 +27,7 @@ const UserMenu = ({ name }) => {
       menu={{
         items,
       }}
-      placement="bottomLeft"
+      placement="bottomRight"
       trigger={['click']}
     >
       <Button size='large'>

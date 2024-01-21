@@ -13,12 +13,12 @@ const QuantitySelector = ({ quantity, setQuantity, stock }) => {
   };
 
   return (
-    <Flex gap={16}>
-      <Button icon={<MinusOutlined/>} onClick={handleRes} disabled={quantity === 1}></Button>
+    <Flex align="center" gap={16}>
+      <Button size="large" icon={<MinusOutlined/>} onClick={handleRes} disabled={quantity === 1}></Button>
       <div className="quantity-wrapper">
-        <Title level={4}>{quantity}</Title>
+        <Title style={{ margin: 0 }} level={4}>{quantity}</Title>
       </div>
-      <Button icon={<PlusOutlined/>} onClick={handleSum} disabled={quantity === stock}></Button>
+      <Button size="large" icon={<PlusOutlined/>} onClick={handleSum} disabled={quantity === stock}></Button>
     </Flex>
   )
 }

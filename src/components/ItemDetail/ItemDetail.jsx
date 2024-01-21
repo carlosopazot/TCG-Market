@@ -1,5 +1,5 @@
-import { Row, Col, Typography, Image, Card, Button, Flex, Alert } from "antd"
-import { ShoppingCartOutlined, ArrowLeftOutlined} from "@ant-design/icons"
+import { Row, Col, Typography, Image, Card, Button, Flex, Alert, Divider } from "antd"
+import { ShoppingCartOutlined, ArrowLeftOutlined, LeftOutlined} from "@ant-design/icons"
 import QuantitySelector from "./QuantitySelector"
 import TagsState from "../TagsState/TagsState"
 import { useNavigate } from "react-router-dom"
@@ -32,14 +32,14 @@ const ItemDetail = ({ item }) => {
     <>
       <Row style={{ marginBottom: '16px'}}>
         <Col>
-          <Button type="default" onClick={handleBack} icon={<ArrowLeftOutlined/>}>Volver</Button>
+          <Button size="large" type="text" onClick={handleBack} icon={<LeftOutlined/>}>Volver</Button>
         </Col>
       </Row>
-      <Row justify='center'>
-        <Col xs={24} sm={9} md={8} lg={8} xl={6}>
+      <Row gutter={[16,16]} justify='center'>
+        <Col xs={24} sm={10} md={9} lg={8} xl={8}>
           <Image className="img-card" src={item.image} alt={item.name} preview={false} placeholder/>
         </Col>
-        <Col xs={24} sm={15} md={16} lg={16} xl={18}>
+        <Col xs={24} sm={14} md={15} lg={16} xl={16}>
           <Card className="card-info" bodyStyle={{ height: '100%' }}>
             <Flex justify="space-between" style={{ height: '100%'}} vertical>
               <Flex vertical gap={4} align='flex-start' justify='flex-start' >
@@ -52,20 +52,22 @@ const ItemDetail = ({ item }) => {
                     ? <Alert message='Agotado' type="error" /> 
                     : <Alert message={`Stock: ${item.stock}`} type="info" /> 
                   }
-                  <Title level={2}>$ {item.price}</Title>
+                  <Title level={3}>$ {item.price}</Title>
                 </Flex>
               </Flex>
-              <Flex justify="space-between" className="">
+              <Divider></Divider>
+              <Flex justify="space-between">
                 <QuantitySelector quantity={quantity} stock={item.stock} setQuantity={setQuantity}/>
                 { isInCart (item.stock)
                   ? <Button>Terminar compra</Button> 
                   : <Button 
-                    type="primary" 
-                    onClick={handleAdd}
-                    disabled={item.stock === 0}
-                    icon={<ShoppingCartOutlined />}
+                      type="primary" 
+                      onClick={handleAdd}
+                      disabled={item.stock === 0}
+                      icon={<ShoppingCartOutlined />}
+                      size="large"
                     >
-                    Agregar al carro
+                     Agregar al carro
                     </Button>
                 }
               </Flex>

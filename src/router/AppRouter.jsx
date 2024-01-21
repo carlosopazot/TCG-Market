@@ -1,5 +1,3 @@
-import { useContext } from "react"
-import { UserContext } from "../context/UserContext"
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom"
 import { Row, Col, Layout } from "antd"
 import Navbar from "../components/Navbar/NavBar"
@@ -11,8 +9,6 @@ import NotFound from "../components/NotFound/NotFound"
 import Login from "../components/Login/Login"
 
 const AppRouter = () => {
-  const { user } = useContext(UserContext)
-  const isLoggedIn = user.logged
   return (
     <BrowserRouter>
       <Navbar />

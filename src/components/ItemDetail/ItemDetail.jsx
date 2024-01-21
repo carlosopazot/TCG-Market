@@ -36,7 +36,7 @@ const ItemDetail = ({ item }) => {
         </Col>
       </Row>
       <Row gutter={24}>
-        <Col xs={24} sm={10} md={8} lg={8}>
+        <Col xs={16} sm={10} md={8} lg={8}>
           <Image className="img-card" src={item.image} alt={item.name} preview={false} placeholder/>
         </Col>
         <Col xs={24} sm={14} md={16} lg={16}>

@@ -16,7 +16,7 @@ const ItemCard = ({ item }) => {
 
 
   return (
-    <Col xs={24} sm={12} md={8} xl={6} style={{ marginBottom: '1rem'}}>
+    <Col xs={12} sm={12} md={8} xl={6} style={{ marginBottom: '1rem'}}>
       <Link to={`/item/${item.id}`}>
         <Card 
           className='card-item'

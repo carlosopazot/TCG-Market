@@ -95,10 +95,10 @@ const Checkout = () => {
   return (
     <>
       <Row>
-        <Title level={4}>Finalizar compra</Title>
+        <Title level={4}>Resumen de tu compra</Title>
       </Row>
-      <Row gutter={16} justify='start'>
-        <Col md={12}>
+      <Row gutter={[16, 16]} justify='start'>
+        <Col xs={24} md={12}>
           <Card>
             <List 
               itemLayout="horizontal"
@@ -123,7 +123,7 @@ const Checkout = () => {
             </Flex>
           </Card>
         </Col>
-        <Col md={12}>
+        <Col xs={24} md={12}>
           <Card>
             <Form
               name="basic"

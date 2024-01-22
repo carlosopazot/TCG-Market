@@ -56,7 +56,7 @@ const ItemDetail = ({ item }) => {
                 </Flex>
               </Flex>
               <Divider></Divider>
-              <Flex justify="space-between">
+              <Flex gap={8} justify="space-between">
                 <QuantitySelector quantity={quantity} stock={item.stock} setQuantity={setQuantity}/>
                 { isInCart (item.stock)
                   ? <Button>Terminar compra</Button> 

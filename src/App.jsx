@@ -1,29 +1,19 @@
 import { CartProvider } from './context/CartContext';
 import { UserProvider } from './context/UserContext';
-import { ConfigProvider } from 'antd'
+import { ThemeProvider } from './context/ThemeContext';
 import './assets/css/App.css'
 import AppRouter from './router/AppRouter';
 
 function App() {
 
   return (
-    <UserProvider>
-      <CartProvider>
-        <ConfigProvider
-          theme={{
-            components: {
-              Layout: {
-                bodyBg: 'transparent',
-                lightTriggerBg: '#444',
-                lightTriggerColor: '#fff'
-              },
-            },
-          }}
-        >
+    <ThemeProvider>
+      <UserProvider>
+        <CartProvider>
           <AppRouter></AppRouter>
-        </ConfigProvider>
-      </CartProvider>
-    </UserProvider>
+        </CartProvider>
+      </UserProvider>
+    </ThemeProvider>
 
   )
 }

@@ -1,5 +1,4 @@
 body, .layout {
-  background-color: rgb(247, 249, 251);
   margin: 0;
 }
 
@@ -13,4 +12,5 @@ a {
 
 .layout {
   padding: 100px 1.25rem;
+  min-height: 100vh;
 }

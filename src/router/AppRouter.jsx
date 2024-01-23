@@ -11,24 +11,22 @@ import Login from "../components/Login/Login"
 const AppRouter = () => {
   return (
     <BrowserRouter>
-      <Navbar />
       <Layout className='layout'>
-        <Layout>
-          <Row justify='center'>
-            <Col xs={24} lg={20}>
-                <Routes>
-                  <Route path='/' element={<ItemListContainer title="Cartas"/>}></Route>
-                  <Route path='/cards/:stateId' element={<ItemListContainer title="Cartas"/>}></Route>
-                  <Route path="/cart" element={<CartView />} />
-                  <Route path='/item/:itemId' element={<ItemDetailContainer />}></Route>
-                  <Route path='/checkout' element={<Checkout />}></Route>
-                  <Route path='/not-found' element={ <NotFound/>}></Route>
-                  <Route path='*' element={ <Navigate to={'not-found'} />}></Route>
-                  <Route path="/login" element={<Login />}></Route>
-                </Routes>
-            </Col>
-          </Row>
-        </Layout>
+        <Navbar />
+        <Row justify='center'>
+          <Col xs={24} lg={20}>
+              <Routes>
+                <Route path='/' element={<ItemListContainer title="Cartas"/>}></Route>
+                <Route path='/cards/:stateId' element={<ItemListContainer title="Cartas"/>}></Route>
+                <Route path="/cart" element={<CartView />} />
+                <Route path='/item/:itemId' element={<ItemDetailContainer />}></Route>
+                <Route path='/checkout' element={<Checkout />}></Route>
+                <Route path='/not-found' element={ <NotFound/>}></Route>
+                <Route path='*' element={ <Navigate to={'not-found'} />}></Route>
+                <Route path="/login" element={<Login />}></Route>
+              </Routes>
+          </Col>
+        </Row>
       </Layout>
     </BrowserRouter>
   )

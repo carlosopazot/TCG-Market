@@ -7,8 +7,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fff;
   z-index: 10;
+  background-color: #fff;
+}
+
+.navbar.navbar-dark {
+  background-color: #141414;
 }
 
 .logo {
@@ -24,6 +28,10 @@
 .logo-title {
   margin: 0;
   line-height: 2rem;
+}
+
+.logo-title.logo-title-dark {
+  color: #fff;
 }
 
 .brand {

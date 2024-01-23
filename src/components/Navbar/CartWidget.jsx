@@ -1,9 +1,9 @@
 import { Badge, Button, Drawer, Flex, Typography } from "antd"
-import { ShoppingCartOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined } from '@ant-design/icons'
 import { useContext, useState } from 'react'
-import { CartContext } from "../../context/CartContext";
-import { Link } from "react-router-dom";
-import CartView from "../CartView/CartView";
+import { CartContext } from "../../context/CartContext"
+import { Link } from "react-router-dom"
+import CartView from "../CartView/CartView"
 
 const { Title } = Typography
 

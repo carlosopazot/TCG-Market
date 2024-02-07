@@ -25,11 +25,7 @@ const QuantitySelector = ({ stock, setStock }) => {
           {stock}
         </Title>
       </div>
-      <Button
-        size="large"
-        icon={<PlusOutlined />}
-        onClick={handleSum}
-      ></Button>
+      <Button size="large" icon={<PlusOutlined />} onClick={handleSum}></Button>
     </Flex>
   )
 }

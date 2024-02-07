@@ -19,7 +19,7 @@ const TagsState = ({ item }) => {
           FOIL
         </Tag>
       ) : null}
-      <Tag bordered={false} color='green'>
+      <Tag bordered={false} color="green">
         USD {item.dollarValue}
       </Tag>
     </Flex>

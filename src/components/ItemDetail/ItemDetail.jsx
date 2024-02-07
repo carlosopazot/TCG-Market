@@ -21,6 +21,8 @@ import TagsState from '../TagsState/TagsState'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles.css'
 import imgPlaceholder from '../../assets/images/magic_card_back.webp'
+import SetIcon from '../UploadCard/SetIcon'
+import WhatsappButton from '../WhatsappButton/WhatsappButton'
 import { useContext } from 'react'
 import { UserContext } from '../../context/UserContext'
 
@@ -66,9 +68,7 @@ const ItemDetail = ({ item }) => {
                 <Title level={2} className="title-card">
                   {item.name}
                 </Title>
-                <Title level={3} className="subtitle-card">
-                  {item.set}
-                </Title>
+                <SetIcon setCode={item.set} setName={item.set_name}></SetIcon>
                 <TagsState item={item}></TagsState>
                 <p>{item.description} </p>
                 <Flex vertical align="flex-start" gap={8}>
@@ -88,11 +88,12 @@ const ItemDetail = ({ item }) => {
                 <Col xs={24} md={14}>
                   <Meta
                     avatar={
-                      <Avatar src={item.seller.avatar} placeholder="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
+                      <Avatar
+                        src={item.seller.avatar}
+                        placeholder="https://api.dicebear.com/7.x/miniavs/svg?seed=8"
+                      />
                     }
-                    title={
-                      <Title level={4}>{item.seller.name}</Title>
-                    }
+                    title={<Title level={4}>{item.seller.name}</Title>}
                     description={
                       <Flex vertical gap={8}>
                         <Rate disabled defaultValue={5} />
@@ -104,15 +105,10 @@ const ItemDetail = ({ item }) => {
                   />
                 </Col>
                 <Col xs={24} md={10}>
-                  <Button
-                    icon={<WhatsAppOutlined />}
-                    type="primary"
-                    style={{ marginBottom: '0.5rem' }}
-                    size="large"
-                    block
-                  >
-                    Contactar
-                  </Button>
+                  <WhatsappButton
+                    sellerName={item.seller.name}
+                    nameCard={item.name}
+                  ></WhatsappButton>
                   <Button icon={<ShopOutlined />} size="large" block>
                     Ver tienda
                   </Button>

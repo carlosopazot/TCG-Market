@@ -1,20 +1,11 @@
-import {
-  message,
-  Button,
-  Select,
-  Row,
-  Col,
-  Typography,
-  Spin
-} from 'antd'
+import { message, Button, Select, Row, Col, Typography, Spin } from 'antd'
 import axios from 'axios'
 import { useState } from 'react'
 import UploadItem from './UploadItem'
-import { useNavigate } from 'react-router-dom'
-import { LeftOutlined, SearchOutlined } from '@ant-design/icons'
+import BackButton from '../BackButton/BackButton'
+import { SearchOutlined } from '@ant-design/icons'
 
 const { Title } = Typography
-
 
 const UploadCard = () => {
   const [searchResults, setSearchResults] = useState([])
@@ -22,12 +13,6 @@ const UploadCard = () => {
   const [loading, setLoading] = useState(false)
   const [cardDetails, setCardDetails] = useState(null)
   const [editions, setEditions] = useState([])
-  const navigate = useNavigate()
-
-  const handleBack = () => {
-    navigate(-1)
-  }
-
 
   const handleSearch = async (value) => {
     try {
@@ -70,6 +55,7 @@ const UploadCard = () => {
   }
 
   const getCardDetails = async (cardName) => {
+    clearSearch()
     try {
       const response = await axios.get(
         `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(cardName)}`
@@ -91,7 +77,6 @@ const UploadCard = () => {
   }
 
   const handleSelectChange = async (value) => {
-    
     clearSearch()
     setSelectedCard(value)
 
@@ -110,15 +95,16 @@ const UploadCard = () => {
   }
 
   return (
-    <Row justify='center' gutter={[16, 24]}>
+    <Row justify="center" gutter={[16, 24]}>
       <Col xs={24} md={16}>
-        <Button type='link' icon={<LeftOutlined/>} onClick={handleBack} size='large' style={{ marginBottom: '1rem', paddingLeft: 0 }}>Volver a mi tienda</Button>
+        <BackButton></BackButton>
         <Title level={3}>Vende tus cartas</Title>
-        <Title style={{ marginTop : 0 }} level={5} type="secondary">
-         Ingresa el nombre de tu carta, completa la información y súbela a tu tienda.
+        <Title style={{ marginTop: 0 }} level={5} type="secondary">
+          Ingresa el nombre de tu carta, completa la información y súbela a tu
+          tienda.
         </Title>
       </Col>
-      <Col xs={24} md={16} style={{ position: 'sticky', top: '80px'}}>
+      <Col xs={24} md={16} style={{ position: 'sticky', top: '80px' }}>
         <Select
           allowClear
           showSearch
@@ -130,7 +116,7 @@ const UploadCard = () => {
           onChange={handleSelectChange}
           value={selectedCard}
           style={{ width: '100%' }}
-          suffixIcon={<SearchOutlined/>}
+          suffixIcon={<SearchOutlined />}
           options={(searchResults || []).map((d) => ({
             value: d,
             label: d,
@@ -147,8 +133,8 @@ const UploadCard = () => {
                 <Title level={4}>Resultados para {cardDetails.name}:</Title>
               </Col>
               {editions.map((edition, index) => {
-                console.log(`Detalles de la edición ${index + 1}:`, edition);
-                return <UploadItem edition={edition} key={edition.set} />;
+                console.log(`Detalles de la edición ${index + 1}:`, edition)
+                return <UploadItem edition={edition} key={edition.set} />
               })}
             </Row>
           </Col>

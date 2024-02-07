@@ -1,11 +1,10 @@
-import { CartProvider } from './context/CartContext';
-import { UserProvider } from './context/UserContext';
-import { ThemeProvider } from './context/ThemeContext';
+import { CartProvider } from './context/CartContext'
+import { UserProvider } from './context/UserContext'
+import { ThemeProvider } from './context/ThemeContext'
 import './assets/css/App.css'
-import AppRouter from './router/AppRouter';
+import AppRouter from './router/AppRouter'
 
 function App() {
-
   return (
     <ThemeProvider>
       <UserProvider>
@@ -14,7 +13,6 @@ function App() {
         </CartProvider>
       </UserProvider>
     </ThemeProvider>
-
   )
 }
 

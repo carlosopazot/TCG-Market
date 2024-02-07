@@ -3,12 +3,13 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: auto;
+  height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 10;
   background-color: #fff;
+  padding: 1rem 1.25rem;
 }
 
 .navbar.navbar-dark {
@@ -23,6 +24,7 @@
 .brand {
   display: flex;
   align-items: center;
+  margin-right: 1rem;
 }
 
 .logo-title {
@@ -32,10 +34,6 @@
 
 .logo-title.logo-title-dark {
   color: #fff;
-}
-
-.brand {
-  margin-right: 1rem;
 }
 
 .cart-item-list {
@@ -48,10 +46,10 @@
   border-top: 1px solid #eee;
   background-color: #fff;
   border-bottom-right-radius: 8px;
-  border-bottom-left-radius: 8px ;
+  border-bottom-left-radius: 8px;
 }
 
-@media screen and (max-width: 992px) {
+@media (width <= 992px) {
   .logo-title {
     display: none;
   }

@@ -1,8 +1,8 @@
-.text-user{
+.text-user {
   margin-left: 0.25rem;
 }
 
-@media screen and (max-width: 480px) {
+@media (width <= 480px) {
   .text-user {
     display: none;
   }

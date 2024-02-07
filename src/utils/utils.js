@@ -1,4 +1,4 @@
-import { cards } from "../data/data"
+import { cards } from '../data/data'
 
 export const getData = () => {
   return new Promise((resolve) => {

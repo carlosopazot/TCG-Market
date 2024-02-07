@@ -1,0 +1,8 @@
+.hide-mobile {
+  display: inline-block;
+}
+@media (width <= 480px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}

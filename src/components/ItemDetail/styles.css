@@ -8,7 +8,7 @@
 }
 
 .card-info {
-  height: 100%;
+  margin-bottom: 1rem;
 }
 
 .quantity-wrapper {
@@ -21,7 +21,7 @@
   margin: 0 auto;
 }
 
-@media screen and (max-width:768px) {
+@media (width <= 768px) {
   .img-card {
     margin-bottom: 1rem;
     width: 200px;

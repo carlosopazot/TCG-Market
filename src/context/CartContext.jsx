@@ -1,14 +1,13 @@
-import { createContext, useState } from "react";
-import { notification } from "antd";
+import { createContext, useState } from 'react'
+import { notification } from 'antd'
 
 export const CartContext = createContext()
 
-
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([])
-  const [api, contextHolder] = notification.useNotification();
+  const [api, contextHolder] = notification.useNotification()
 
-  const openNotification = (item, placement,type) => {
+  const openNotification = (item, placement, type) => {
     api[type]({
       message: 'Listo',
       description: `La carta ${item.name} fue agregada con exito`,
@@ -17,7 +16,9 @@ export const CartProvider = ({ children }) => {
   }
 
   const addToCart = (item) => {
-    const existingItemIndex = cart.findIndex((cartItem) => cartItem.id === item.id);
+    const existingItemIndex = cart.findIndex(
+      (cartItem) => cartItem.id === item.id
+    )
     if (existingItemIndex !== -1) {
       const updatedCart = [...cart]
       updatedCart[existingItemIndex].quantity += item.quantity
@@ -26,12 +27,12 @@ export const CartProvider = ({ children }) => {
       setCart((prevCart) => [...prevCart, item])
     }
     openNotification(item, 'topRight', 'success')
-  };
+  }
 
-  const calculateItemTotal = (quantity, price) => quantity * price;
+  const calculateItemTotal = (quantity, price) => quantity * price
 
   const isInCart = (id) => {
-    return cart.some(item => item.id === id)
+    return cart.some((item) => item.id === id)
   }
 
   const clearCart = () => {
@@ -43,24 +44,29 @@ export const CartProvider = ({ children }) => {
   }
 
   const totalCart = () => {
-    const total = cart.reduce((acc, item) => acc + (item.quantity * item.price), 0)
+    const total = cart.reduce(
+      (acc, item) => acc + item.quantity * item.price,
+      0
+    )
     return total.toFixed(2)
   }
 
   const removeItem = (id) => {
-    setCart( cart.filter(item => item.id !== id) )
+    setCart(cart.filter((item) => item.id !== id))
   }
 
   return (
-    <CartContext.Provider value={{
-      cart,
-      isInCart,
-      addToCart,
-      clearCart,
-      itemsInCart,
-      totalCart,
-      removeItem,
-    }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        isInCart,
+        addToCart,
+        clearCart,
+        itemsInCart,
+        totalCart,
+        removeItem,
+      }}
+    >
       {contextHolder}
       {children}
     </CartContext.Provider>

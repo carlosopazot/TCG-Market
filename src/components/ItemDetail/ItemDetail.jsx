@@ -11,44 +11,31 @@ import {
   Rate,
 } from 'antd'
 import {
-  LeftOutlined,
   EnvironmentOutlined,
   LoginOutlined,
-  WhatsAppOutlined,
   ShopOutlined,
 } from '@ant-design/icons'
 import TagsState from '../TagsState/TagsState'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './styles.css'
 import imgPlaceholder from '../../assets/images/magic_card_back.webp'
 import SetIcon from '../UploadCard/SetIcon'
 import WhatsappButton from '../WhatsappButton/WhatsappButton'
 import { useContext } from 'react'
 import { UserContext } from '../../context/UserContext'
+import BackButton from '../BackButton/BackButton'
 
 const { Title } = Typography
 const { Meta } = Card
 
 const ItemDetail = ({ item }) => {
   const { user } = useContext(UserContext)
-  const navigate = useNavigate()
-
-  const handleBack = () => {
-    navigate(-1)
-  }
 
   return (
     <>
-      <Row style={{ marginBottom: '16px' }}>
+      <Row>
         <Col>
-          <Button
-            size="large"
-            type="text"
-            onClick={handleBack}
-            icon={<LeftOutlined />}
-          >
-            Volver
-          </Button>
+          <BackButton></BackButton>
         </Col>
       </Row>
       <Row gutter={[16, 16]} justify="center">

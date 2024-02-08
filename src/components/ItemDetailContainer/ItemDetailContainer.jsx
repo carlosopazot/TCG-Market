@@ -23,7 +23,7 @@ const ItemDetailContainer = () => {
         setItem(doc)
       })
       .finally(() => setLoading(false))
-  }, [])
+  }, [itemId])
 
   return (
     <>

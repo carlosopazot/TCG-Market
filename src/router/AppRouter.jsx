@@ -9,35 +9,60 @@ import NotFound from '../components/NotFound/NotFound'
 import Store from '../components/Store/Store'
 import Login from '../components/Login/Login'
 import UploadCard from '../components/UploadCard/UploadCard'
+import { useContext } from 'react'
+import { UserContext } from '../context/UserContext'
 
 const AppRouter = () => {
+  const { user } = useContext(UserContext)
   return (
     <BrowserRouter>
       <Layout className="layout">
         <Navbar />
         <Row justify="center">
           <Col xs={24} lg={20}>
-            <Routes>
-              <Route
-                path="/"
-                element={<ItemListContainer title="Cartas" />}
-              ></Route>
-              <Route path="/tienda" element={<Store />}></Route>
-              <Route
-                path="/cards/:stateId"
-                element={<ItemListContainer title="Cartas" />}
-              ></Route>
-              <Route path="/cart" element={<CartView />} />
-              <Route
-                path="/item/:itemId"
-                element={<ItemDetailContainer />}
-              ></Route>
-              <Route path="/agregar-carta" element={<UploadCard />}></Route>
-              <Route path="/checkout" element={<Checkout />}></Route>
-              <Route path="/not-found" element={<NotFound />}></Route>
-              <Route path="*" element={<Navigate to={'not-found'} />}></Route>
-              <Route path="/login" element={<Login />}></Route>
-            </Routes>
+            {user.logged ? (
+              <Routes>
+                <Route
+                  path="/"
+                  element={<ItemListContainer title="Cartas" />}
+                ></Route>
+                <Route path="/tienda" element={<Store />}></Route>
+                <Route
+                  path="/cards/:stateId"
+                  element={<ItemListContainer title="Cartas" />}
+                ></Route>
+                <Route path="/cart" element={<CartView />} />
+                <Route
+                  path="/item/:itemId"
+                  element={<ItemDetailContainer />}
+                ></Route>
+                <Route path="/agregar-carta" element={<UploadCard />}></Route>
+                <Route path="/checkout" element={<Checkout />}></Route>
+                <Route path="/not-found" element={<NotFound />}></Route>
+                <Route path="*" element={<Navigate to={'not-found'} />}></Route>
+                <Route path="/login" element={<Login />}></Route>
+              </Routes>
+            ) : (
+              <Routes>
+                <Route
+                  path="/"
+                  element={<ItemListContainer title="Cartas" />}
+                ></Route>
+                <Route
+                  path="/cards/:stateId"
+                  element={<ItemListContainer title="Cartas" />}
+                ></Route>
+                <Route path="/cart" element={<CartView />} />
+                <Route
+                  path="/item/:itemId"
+                  element={<ItemDetailContainer />}
+                ></Route>
+                <Route path="/checkout" element={<Checkout />}></Route>
+                <Route path="/not-found" element={<NotFound />}></Route>
+                <Route path="*" element={<Navigate to={'not-found'} />}></Route>
+                <Route path="/login" element={<Login />}></Route>
+              </Routes>
+            )}
           </Col>
         </Row>
       </Layout>

@@ -1,31 +1,21 @@
+import { Row, Col, Typography, Card, Empty, message } from 'antd'
 import {
-  PlusOutlined,
-  SettingOutlined,
-  LoadingOutlined,
-} from '@ant-design/icons'
-import {
-  Row,
-  Col,
-  Typography,
-  Button,
-  Flex,
-  Card,
-  Empty,
-  Spin,
-  Statistic,
-  Divider,
-  message,
-  Tabs,
-} from 'antd'
-import { collection, getDocs, query, where } from 'firebase/firestore'
+  collection,
+  getDocs,
+  query,
+  updateDoc,
+  setDoc,
+  where,
+  doc,
+  deleteDoc,
+} from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import { useEffect, useState, useContext, useMemo } from 'react'
 import { UserContext } from '../../context/UserContext'
+import StoreHeader from './StoreHeader'
 import StoreItem from './StoreItem'
-import './styles.css'
-import { Link } from 'react-router-dom'
-import CountUp from 'react-countup'
-import { doc, deleteDoc } from 'firebase/firestore'
+import StoreStats from './StoreStats'
+import Loader from '../Loader/Loader'
 
 const { Title } = Typography
 
@@ -33,7 +23,6 @@ const Store = () => {
   const [cards, setCards] = useState([])
   const { user } = useContext(UserContext)
   const [loading, setLoading] = useState(true)
-  const formatter = (value) => <CountUp end={value} separator="," />
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -54,7 +43,7 @@ const Store = () => {
     }
 
     fetchCards()
-  }, [user.email])
+  }, [user.uid])
 
   const handleDelete = async (id) => {
     try {
@@ -67,6 +56,18 @@ const Store = () => {
     }
   }
 
+  const handleSold = async (id) => {
+    try {
+      const docRef = doc(db, 'cards', id);
+      await updateDoc(docRef, {
+        stock: 0 // Actualiza el stock a 0 (como un número)
+      })
+    } catch (error) {
+      console.error('Error al marcar la carta como vendida:', error);
+      message.error('Error al marcar la carta como vendida');
+    }
+  }
+  
   const totalStock = useMemo(() => {
     return cards.reduce(
       (accumulator, currentCard) => accumulator + currentCard.stock,
@@ -77,61 +78,13 @@ const Store = () => {
   return (
     <>
       <Row gutter={[16, 24]}>
-        <Col xs={12} md={12}>
-          <Title level={2}>Mi tienda</Title>
-        </Col>
-        <Col xs={12} md={12}>
-          <Flex gap={8} justify="end">
-            <Button icon={<SettingOutlined />} disabled size="large">
-              <span className="hide-mobile">Configurar</span>
-            </Button>
-            <Link to="/agregar-carta">
-              <Button type="primary" icon={<PlusOutlined />} size="large">
-                Agregar carta
-              </Button>
-            </Link>
-          </Flex>
-        </Col>
-        {loading ? (
-          <Col xs={24}>
-            <Spin
-              tip="Cargando tus cartas"
-              indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
-            >
-              <div className="content" />
-            </Spin>
-          </Col>
-        ) : (
-          <Col xs={24}>
+        <StoreHeader></StoreHeader>
+        <Col xs={24}>
+          {loading ? (
+            <Loader></Loader>
+          ) : (
             <Row gutter={[16, 16]}>
-              <Col xs={24} sm={8}>
-                <Card bordered={false}>
-                  <Statistic
-                    title="Total por vender"
-                    prefix="$"
-                    value={0}
-                    formatter={formatter}
-                  />
-                </Card>
-              </Col>
-              <Col xs={24} sm={8}>
-                <Card bordered={false}>
-                  <Statistic
-                    title="Total vendido"
-                    value={0}
-                    formatter={formatter}
-                  />
-                </Card>
-              </Col>
-              <Col xs={24} sm={8}>
-                <Card bordered={false}>
-                  <Statistic
-                    title="Cartas en coleccion"
-                    value={totalStock}
-                    formatter={formatter}
-                  />
-                </Card>
-              </Col>
+              <StoreStats totalStock={totalStock}></StoreStats>
               {cards.length > 0 ? (
                 <Col xs={24}>
                   <Row>
@@ -145,6 +98,7 @@ const Store = () => {
                         key={item.id}
                         item={item}
                         onDelete={handleDelete}
+                        onSold={handleSold}
                       />
                     ))}
                   </Row>
@@ -157,8 +111,8 @@ const Store = () => {
                 </Col>
               )}
             </Row>
-          </Col>
-        )}
+          )}
+        </Col>
       </Row>
     </>
   )

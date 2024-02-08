@@ -17,7 +17,7 @@ const BackButton = () => {
       size="large"
       style={{ marginBottom: '1rem', paddingLeft: 0 }}
     >
-      Volver a mi tienda
+      Volver
     </Button>
   )
 }

@@ -1,9 +1,9 @@
-import { message, Button, Select, Row, Col, Typography, Spin } from 'antd'
+import { message, Row, Col, Typography } from 'antd'
 import axios from 'axios'
 import { useState } from 'react'
-import UploadItem from './UploadItem'
+import CardSearch from './CardSearch'
+import CardResults from './CardResults'
 import BackButton from '../BackButton/BackButton'
-import { SearchOutlined } from '@ant-design/icons'
 
 const { Title } = Typography
 
@@ -61,8 +61,7 @@ const UploadCard = () => {
         `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(cardName)}`
       )
       const cardData = response.data
-
-      // console.log('Detalles de la carta:', cardData)
+      console.log('Detalles de la carta:', cardData)
 
       // Actualiza el estado con los detalles de la carta
       setCardDetails(cardData)
@@ -77,7 +76,6 @@ const UploadCard = () => {
   }
 
   const handleSelectChange = async (value) => {
-    clearSearch()
     setSelectedCard(value)
 
     try {
@@ -88,7 +86,6 @@ const UploadCard = () => {
   }
 
   const clearSearch = () => {
-    // Limpia el estado de los resultados de búsqueda, la carta seleccionada y los detalles de la carta
     setSearchResults([])
     setSelectedCard(null)
     setCardDetails(null)
@@ -105,45 +102,22 @@ const UploadCard = () => {
         </Title>
       </Col>
       <Col xs={24} md={16} style={{ position: 'sticky', top: '80px' }}>
-        <Select
-          allowClear
-          showSearch
-          placeholder="Ej: Counterspell"
-          optionLabelProp="label"
-          filterOption={false}
+        <CardSearch
           onSearch={handleSearch}
-          defaultOpen={false}
-          onChange={handleSelectChange}
-          value={selectedCard}
-          style={{ width: '100%' }}
-          suffixIcon={<SearchOutlined />}
-          options={(searchResults || []).map((d) => ({
-            value: d,
-            label: d,
-          }))}
+          onSelect={handleSelectChange}
+          searchResults={searchResults}
           loading={loading}
-          size="large"
-        />
+          selectedCard={selectedCard}
+        ></CardSearch>
       </Col>
       {cardDetails && (
-        <>
-          <Col xs={24} md={16}>
-            <Row gutter={[16, 16]}>
-              <Col xs={24}>
-                <Title level={4}>Resultados para {cardDetails.name}:</Title>
-              </Col>
-              {editions.map((edition, index) => {
-                console.log(`Detalles de la edición ${index + 1}:`, edition)
-                return <UploadItem edition={edition} key={edition.set} />
-              })}
-            </Row>
-          </Col>
-          <Col md={16}>
-            <Button type="primary" onClick={clearSearch}>
-              Limpiar búsqueda
-            </Button>
-          </Col>
-        </>
+        <Col xs={24} md={16}>
+          <CardResults
+            cardDetails={cardDetails}
+            editions={editions}
+            clearSearch={clearSearch}
+          />
+        </Col>
       )}
     </Row>
   )

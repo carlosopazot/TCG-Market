@@ -1,38 +1,36 @@
 import {
-  Button,
   Row,
   Col,
   Card,
+  Form,
+  Input,
   Typography,
   Flex,
   Divider,
-  Form,
-  Input,
+  Button,
+  InputNumber,
+  message,
 } from 'antd'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
-import { FacebookFilled, GoogleOutlined } from '@ant-design/icons'
-import { useNavigate, Link } from 'react-router-dom'
-import { QuestionCircleFilled } from '@ant-design/icons'
+import { Link, useNavigate } from 'react-router-dom'
+import { db } from '../../firebase/config'
+import { collection, writeBatch, addDoc } from 'firebase/firestore'
 
 const { Title, Text } = Typography
 
-const Login = () => {
-  const { googleLogin, facebookLogin, login } = useContext(UserContext)
-  const { user } = useContext(UserContext)
-
+const Register = () => {
+  const { register, user } = useContext(UserContext)
   const [values, setValues] = useState({
     email: '',
     password: '',
+    name: '',
+    phone: '',
   })
 
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if (user.logged === true) {
-      navigate(-1)
-    }
-  }, [user.logged, navigate])
+  const [sellerId, setSellerId] = useState(null)
 
   const handleInputChange = (e) => {
     setValues({
@@ -41,8 +39,9 @@ const Login = () => {
     })
   }
 
-  const onFinish = (values) => {
-    login(values)
+  const onFinish = async (values) => {
+    register(values)
+    navigate('/verificar-cuenta')
   }
 
   const onFinishFailed = (errorInfo) => {
@@ -53,19 +52,7 @@ const Login = () => {
     <Row justify="center">
       <Col xs={24}>
         <Card>
-          <Title level={3}>Inicia sesión</Title>
-          <Divider></Divider>
-          <Flex gap={8} vertical>
-            <Title level={5}>Ingresa con tus redes</Title>
-            <Button onClick={googleLogin} size="large">
-              <GoogleOutlined style={{ color: 'red' }} />
-              Ingresa con Google
-            </Button>
-            <Button disabled onClick={facebookLogin} size="large">
-              <FacebookFilled style={{ color: 'blue' }} />
-              Ingresa con Facebook
-            </Button>
-          </Flex>
+          <Title level={3}>Crea tu cuenta</Title>
           <Divider></Divider>
           <Form
             name="basic"
@@ -78,12 +65,31 @@ const Login = () => {
             layout="vertical"
           >
             <Form.Item
+              label="Nombre"
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: 'Ingresa tu nombre!',
+                },
+              ]}
+            >
+              <Input
+                size="large"
+                onChange={handleInputChange}
+                value={values.name}
+                name="name"
+              />
+            </Form.Item>
+
+            <Form.Item
               label="Correo"
               name="email"
               rules={[
                 {
                   required: true,
-                  message: 'Please input your username!',
+                  message: 'Ingresa un correo válido!',
+                  type: 'email',
                 },
               ]}
             >
@@ -97,13 +103,32 @@ const Login = () => {
             </Form.Item>
 
             <Form.Item
-              label="Password"
-              name="password"
-              style={{ marginBottom: '1rem' }}
+              label="N° de teléfono"
+              name="phone"
               rules={[
                 {
                   required: true,
-                  message: 'Please input your password!',
+                  message: 'Ingresa un numero valido!',
+                },
+              ]}
+            >
+              <Input
+                size="large"
+                onChange={handleInputChange}
+                value={values.phone}
+                name="phone"
+                placeholder="Ej: 912345678"
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Contraseña"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Ingresa una contraseña!',
                 },
               ]}
             >
@@ -114,28 +139,18 @@ const Login = () => {
                 name="password"
               />
             </Form.Item>
-            <Flex style={{ marginBottom: '1rem' }} justify="end">
-              <Button
-                icon={<QuestionCircleFilled />}
-                type="link"
-                size="small"
-                disabled
-              >
-                Olvidé mi contrasena
-              </Button>
-            </Flex>
             <Form.Item>
               <Button block size="large" type="primary" htmlType="submit">
-                Ingresar
+                Crear cuenta
               </Button>
             </Form.Item>
           </Form>
           <Divider></Divider>
           <Flex>
-            <Text>No tienes una cuenta?</Text>
-            <Link to="/registro">
+            <Text>Ya tienes una cuenta?</Text>
+            <Link to="/login">
               <Button type="link" size="small">
-                Crear una cuenta
+                Inicia sesión
               </Button>
             </Link>
           </Flex>
@@ -145,4 +160,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Register

@@ -1,7 +1,7 @@
 import { Col, Card, Statistic } from 'antd'
 import CountUp from 'react-countup'
 
-const StoreStats = ({ totalStock }) => {
+const StoreStats = ({ totalStock, totalForSell }) => {
   const formatter = (value) => <CountUp end={value} separator="," />
   return (
     <>
@@ -10,7 +10,7 @@ const StoreStats = ({ totalStock }) => {
           <Statistic
             title="Total por vender"
             prefix="$"
-            value={0}
+            value={totalForSell}
             formatter={formatter}
           />
         </Card>

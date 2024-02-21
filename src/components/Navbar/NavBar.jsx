@@ -1,4 +1,4 @@
-import { Layout, Flex, Button, Typography } from 'antd'
+import { Layout, Flex, Button, Typography, Divider } from 'antd'
 import UserMenu from '../UserMenu/UserMenu'
 import Searchbar from '../Searchbar/Searchbar'
 import Logo from '../../assets/images/card-games.png'
@@ -28,6 +28,7 @@ const Navbar = () => {
       {/* <Searchbar></Searchbar> */}
       <Flex gap={24} align="center">
         <DarkMode></DarkMode>
+        <Divider type='vertical' />
         <Flex gap={10} align="center">
           {!user.logged ? (
             <Link to="/login">

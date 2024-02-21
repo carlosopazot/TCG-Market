@@ -7,34 +7,20 @@ const { Title } = Typography
 
 const items = [
   {
-    label: <a href="#">Actualizar stock</a>,
-    key: '0',
-    disabled: true,
-  },
-  {
-    label: <a href="#">Marcar como vendido</a>,
-    key: '1',
-  },
-  {
-    type: 'divider',
-  },
-  {
     label: 'Eliminar',
-    key: '2',
+    key: '1',
     danger: true,
   },
 ]
 
-const StoreItem = ({ item, onDelete, onSold }) => {
+const StoreItem = ({ item, onDelete}) => {
   const handleMenuClick = ({ key }) => {
-    if (key === '2') {
+    if (key === '1') {
       onDelete(item.id)
-    } else if (key === '1') {
-      onSold(item.stock)
     }
   }
   return (
-    <Col xs={12} md={8}>
+    <Col xs={12} md={8} xl={6} xxl={4}>
       <Card
         cover={<img alt={item.name} src={item.image} />}
         actions={[

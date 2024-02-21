@@ -16,6 +16,7 @@ const ModalUpload = ({
   setDollarValue,
   total,
   unitaryTotal,
+  dollar,
 }) => {
   return (
     <Modal
@@ -64,6 +65,7 @@ const ModalUpload = ({
             buttonStyle="solid"
             onChange={(e) => setDollarValue(e.target.value)}
           >
+            <Radio.Button value={dollar}>{dollar}</Radio.Button>
             <Radio.Button value={850}>850</Radio.Button>
             <Radio.Button value={800}>800</Radio.Button>
             <Radio.Button value={750}>750</Radio.Button>

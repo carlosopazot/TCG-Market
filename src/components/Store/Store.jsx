@@ -4,10 +4,10 @@ import {
   getDocs,
   query,
   updateDoc,
-  setDoc,
   where,
   doc,
   deleteDoc,
+  FieldValue,
 } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import { useEffect, useState, useContext, useMemo } from 'react'
@@ -39,10 +39,11 @@ const Store = () => {
       })
 
       setCards(cardsData)
+      console.log(cardsData)
       setLoading(false)
     }
 
-    fetchCards()
+      fetchCards()
   }, [user.uid])
 
   const handleDelete = async (id) => {
@@ -58,21 +59,28 @@ const Store = () => {
 
   const handleSold = async (id) => {
     try {
-      const docRef = doc(db, 'cards', id);
+
+      const docRef = doc(db, 'cards', id) 
       await updateDoc(docRef, {
-        stock: 0 // Actualiza el stock a 0 (como un número)
-      })
+        'sold' : true
+      }, { merge: true })
+      // setCards(cards.filter((card) => card.stock !== 0))
+      message.success('Carta eliminada con éxito')
     } catch (error) {
-      console.error('Error al marcar la carta como vendida:', error);
-      message.error('Error al marcar la carta como vendida');
+      console.error('Error al marcar la carta como vendida:', error)
+      message.error('Error al marcar la carta como vendida')
     }
   }
-  
+
   const totalStock = useMemo(() => {
     return cards.reduce(
       (accumulator, currentCard) => accumulator + currentCard.stock,
       0
     )
+  }, [cards])
+
+  const totalForSell = useMemo(() => {
+    return cards.reduce((total, item) => total + Number(item.total), 0)
   }, [cards])
 
   return (
@@ -84,7 +92,10 @@ const Store = () => {
             <Loader></Loader>
           ) : (
             <Row gutter={[16, 16]}>
-              <StoreStats totalStock={totalStock}></StoreStats>
+              <StoreStats
+                totalStock={totalStock}
+                totalForSell={totalForSell}
+              ></StoreStats>
               {cards.length > 0 ? (
                 <Col xs={24}>
                   <Row>

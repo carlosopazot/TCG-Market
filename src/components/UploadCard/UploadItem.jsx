@@ -18,7 +18,7 @@ import ModalUpload from './ModalUpload'
 
 const { Title } = Typography
 
-const UploadItem = ({ edition }) => {
+const UploadItem = ({ edition, dollarPrice }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [stock, setStock] = useState(1)
   const [dollarValue, setDollarValue] = useState(850)
@@ -26,6 +26,7 @@ const UploadItem = ({ edition }) => {
   const [state, setState] = useState('NM')
 
   const { user } = useContext(UserContext)
+  
   const [values, setValues] = useState({
     name: user.name || '',
     email: user.email || '',
@@ -33,9 +34,17 @@ const UploadItem = ({ edition }) => {
     avatar: user.avatar,
   })
 
+
+
+  const editionPrices =
+    edition.prices?.usd ||
+    edition.prices?.usd_foil ||
+    edition.prices?.usd_etched
+  const priceClp = Number(editionPrices * dollarPrice).toFixed(0)
+
   const calculateTotal = () => {
-    const unitaryTotal = (edition.prices?.usd * Number(dollarValue)).toFixed(0)
-    const total = (edition.prices?.usd * Number(dollarValue) * stock).toFixed(0)
+    const unitaryTotal = (editionPrices * Number(dollarValue)).toFixed(0)
+    const total = (unitaryTotal * stock).toFixed(0)
     return { unitaryTotal, total }
   }
 
@@ -49,8 +58,8 @@ const UploadItem = ({ edition }) => {
       date: new Date(),
       stock: stock,
       image: edition.image_uris?.normal,
-      price: (edition.prices?.usd * Number(dollarValue)).toFixed(0),
-      total: (edition.prices?.usd * Number(dollarValue) * stock).toFixed(0),
+      price: calculateTotal().unitaryTotal,
+      total: calculateTotal().total,
       foil: edition.foil,
       state: state,
       set: edition.set,
@@ -101,13 +110,10 @@ const UploadItem = ({ edition }) => {
             </Flex>
             {edition.foil ? <Tag color="gold">Foil</Tag> : <Tag>Non Foil</Tag>}
             <Title style={{ marginTop: '1rem' }} type="secondary" level={5}>
-              USD{' '}
-              {edition.prices?.usd ||
-                edition.prices?.usd_foil ||
-                edition.prices?.usd_etched}
+              $ {editionPrices} USD
             </Title>
             <Title style={{ margin: 0 }} level={4}>
-              ${(edition.prices?.usd * 850).toFixed(0)} CLP
+              ${priceClp} CLP
             </Title>
           </Col>
           <Col xs={24} sm={8}>
@@ -128,6 +134,7 @@ const UploadItem = ({ edition }) => {
                 setDollarValue={setDollarValue}
                 unitaryTotal={calculateTotal().unitaryTotal}
                 total={calculateTotal().total}
+                dollar={dollarPrice}
               ></ModalUpload>
             </Flex>
           </Col>

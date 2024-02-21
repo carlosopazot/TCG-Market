@@ -14,7 +14,7 @@ const TagsState = ({ item }) => {
       <Tag bordered={false} color={tagColor}>
         {item.state}
       </Tag>
-      {item.foil ? <Tag color="gold">Foil</Tag> : <Tag>Non foil</Tag>}
+      {item.foil ? <Tag bordered={false} color="gold">Foil</Tag> : <Tag bordered={false}>Non foil</Tag>}
       <Tag bordered={false} color="green">
         USD {item.dollarValue}
       </Tag>

@@ -8,9 +8,12 @@ import Checkout from '../components/Checkout/Checkout'
 import NotFound from '../components/NotFound/NotFound'
 import Store from '../components/Store/Store'
 import Login from '../components/Login/Login'
+import Register from '../components/Register/Register'
 import UploadCard from '../components/UploadCard/UploadCard'
 import { useContext } from 'react'
 import { UserContext } from '../context/UserContext'
+import Account from '../components/Account/Account'
+import VerifiedAccount from '../components/VerifiedAccount/VerifiedAccount'
 
 const AppRouter = () => {
   const { user } = useContext(UserContext)
@@ -18,15 +21,16 @@ const AppRouter = () => {
     <BrowserRouter>
       <Layout className="layout">
         <Navbar />
-        <Row justify="center">
-          <Col xs={24} lg={20}>
-            {user.logged ? (
+  
+          <Row justify="center">
+            <Col xs={24}>
               <Routes>
                 <Route
                   path="/"
                   element={<ItemListContainer title="Cartas" />}
                 ></Route>
                 <Route path="/tienda" element={<Store />}></Route>
+                <Route path="/cuenta" element={<Account />}></Route>
                 <Route
                   path="/cards/:stateId"
                   element={<ItemListContainer title="Cartas" />}
@@ -38,33 +42,14 @@ const AppRouter = () => {
                 ></Route>
                 <Route path="/agregar-carta" element={<UploadCard />}></Route>
                 <Route path="/checkout" element={<Checkout />}></Route>
+                <Route path="/login" element={<Login />}></Route>
+                <Route path="/registro" element={<Register />}></Route>
                 <Route path="/not-found" element={<NotFound />}></Route>
                 <Route path="*" element={<Navigate to={'not-found'} />}></Route>
-                <Route path="/login" element={<Login />}></Route>
+                <Route path="/verificar-cuenta" element={<VerifiedAccount />}></Route>
               </Routes>
-            ) : (
-              <Routes>
-                <Route
-                  path="/"
-                  element={<ItemListContainer title="Cartas" />}
-                ></Route>
-                <Route
-                  path="/cards/:stateId"
-                  element={<ItemListContainer title="Cartas" />}
-                ></Route>
-                <Route path="/cart" element={<CartView />} />
-                <Route
-                  path="/item/:itemId"
-                  element={<ItemDetailContainer />}
-                ></Route>
-                <Route path="/checkout" element={<Checkout />}></Route>
-                <Route path="/not-found" element={<NotFound />}></Route>
-                <Route path="*" element={<Navigate to={'not-found'} />}></Route>
-                <Route path="/login" element={<Login />}></Route>
-              </Routes>
-            )}
-          </Col>
-        </Row>
+            </Col>
+          </Row>
       </Layout>
     </BrowserRouter>
   )

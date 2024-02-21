@@ -44,7 +44,7 @@ const ModalUpload = ({
         </Col>
         <Col xs={24}>
           <Row gutter={32}>
-            <Col xs={12}>
+            <Col xs={24}>
               <Title level={5}>Estado</Title>
               <Radio.Group
                 value={state}

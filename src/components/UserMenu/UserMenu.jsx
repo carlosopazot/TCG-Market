@@ -50,7 +50,6 @@ const UserMenu = ({ name }) => {
     >
       <Button size="large">
         <Avatar size="small" src={user.avatar}></Avatar>
-        <span className="text-user">{name}</span>
       </Button>
     </Dropdown>
   )

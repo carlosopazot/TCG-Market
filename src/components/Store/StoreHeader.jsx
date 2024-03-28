@@ -13,9 +13,9 @@ const StoreHeader = () => {
       </Col>
       <Col xs={12} md={12}>
         <Flex gap={8} justify="end">
-          <Button icon={<SettingOutlined />} disabled size="large">
+          {/* <Button icon={<SettingOutlined />} disabled size="large">
             <span className="hide-mobile">Configurar</span>
-          </Button>
+          </Button> */}
           <Link to="/agregar-carta">
             <Button type="primary" icon={<PlusOutlined />} size="large">
               Agregar carta

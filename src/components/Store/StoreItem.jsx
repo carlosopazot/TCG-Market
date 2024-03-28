@@ -20,7 +20,7 @@ const StoreItem = ({ item, onDelete}) => {
     }
   }
   return (
-    <Col xs={12} md={8} xl={6} xxl={4}>
+    <Col xs={24} md={12} lg={6}>
       <Card
         cover={<img alt={item.name} src={item.image} />}
         actions={[

@@ -32,7 +32,7 @@ const ItemDetail = ({ item }) => {
   const { user } = useContext(UserContext)
 
   return (
-    <>
+    <div className='main'>
       <Row>
         <Col>
           <BackButton></BackButton>
@@ -121,7 +121,7 @@ const ItemDetail = ({ item }) => {
           </Card>
         </Col>
       </Row>
-    </>
+    </div>
   )
 }
 

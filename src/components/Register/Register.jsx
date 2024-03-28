@@ -8,19 +8,15 @@ import {
   Flex,
   Divider,
   Button,
-  InputNumber,
-  message,
 } from 'antd'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { Link, useNavigate } from 'react-router-dom'
-import { db } from '../../firebase/config'
-import { collection, writeBatch, addDoc } from 'firebase/firestore'
 
 const { Title, Text } = Typography
 
 const Register = () => {
-  const { register, user } = useContext(UserContext)
+  const { register } = useContext(UserContext)
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -29,8 +25,6 @@ const Register = () => {
   })
 
   const navigate = useNavigate()
-
-  const [sellerId, setSellerId] = useState(null)
 
   const handleInputChange = (e) => {
     setValues({
@@ -49,8 +43,9 @@ const Register = () => {
   }
 
   return (
-    <Row justify="center">
-      <Col xs={24}>
+    <div className="main">
+      <Row justify="center">
+      <Col xs={24} md={12}>
         <Card>
           <Title level={3}>Crea tu cuenta</Title>
           <Divider></Divider>
@@ -157,6 +152,7 @@ const Register = () => {
         </Card>
       </Col>
     </Row>
+    </div>
   )
 }
 

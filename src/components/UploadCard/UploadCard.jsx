@@ -117,48 +117,50 @@ const UploadCard = () => {
   }
 
   return (
-    <Row justify="center" gutter={[16, 24]}>
-      <Col xs={24} md={16}>
-        <BackButton></BackButton>
-        <Row justify="space-between">
-          <Col xs={24} md={14}>
-            <Title level={3}>Vende tus cartas</Title>
-            <Title style={{ marginTop: 0 }} level={5} type="secondary">
-              Ingresa el nombre de tu carta, completa la información y súbela a
-              tu tienda.
-            </Title>
-          </Col>
-          <Col xs={24} md={8}>
-            <Card>
-              {dollar ? (
-                <Statistic title="Valor dolar actual" value={`$ ${dollar}`} />
-              ) : (
-                <Spin />
-              )}
-            </Card>
-          </Col>
-        </Row>
-      </Col>
-      <Col xs={24} md={16} style={{ position: 'sticky', top: '80px' }}>
-        <CardSearch
-          onSearch={handleSearch}
-          onSelect={handleSelectChange}
-          searchResults={searchResults}
-          loading={loading}
-          selectedCard={selectedCard}
-        ></CardSearch>
-      </Col>
-      {cardDetails && (
+    <main className="main">
+      <Row justify="center" gutter={[16, 24]}>
         <Col xs={24} md={16}>
-          <CardResults
-            cardDetails={cardDetails}
-            editions={editions}
-            clearSearch={clearSearch}
-            dollarPrice={dollar}
-          />
+          <BackButton></BackButton>
+          <Row justify="space-between">
+            <Col xs={24} md={14}>
+              <Title level={3}>Vende tus cartas</Title>
+              <Title style={{ marginTop: 0 }} level={5} type="secondary">
+                Ingresa el nombre de tu carta, completa la información y súbela a
+                tu tienda.
+              </Title>
+            </Col>
+            <Col xs={24} md={8}>
+              <Card>
+                {dollar ? (
+                  <Statistic title="Valor dolar actual" value={`$ ${dollar}`} />
+                ) : (
+                  <Spin />
+                )}
+              </Card>
+            </Col>
+          </Row>
         </Col>
-      )}
-    </Row>
+        <Col xs={24} md={16} style={{ position: 'sticky', top: '80px' }}>
+          <CardSearch
+            onSearch={handleSearch}
+            onSelect={handleSelectChange}
+            searchResults={searchResults}
+            loading={loading}
+            selectedCard={selectedCard}
+          ></CardSearch>
+        </Col>
+        {cardDetails && (
+          <Col xs={24} md={16}>
+            <CardResults
+              cardDetails={cardDetails}
+              editions={editions}
+              clearSearch={clearSearch}
+              dollarPrice={dollar}
+            />
+          </Col>
+        )}
+      </Row>
+    </main>
   )
 }
 

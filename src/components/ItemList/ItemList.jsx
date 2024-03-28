@@ -8,11 +8,13 @@ const ItemList = ({ cards, title }) => {
     <section>
       <Title level={4}>{title}</Title>
       {cards.length > 0 ? (
-        <Row gutter={16} wrap>
-          {cards.map((item) => (
-            <ItemCard key={item.id} item={item} />
-          ))}
-        </Row>
+        <main className="main">
+          <Row gutter={16} wrap>
+            {cards.map((item) => (
+              <ItemCard key={item.id} item={item} />
+            ))}
+          </Row>
+        </main>
       ) : (
         <Card>
           <Empty

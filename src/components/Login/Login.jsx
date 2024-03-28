@@ -50,8 +50,9 @@ const Login = () => {
   }
 
   return (
-    <Row justify="center">
-      <Col xs={24}>
+    <div className="main">
+      <Row justify="center">
+      <Col xs={12}>
         <Card>
           <Title level={3}>Inicia sesión</Title>
           <Divider></Divider>
@@ -142,6 +143,7 @@ const Login = () => {
         </Card>
       </Col>
     </Row>
+    </div>
   )
 }
 

@@ -1,4 +1,4 @@
-import { Card, Flex, Typography, Col, Tag } from 'antd'
+import { Card, Flex, Typography, Col } from 'antd'
 import { Link } from 'react-router-dom'
 import './styles.css'
 import imgPlaceholder from '../../assets/images/magic_card_back.webp'
@@ -7,16 +7,8 @@ import TagsState from '../TagsState/TagsState'
 const { Title } = Typography
 
 const ItemCard = ({ item }) => {
-  let tagColor = ''
-
-  if (item.state === 'NM') {
-    tagColor = 'blue'
-  } else if (item.state === 'PLD') {
-    tagColor = 'yellow'
-  }
-
   return (
-    <Col xs={12} sm={12} md={8} xl={6} xxl={4} style={{ marginBottom: '1rem' }}>
+    <Col xs={12} sm={12} md={8} xl={4} xxl={4} style={{ marginBottom: '1rem' }}>
       <Link to={`/item/${item.id}`}>
         <Card
           className="card-item"

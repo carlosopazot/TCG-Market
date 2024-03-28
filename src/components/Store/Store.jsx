@@ -7,7 +7,6 @@ import {
   where,
   doc,
   deleteDoc,
-  FieldValue,
 } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import { useEffect, useState, useContext, useMemo } from 'react'
@@ -21,8 +20,8 @@ const { Title } = Typography
 
 const Store = () => {
   const [cards, setCards] = useState([])
-  const { user } = useContext(UserContext)
   const [loading, setLoading] = useState(true)
+  const { user } = useContext(UserContext)
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -84,7 +83,7 @@ const Store = () => {
   }, [cards])
 
   return (
-    <>
+    <main className='main'>
       <Row gutter={[16, 24]}>
         <StoreHeader></StoreHeader>
         <Col xs={24}>
@@ -125,7 +124,7 @@ const Store = () => {
           )}
         </Col>
       </Row>
-    </>
+    </main>
   )
 }
 

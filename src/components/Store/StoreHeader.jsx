@@ -1,6 +1,6 @@
 import { Col, Typography, Button, Flex } from 'antd'
 import { Link } from 'react-router-dom'
-import { SettingOutlined, PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons'
 import './styles.css'
 
 const { Title } = Typography

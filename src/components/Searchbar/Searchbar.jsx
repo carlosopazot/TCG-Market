@@ -1,51 +1,48 @@
 import { Select } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
-import { collection, getDocs, query, where } from 'firebase/firestore'
-import { db } from '../../firebase/config'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { SearchContext } from '../../context/SearchContext'
+import axios from 'axios'
 
 const Searchbar = () => {
-  const [cards, setCards] = useState([])
-  const [value, setValue] = useState()
-  const productosRef = collection(db, 'cards')
 
-  const fetchData = async (searchValue) => {
-    const q = query(productosRef, where('name', '>=', searchValue))
-    const querySnapshot = await getDocs(q)
-    const cardList = querySnapshot.docs.map((doc) => ({
-      value: doc.id, // o cualquier otro campo que desees usar como valor
-      label: doc.data().name, // Ajusta esto según tu estructura de datos
-    }))
-    setCards(cardList)
+  const { handleSearch } = useContext(SearchContext)
+  const [ options, setOptions ] = useState([])
+  const navigate = useNavigate()
+
+  const handleSearchInput = async (value) => {
+    try {
+      const response = await axios.get(`https://api.scryfall.com/cards/search?q=${value}`);
+      const { data } = response;
+      const cardNames = data.data.map((card) => ({
+        label: card.name,
+        value: card.name,
+      }));
+      setOptions(cardNames);
+    } catch (error) {
+      console.error('Error fetching card names:', error);
+      setOptions([]);
+    }
+  };
+
+  const handleSelect = (value) => {
+    handleSearch(value)
+    navigate('/search')
   }
-
-  const handleSearch = (searchValue) => {
-    fetchData(searchValue)
-  }
-
-  const handleChange = (newValue) => {
-    setValue(newValue)
-  }
-
-  console.log(cards)
 
   return (
     <Select
-      style={{ width: '240px' }}
-      placeholder="Busca una carta en Market"
-      defaultActiveFirstOption={false}
-      notFoundContent={null}
-      suffixIcon={<SearchOutlined />}
-      filterOption={true}
-      size="large"
       showSearch
-      onSearch={handleSearch}
-      onChange={handleChange}
-      optionLabelProp="label"
-      options={(cards || []).map((d) => ({
-        value: d.value, // Ajusta esto según tu estructura de datos
-        label: d.label, // Ajusta esto según tu estructura de datos
-      }))}
+      style={{ width: '240px' }}
+      placeholder='Busca una carta'
+      size='large'
+      onSelect={handleSelect}
+      onSearch={handleSearchInput}
+      notFoundContent={null}
+      allowClear
+      options={options}
+      suffixIcon={<SearchOutlined />}
     />
   )
 }

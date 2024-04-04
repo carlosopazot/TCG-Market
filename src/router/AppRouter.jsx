@@ -14,9 +14,9 @@ import { useContext } from 'react'
 import { UserContext } from '../context/UserContext'
 import Account from '../components/Account/Account'
 import VerifiedAccount from '../components/VerifiedAccount/VerifiedAccount'
+import Search from '../components/Search/Search'
 
 const AppRouter = () => {
-  const { user } = useContext(UserContext)
   return (
     <BrowserRouter>
       <Layout className="layout">
@@ -31,6 +31,7 @@ const AppRouter = () => {
                 ></Route>
                 <Route path="/tienda" element={<Store />}></Route>
                 <Route path="/cuenta" element={<Account />}></Route>
+                <Route path="/search" element={<Search />}></Route>
                 <Route
                   path="/cards/:stateId"
                   element={<ItemListContainer title="Cartas" />}

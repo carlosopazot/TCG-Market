@@ -52,7 +52,7 @@ const Login = () => {
   return (
     <div className="main">
       <Row justify="center">
-      <Col xs={12}>
+      <Col xs={24} md={12}>
         <Card>
           <Title level={3}>Inicia sesión</Title>
           <Divider></Divider>

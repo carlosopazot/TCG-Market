@@ -1,10 +1,10 @@
 import { Spin } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 
-const Loader = () => {
+const Loader = ({ tip }) => {
   return (
     <Spin
-      tip="Cargando tus cartas"
+      tip={tip}
       indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
     >
       <div className="content" />

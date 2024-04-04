@@ -8,7 +8,7 @@ const { Title } = Typography
 
 const ItemCard = ({ item }) => {
   return (
-    <Col xs={12} sm={12} md={8} xl={4} xxl={4} style={{ marginBottom: '1rem' }}>
+    <Col xs={12} sm={12} md={6} xl={4} xxl={4} style={{ marginBottom: '1rem' }}>
       <Link to={`/item/${item.id}`}>
         <Card
           className="card-item"
@@ -21,8 +21,8 @@ const ItemCard = ({ item }) => {
             />
           }
         >
-          <Flex gap={8} vertical>
-            <Title style={{ margin: 0 }} level={4} ellipsis>
+          <Flex gap={4} vertical>
+            <Title style={{ margin: 0 }} level={5} ellipsis>
               {item.name}
             </Title>
             <Flex>

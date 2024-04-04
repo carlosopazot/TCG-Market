@@ -26,7 +26,7 @@ const Navbar = () => {
               Card Market
             </h2>
           </Link>
-          {/* <Searchbar></Searchbar> */}
+          <Searchbar></Searchbar>
           <Flex gap={24} align="center">
             <DarkMode></DarkMode>
             <Divider type='vertical' />

@@ -1,4 +1,4 @@
-import { Row, Col, Typography, Card, Empty, message } from 'antd'
+import { Row, Col, Typography, Card, Empty, message, Alert, Button } from 'antd'
 import {
   collection,
   getDocs,
@@ -15,6 +15,7 @@ import StoreHeader from './StoreHeader'
 import StoreItem from './StoreItem'
 import StoreStats from './StoreStats'
 import Loader from '../Loader/Loader'
+import { useNavigate } from 'react-router-dom'
 
 const { Title } = Typography
 
@@ -22,6 +23,7 @@ const Store = () => {
   const [cards, setCards] = useState([])
   const [loading, setLoading] = useState(true)
   const { user } = useContext(UserContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -85,6 +87,22 @@ const Store = () => {
   return (
     <main className='main'>
       <Row gutter={[16, 24]}>
+        <Col xs={24}>
+        {user.phone === null ? (
+          <Alert
+            style={{ border : 0 }}
+            message="Todavia no verificas tu número"
+            description="Para poder vender cartas, primero verifica tu número de teléfono."
+            type="warning"
+            showIcon
+            action={
+              <Button type="primary" onClick={() => navigate('/verificar-numero')}>
+                Verificar ahora
+              </Button>
+            }
+          />
+        ) : (null)}
+        </Col>
         <StoreHeader></StoreHeader>
         <Col xs={24}>
           {loading ? (

@@ -1,4 +1,4 @@
-import { Row, Typography, Col, Card, Image, Empty, Button } from "antd"
+import { Row, Typography, Col, Card, Image, Empty, Button, Flex } from "antd"
 import { useContext, useEffect, useState } from "react"                
 import { SearchContext } from "../../context/SearchContext"
 import { collection, getDocs, query, where } from 'firebase/firestore'
@@ -6,6 +6,7 @@ import { db } from '../../firebase/config'
 import Loader from "../Loader/Loader"
 import TagsState from "../TagsState/TagsState"
 import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 const { Title, Text } = Typography
 
@@ -62,23 +63,33 @@ const Search = () => {
           <Col xs={24} md={12}>
             <Title level={4}>Resultados de busqueda para: {searchValue}</Title>
             {cards.map((card) => (
-              <Card key={card.id} style={{ marginBottom: '1rem' }}>
-                <Row gutter={16}>
-                  <Col xs={4}>
-                    <Image src={card.image} preview={false}></Image>
-                  </Col>
-                  <Col xs={8}>
-                    <Title level={5}>{card.name}</Title>
-                    <Text>{card.set_name}</Text>
-                    <TagsState item={card}></TagsState>
-                    <Title style={{ margin : 0 }} level={4}>{card.price}</Title>
-                  </Col>
-                  <Col xs={12}>
-                    <Text>Vendido por</Text>
-                    <Title level={5}>{card.seller.name}</Title>
-                  </Col>
-                </Row>
-              </Card>
+              <Link to={`/item/${card.id}`} key={card.id}>
+                <Card hoverable style={{ marginBottom: '1rem' }}>
+                  <Row gutter={16}>
+                    <Col xs={10} md={8} lg={4}>
+                      <Image src={card.image} preview={false}></Image>
+                    </Col>
+                    <Col xs={14} lg={20}>
+                      <Row gutter={[16,16]}>
+                        <Col xs={24} lg={16}>
+                          <Flex vertical gap={8}>
+                            <div>
+                              <Title style={{ marginBottom: 0 }} level={5}>{card.name}</Title>
+                              <Text>{card.set_name}</Text>
+                            </div>
+                            <TagsState item={card}></TagsState>
+                            <Title style={{ margin : 0 }} level={4}>${card.price}</Title>
+                          </Flex>
+                        </Col>
+                        <Col xs={24} lg={8}>
+                          <Text>Vendido por</Text>
+                          <Title style={{ margin: 0}} level={5}>{card.seller.name}</Title>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </Card>
+              </Link>
             ))}
           </Col>
         )}

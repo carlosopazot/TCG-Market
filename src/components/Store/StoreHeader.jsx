@@ -2,10 +2,13 @@ import { Col, Typography, Button, Flex } from 'antd'
 import { Link } from 'react-router-dom'
 import { PlusOutlined } from '@ant-design/icons'
 import './styles.css'
+import { useContext } from 'react'
+import { UserContext } from '../../context/UserContext'
 
 const { Title } = Typography
 
 const StoreHeader = () => {
+  const { user } = useContext(UserContext)
   return (
     <>
       <Col xs={12} md={12}>
@@ -17,7 +20,7 @@ const StoreHeader = () => {
             <span className="hide-mobile">Configurar</span>
           </Button> */}
           <Link to="/agregar-carta">
-            <Button type="primary" icon={<PlusOutlined />} size="large">
+            <Button disabled={user.phone === null} type="primary" icon={<PlusOutlined />} size="large">
               Agregar carta
             </Button>
           </Link>

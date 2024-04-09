@@ -15,13 +15,16 @@ import { UserContext } from '../context/UserContext'
 import Account from '../components/Account/Account'
 import VerifiedAccount from '../components/VerifiedAccount/VerifiedAccount'
 import Search from '../components/Search/Search'
+import VerifyNumber from '../components/VerifyNumber/VerifyNumber'
+import FooterHome from '../components/Footer/Footer'
 
 const AppRouter = () => {
+  const { user } = useContext(UserContext)
+
   return (
     <BrowserRouter>
       <Layout className="layout">
         <Navbar />
-  
           <Row justify="center">
             <Col xs={24}>
               <Routes>
@@ -29,8 +32,9 @@ const AppRouter = () => {
                   path="/"
                   element={<ItemListContainer title="Cartas" />}
                 ></Route>
-                <Route path="/tienda" element={<Store />}></Route>
-                <Route path="/cuenta" element={<Account />}></Route>
+                {user.logged && <Route path="/tienda" element={<Store />}></Route>}
+                {user.logged && <Route path="/cuenta" element={<Account />}></Route>}
+                <Route path='/verificar-numero' element={<VerifyNumber/>}></Route>
                 <Route path="/search" element={<Search />}></Route>
                 <Route
                   path="/cards/:stateId"
@@ -41,16 +45,17 @@ const AppRouter = () => {
                   path="/item/:itemId"
                   element={<ItemDetailContainer />}
                 ></Route>
-                <Route path="/agregar-carta" element={<UploadCard />}></Route>
+                {user.logged && <Route path="/agregar-carta" element={<UploadCard />}></Route>}
                 <Route path="/checkout" element={<Checkout />}></Route>
-                <Route path="/login" element={<Login />}></Route>
-                <Route path="/registro" element={<Register />}></Route>
+                {user.logged === false && <Route path="/login" element={<Login />}></Route> }
+                {user.logged === false && <Route path="/registro" element={<Register />}></Route>}
                 <Route path="/not-found" element={<NotFound />}></Route>
                 <Route path="*" element={<Navigate to={'not-found'} />}></Route>
                 <Route path="/verificar-cuenta" element={<VerifiedAccount />}></Route>
               </Routes>
             </Col>
           </Row>
+          <FooterHome/>
       </Layout>
     </BrowserRouter>
   )

@@ -7,9 +7,9 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
-  sendEmailVerification,
 } from 'firebase/auth'
 import { message } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 export const UserContext = createContext()
 
@@ -72,9 +72,11 @@ export const UserProvider = ({ children }) => {
         displayName: values.name,
       })
 
-      await sendEmailVerification(user)
+      // await sendEmailVerification(user)
       // Otros procesos posteriores al registro, como redireccionar al usuario, mostrar un mensaje de éxito, etc.
       console.log('Usuario creado exitosamente:', user)
+      window.location.href = '/verificar-numero'
+      
     } catch (error) {
       handleAuthError(error)
     }
@@ -123,7 +125,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, googleLogin, logout, facebookLogin, login, register }}
+      value={{ user, setUser, googleLogin, logout, facebookLogin, login, register }}
     >
       {children}
     </UserContext.Provider>

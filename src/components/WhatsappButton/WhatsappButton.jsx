@@ -1,7 +1,7 @@
 import { Button } from 'antd'
 import { WhatsAppOutlined } from '@ant-design/icons'
 
-const WhatsappButton = ({ nameCard, sellerName }) => {
+const WhatsappButton = ({ nameCard, sellerName, disabled }) => {
   const sendMessage = () => {
     const phoneNumber = '+56973392820' // Reemplaza con el número de teléfono al que deseas enviar el mensaje
     const message = encodeURIComponent(
@@ -17,10 +17,10 @@ const WhatsappButton = ({ nameCard, sellerName }) => {
     <Button
       icon={<WhatsAppOutlined />}
       type="primary"
-      style={{ marginBottom: '0.5rem' }}
       size="large"
       block
       onClick={sendMessage}
+      disabled={disabled}
     >
       Contactar
     </Button>

@@ -1,31 +1,56 @@
-import { Button, Avatar, Dropdown } from 'antd'
-import { LogoutOutlined, ShopOutlined, UserOutlined } from '@ant-design/icons'
-import { useContext } from 'react'
+import { Button, Avatar, Dropdown, Badge  } from 'antd'
+import { LogoutOutlined, ShopOutlined, UserOutlined, ExclamationCircleOutlined, TagsOutlined } from '@ant-design/icons'
+import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './styles.css'
 
 const UserMenu = ({ name }) => {
   const { logout, user } = useContext(UserContext)
+  const [ show, setShow ] = useState(false)
+  const color = '#FFC53D'
+  const navigate = useNavigate()
+
+
+  useEffect(() => {
+    if (user.phone === null) {
+      setShow(true)
+    } else {
+      setShow(false)
+    }
+  }, [user])
   
   const items = [
     {
-      key: '1',
+      key: '0',
       label: (
-        <Link to="/tienda">
-          <ShopOutlined style={{ marginRight: '4px' }} />
-          Tienda
+        <Link to="/agregar-carta">
+          Vender carta
         </Link>
       ),
+      icon: <TagsOutlined />,
+      disabled: user.phone === null,
+    },
+    {
+      key: '1',
+      label: (
+        <>
+          <Link to="/tienda">
+            Tienda
+          </Link>
+          {user.phone === null && <ExclamationCircleOutlined style={{ marginLeft: '4px', color: `${color}` }} />}
+        </>
+      ),
+      icon: <ShopOutlined />,
     },
     {
       key: '3',
       label: (
         <Link to="/cuenta">
-          <UserOutlined style={{ marginRight: '4px' }} />
-          Perfil
+          Cuenta
         </Link>
       ),
+      icon: <UserOutlined />,
     },
     {
       type: 'divider',
@@ -34,10 +59,10 @@ const UserMenu = ({ name }) => {
       key: '4',
       label: (
         <Link onClick={logout}>
-          <LogoutOutlined style={{ marginRight: '4px' }} />
           Cerrar sesión
         </Link>
       ),
+      icon: <LogoutOutlined />,
     },
   ]
   return (
@@ -49,7 +74,11 @@ const UserMenu = ({ name }) => {
       trigger={['click']}
     >
       <Button size="large">
-        <Avatar size="small" src={user.avatar}></Avatar>
+        <Badge color={color} dot={show}>
+          <Avatar size="small" src={user.avatar || null }>
+            {name && name.charAt(0).toUpperCase()}
+          </Avatar>
+        </Badge>
       </Button>
     </Dropdown>
   )

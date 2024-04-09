@@ -98,7 +98,7 @@ const Login = () => {
             </Form.Item>
 
             <Form.Item
-              label="Password"
+              label="Contraseña"
               name="password"
               style={{ marginBottom: '1rem' }}
               rules={[
@@ -133,10 +133,10 @@ const Login = () => {
           </Form>
           <Divider></Divider>
           <Flex>
-            <Text>No tienes una cuenta?</Text>
+            <Text>¿No tienes una cuenta?</Text>
             <Link to="/registro">
               <Button type="link" size="small">
-                Crear una cuenta
+                Crea una cuenta
               </Button>
             </Link>
           </Flex>

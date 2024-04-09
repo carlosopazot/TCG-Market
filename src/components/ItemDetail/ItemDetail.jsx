@@ -8,7 +8,6 @@ import {
   Flex,
   Alert,
   Avatar,
-  Rate,
 } from 'antd'
 import {
   EnvironmentOutlined,
@@ -72,7 +71,7 @@ const ItemDetail = ({ item }) => {
           <Card title="Vendido por">
             {user.logged ? (
               <Row gutter={[16, 16]}>
-                <Col xs={24} md={14}>
+                <Col xs={24} md={14} lg={10}>
                   <Meta
                     avatar={
                       <Avatar
@@ -83,7 +82,7 @@ const ItemDetail = ({ item }) => {
                     title={<Title level={4}>{item.seller.name}</Title>}
                     description={
                       <Flex vertical gap={8}>
-                        <Rate disabled defaultValue={5} />
+                        {/* <Rate disabled defaultValue={5} /> */}
                         <Title level={5}>
                           <EnvironmentOutlined /> Santiago
                         </Title>
@@ -91,14 +90,18 @@ const ItemDetail = ({ item }) => {
                     }
                   />
                 </Col>
-                <Col xs={24} md={10}>
-                  <WhatsappButton
-                    sellerName={item.seller.name}
-                    nameCard={item.name}
-                  ></WhatsappButton>
-                  <Button icon={<ShopOutlined />} size="large" block>
-                    Ver tienda
-                  </Button>
+                <Col xs={24} md={10} lg={12}>
+                  <Flex gap={8} vertical>
+                    {user.phone === null ? <Alert showIcon type='warning' message='Verifica tú numero para contactar al vendedor'></Alert> : null}
+                    <WhatsappButton
+                      sellerName={item.seller.name}
+                      nameCard={item.name}
+                      disabled={user.phone === null}
+                    ></WhatsappButton>
+                    <Button icon={<ShopOutlined />} size="large" block>
+                      Ver tienda
+                    </Button>
+                  </Flex>
                 </Col>
               </Row>
             ) : (

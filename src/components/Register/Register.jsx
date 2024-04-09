@@ -11,7 +11,7 @@ import {
 } from 'antd'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const { Title, Text } = Typography
 
@@ -24,8 +24,6 @@ const Register = () => {
     phone: '',
   })
 
-  const navigate = useNavigate()
-
   const handleInputChange = (e) => {
     setValues({
       ...values,
@@ -34,8 +32,11 @@ const Register = () => {
   }
 
   const onFinish = async (values) => {
-    register(values)
-    navigate('/verificar-cuenta')
+    try {
+      await register(values)
+    } catch (error) {
+      console.log('Registration failed:', error)
+    }
   }
 
   const onFinishFailed = (errorInfo) => {
@@ -45,7 +46,7 @@ const Register = () => {
   return (
     <div className="main">
       <Row justify="center">
-      <Col xs={24} md={12}>
+      <Col xs={24} md={12} lg={12} xl={8}>
         <Card>
           <Title level={3}>Crea tu cuenta</Title>
           <Divider></Divider>
@@ -98,26 +99,6 @@ const Register = () => {
             </Form.Item>
 
             <Form.Item
-              label="N° de teléfono"
-              name="phone"
-              rules={[
-                {
-                  required: true,
-                  message: 'Ingresa un numero valido!',
-                },
-              ]}
-            >
-              <Input
-                size="large"
-                onChange={handleInputChange}
-                value={values.phone}
-                name="phone"
-                placeholder="Ej: 912345678"
-                style={{ width: '100%' }}
-              />
-            </Form.Item>
-
-            <Form.Item
               label="Contraseña"
               name="password"
               rules={[
@@ -142,7 +123,7 @@ const Register = () => {
           </Form>
           <Divider></Divider>
           <Flex>
-            <Text>Ya tienes una cuenta?</Text>
+            <Text>¿Ya tienes una cuenta?</Text>
             <Link to="/login">
               <Button type="link" size="small">
                 Inicia sesión

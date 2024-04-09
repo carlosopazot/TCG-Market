@@ -1,9 +1,9 @@
 import { Button } from 'antd'
 import { WhatsAppOutlined } from '@ant-design/icons'
 
-const WhatsappButton = ({ nameCard, sellerName, disabled }) => {
+const WhatsappButton = ({ nameCard, sellerName, disabled, number }) => {
   const sendMessage = () => {
-    const phoneNumber = '+56973392820' // Reemplaza con el número de teléfono al que deseas enviar el mensaje
+    const phoneNumber = `${number}` // Reemplaza con el número de teléfono al que deseas enviar el mensaje
     const message = encodeURIComponent(
       `¡Hola ${sellerName}! Me interesa tu carta ${nameCard} y quiero saber si está disponible`
     )

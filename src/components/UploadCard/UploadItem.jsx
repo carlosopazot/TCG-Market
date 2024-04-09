@@ -32,6 +32,7 @@ const UploadItem = ({ edition, dollarPrice }) => {
     email: user.email || '',
     uid: user.uid,
     avatar: user.avatar,
+    phone: user.phone,
   })
 
 

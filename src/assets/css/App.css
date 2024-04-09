@@ -36,3 +36,7 @@ a {
 .ant-tag {
   margin-inline-end: 0;
 }
+
+.ant-card .ant-card-body {
+  padding: 1rem;
+}

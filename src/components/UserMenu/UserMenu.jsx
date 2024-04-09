@@ -1,9 +1,12 @@
-import { Button, Avatar, Dropdown, Badge  } from 'antd'
+import { Button, Avatar, Dropdown, Badge, Typography, Flex  } from 'antd'
 import { LogoutOutlined, ShopOutlined, UserOutlined, ExclamationCircleOutlined, TagsOutlined } from '@ant-design/icons'
 import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { Link, useNavigate } from 'react-router-dom'
+import DarkMode from '../DarkMode/DarkMode'
 import './styles.css'
+
+const { Text } = Typography
 
 const UserMenu = ({ name }) => {
   const { logout, user } = useContext(UserContext)
@@ -57,6 +60,18 @@ const UserMenu = ({ name }) => {
     },
     {
       key: '4',
+      label: (
+        <Flex justify='space-between'>
+          <Text>Tema</Text>
+          <DarkMode/>
+        </Flex>
+      ),
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: '5',
       label: (
         <Link onClick={logout}>
           Cerrar sesión

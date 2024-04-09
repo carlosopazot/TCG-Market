@@ -27,9 +27,10 @@ import BackButton from '../BackButton/BackButton'
 const { Title } = Typography
 const { Meta } = Card
 
+
 const ItemDetail = ({ item }) => {
   const { user } = useContext(UserContext)
-
+  console.log(item.seller.phone)
   return (
     <div className='main'>
       <Row>
@@ -97,6 +98,7 @@ const ItemDetail = ({ item }) => {
                       sellerName={item.seller.name}
                       nameCard={item.name}
                       disabled={user.phone === null}
+                      number={item.seller.phone}
                     ></WhatsappButton>
                     <Button icon={<ShopOutlined />} size="large" block>
                       Ver tienda

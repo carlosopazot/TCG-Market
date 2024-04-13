@@ -17,6 +17,7 @@ import VerifiedAccount from '../components/VerifiedAccount/VerifiedAccount'
 import Search from '../components/Search/Search'
 import VerifyNumber from '../components/VerifyNumber/VerifyNumber'
 import FooterHome from '../components/Footer/Footer'
+import StoreContainer from '../components/StoreContainer/StoreContainer'
 
 const AppRouter = () => {
   const { user } = useContext(UserContext)
@@ -32,8 +33,9 @@ const AppRouter = () => {
                   path="/"
                   element={<ItemListContainer title="Cartas" />}
                 ></Route>
-                {user.logged && <Route path="/tienda" element={<Store />}></Route>}
-                {user.logged && <Route path="/cuenta" element={<Account />}></Route>}
+                <Route path="/tienda" element={<Store />}></Route>
+                <Route path="/tienda/:storeId" element={<StoreContainer />}></Route>
+                <Route path="/cuenta" element={<Account />}></Route>
                 <Route path='/verificar-numero' element={<VerifyNumber/>}></Route>
                 <Route path="/search" element={<Search />}></Route>
                 <Route
@@ -45,10 +47,10 @@ const AppRouter = () => {
                   path="/item/:itemId"
                   element={<ItemDetailContainer />}
                 ></Route>
-                {user.logged && <Route path="/agregar-carta" element={<UploadCard />}></Route>}
+                <Route path="/agregar-carta" element={<UploadCard />}></Route>
                 <Route path="/checkout" element={<Checkout />}></Route>
-                {user.logged === false && <Route path="/login" element={<Login />}></Route> }
-                {user.logged === false && <Route path="/registro" element={<Register />}></Route>}
+                <Route path="/login" element={<Login />}></Route>
+                <Route path="/registro" element={<Register />}></Route>
                 <Route path="/not-found" element={<NotFound />}></Route>
                 <Route path="*" element={<Navigate to={'not-found'} />}></Route>
                 <Route path="/verificar-cuenta" element={<VerifiedAccount />}></Route>

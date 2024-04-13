@@ -5,7 +5,7 @@ const { Title, Text } = Typography
 
 const ItemList = ({ cards, title }) => {
   return (
-    <section>
+    <main className='main'>
       <Title level={4}>{title}</Title>
       {cards.length > 0 ? (
         <main className="main">
@@ -27,7 +27,7 @@ const ItemList = ({ cards, title }) => {
           />
         </Card>
       )}
-    </section>
+    </main>
   )
 }
 

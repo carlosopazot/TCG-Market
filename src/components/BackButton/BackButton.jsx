@@ -15,7 +15,7 @@ const BackButton = () => {
       icon={<LeftOutlined />}
       onClick={handleBack}
       size="large"
-      style={{ marginBottom: '1rem', paddingLeft: 0 }}
+      style={{ paddingLeft: 0 }}
     >
       Volver
     </Button>

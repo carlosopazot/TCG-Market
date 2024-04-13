@@ -7,9 +7,12 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
+  setPersistence,
+  browserLocalPersistence,
 } from 'firebase/auth'
+import { db } from '../firebase/config'
+import { setDoc, doc } from 'firebase/firestore'
 import { message } from 'antd'
-import { useNavigate } from 'react-router-dom'
 
 export const UserContext = createContext()
 
@@ -50,7 +53,9 @@ export const UserProvider = ({ children }) => {
       )
       const user = userCredential.user
       // Usuario autenticado con éxito
+
       console.log(user)
+      console.log('Tienda creada')
       // Continuar con cualquier lógica adicional después del inicio de sesión...
     } catch (error) {
       handleAuthError(error)
@@ -67,18 +72,27 @@ export const UserProvider = ({ children }) => {
       )
       const user = userCredential.user
 
-      // Actualizar el perfil del usuario con el nombre
       await updateProfile(user, {
-        displayName: values.name,
-      })
+        displayName: values.name
+      });
+
+      await setDoc(doc(db, "stores", user.uid), {
+        email: user.email,
+        name: user.displayName,
+        avatar: user.photoURL,
+        phone: user.phoneNumber,
+      });
+      console.log('Tienda creada')
+       
 
       // await sendEmailVerification(user)
       // Otros procesos posteriores al registro, como redireccionar al usuario, mostrar un mensaje de éxito, etc.
       console.log('Usuario creado exitosamente:', user)
-      window.location.href = '/verificar-numero'
       
     } catch (error) {
       handleAuthError(error)
+    } finally {
+      window.location.href = '/verificar-numero'
     }
   }
 
@@ -86,20 +100,34 @@ export const UserProvider = ({ children }) => {
     signOut(auth)
   }
 
-  const googleLogin = () => {
-    signInWithPopup(auth, provider)
+  const googleLogin = async () => {
+    try {
+      // await signInWithPopup(auth, provider)
+      const userCredential = await signInWithPopup(auth, provider)
+      const user = userCredential.user
+      await setDoc(doc(db, "stores", user.uid), {
+        email: user.email,
+        name: user.displayName,
+        avatar: user.photoURL,
+        phone: user.phoneNumber,
+      });
+    } catch (error) {
+      handleAuthError(error)
+    }
   }
 
   const facebookLogin = () => {
     signInWithPopup(auth, fbProvider)
   }
 
+  // Set persistence for the authentication state
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+      // Continue with the onAuthStateChanged logic
+      onAuthStateChanged(auth, async (user) => {
       if (user) {
         console.log('User:', user)
-        // const username = user.displayName.split(' ')[0]
-
         setUser({
           email: user.email,
           uid: user.uid,
@@ -120,6 +148,10 @@ export const UserProvider = ({ children }) => {
           emailVerified: null,
         })
       }
+      })
+    })
+    .catch((error) => {
+      console.error('Error setting persistence:', error)
     })
   }, [])
 

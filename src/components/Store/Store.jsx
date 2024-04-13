@@ -16,21 +16,23 @@ import StoreItem from './StoreItem'
 import StoreStats from './StoreStats'
 import Loader from '../Loader/Loader'
 import { useNavigate } from 'react-router-dom'
+import BackButton from '../BackButton/BackButton'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
-const Store = () => {
+const Store = ({ item }) => {
   const [cards, setCards] = useState([])
   const [loading, setLoading] = useState(true)
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
+  const matchStore = item.id === user.uid
 
   useEffect(() => {
     const fetchCards = async () => {
       setLoading(true)
       const q = query(
         collection(db, 'cards'),
-        where('seller.uid', '==', user.uid)
+        where('seller.id', '==', item.id)
       )
       const querySnapshot = await getDocs(q)
 
@@ -45,13 +47,15 @@ const Store = () => {
     }
 
       fetchCards()
-  }, [user.uid])
+  }, [item.id])
 
   const handleDelete = async (id) => {
+    console.log(id)
     try {
       await deleteDoc(doc(db, 'cards', id))
       setCards(cards.filter((card) => card.id !== id))
       message.success('Carta eliminada con éxito')
+      console.log(id)
     } catch (error) {
       console.error('Error al eliminar la carta:', error)
       message.error('Error al eliminar la carta')
@@ -60,13 +64,13 @@ const Store = () => {
 
   const handleSold = async (id) => {
     try {
-
+      
       const docRef = doc(db, 'cards', id) 
       await updateDoc(docRef, {
-        'sold' : true
-      }, { merge: true })
-      // setCards(cards.filter((card) => card.stock !== 0))
-      message.success('Carta eliminada con éxito')
+        'stock' : 0
+      })
+      setCards(cards.filter((card) => card.stock !== 0))
+      message.success('Se archivo la carta como vendida')
     } catch (error) {
       console.error('Error al marcar la carta como vendida:', error)
       message.error('Error al marcar la carta como vendida')
@@ -86,40 +90,46 @@ const Store = () => {
 
   return (
     <main className='main'>
-      <Row gutter={[16, 24]}>
+      <Row>
+        <BackButton></BackButton>
+      </Row>
+      <Row gutter={[16, 24]} justify='space-between'>
+      {user.uid === item.id && user.phone === null ? (
         <Col xs={24}>
-        {user.phone === null ? (
           <Alert
             style={{ border : 0 }}
             message="Todavia no verificas tu número"
-            description="Para poder vender cartas, primero verifica tu número de teléfono."
+            description="Para usar tu tienda, debes verificar tu número de teléfono."
             type="warning"
             showIcon
             action={
               <Button type="primary" onClick={() => navigate('/verificar-numero')}>
-                Verificar ahora
+                Verificar
               </Button>
             }
           />
-        ) : (null)}
-        </Col>
-        <StoreHeader></StoreHeader>
+          </Col>) : (null)
+        }
+        <StoreHeader item={item} matchStore={matchStore}></StoreHeader>
         <Col xs={24}>
           {loading ? (
             <Loader></Loader>
           ) : (
             <Row gutter={[16, 16]}>
+              {matchStore ? (
               <StoreStats
                 totalStock={totalStock}
                 totalForSell={totalForSell}
-              ></StoreStats>
+              />) : null }
               {cards.length > 0 ? (
                 <Col xs={24}>
-                  <Row>
-                    <Col xs={24}>
-                      <Title level={3}>Mis cartas</Title>
-                    </Col>
-                  </Row>
+                  {matchStore ? (
+                    <Row>
+                      <Col xs={24}>
+                        <Title level={3}>Carpeta</Title>
+                      </Col>
+                    </Row>
+                  ) : null}
                   <Row gutter={[16, 16]}>
                     {cards.map((item) => (
                       <StoreItem
@@ -127,8 +137,12 @@ const Store = () => {
                         item={item}
                         onDelete={handleDelete}
                         onSold={handleSold}
+                        user={user.uid}
                       />
                     ))}
+                    {/* <Col xs={24}>
+                      <Table columns={columns} dataSource={cards}></Table>
+                    </Col> */}
                   </Row>
                 </Col>
               ) : (

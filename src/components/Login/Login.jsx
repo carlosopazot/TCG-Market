@@ -29,10 +29,12 @@ const Login = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (user.logged === true) {
+    if (user.logged === true && user.phone !== null) {
       navigate(-1)
+    } else if (user.logged === true && user.phone === null) {
+      navigate('/verificar-numero')
     }
-  }, [user.logged, navigate])
+  }, [user.logged, user.phone, navigate])
 
   const handleInputChange = (e) => {
     setValues({

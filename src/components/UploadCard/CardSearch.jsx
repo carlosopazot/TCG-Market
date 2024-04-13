@@ -28,6 +28,7 @@ const CardSearch = ({
       value={selectedCard}
       style={{ width: '100%' }}
       suffixIcon={<SearchOutlined />}
+      notFoundContent={null}
       options={(searchResults || []).map((d) => ({
         value: d,
         label: d,

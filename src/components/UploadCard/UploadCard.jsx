@@ -15,29 +15,29 @@ const UploadCard = () => {
   const [editions, setEditions] = useState([])
   const [dollar, setDollar] = useState(null)
 
-  useEffect(() => {
-    // Función para llamar a la API
-    const fetchDollarValue = async () => {
-      try {
-        const response = await fetch(
-          'https://api.cmfchile.cl/api-sbifv3/recursos_api/dolar?apikey=02f2e2e7a7dcc80cd3987fd612866f56dd7a04ef&formato=json'
-        )
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-        const data = await response.json()
-        // Suponiendo que el valor del dólar se encuentra en data.Dolares[0].Valor
-        const dollarValue = parseFloat(data.Dolares[0].Valor)
-        setDollar(dollarValue)
-        console.log(data.Dolares[0].Valor)
-      } catch (error) {
-        console.error('Error fetching dollar value:', error)
-      }
-    }
+  // useEffect(() => {
+  //   // Función para llamar a la API
+  //   const fetchDollarValue = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         'https://api.cmfchile.cl/api-sbifv3/recursos_api/dolar?apikey=02f2e2e7a7dcc80cd3987fd612866f56dd7a04ef&formato=json'
+  //       )
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok')
+  //       }
+  //       const data = await response.json()
+  //       // Suponiendo que el valor del dólar se encuentra en data.Dolares[0].Valor
+  //       const dollarValue = parseFloat(data.Dolares[0].Valor)
+  //       setDollar(dollarValue)
+  //       console.log(data.Dolares[0].Valor)
+  //     } catch (error) {
+  //       console.error('Error fetching dollar value:', error)
+  //     }
+  //   }
 
-    // Llamar a la función para obtener el valor del dólar al cargar el componente
-    fetchDollarValue()
-  }, [])
+  //   // Llamar a la función para obtener el valor del dólar al cargar el componente
+  //   fetchDollarValue()
+  // }, [])
 
   const handleSearch = async (value) => {
     try {
@@ -129,18 +129,14 @@ const UploadCard = () => {
                 tu tienda.
               </Title>
             </Col>
-            <Col xs={24} md={8}>
+            {/* <Col xs={24} md={8}>
               <Card>
-                {dollar ? (
-                  <Statistic title="Valor dolar actual" value={`$ ${dollar}`} />
-                ) : (
-                  <Spin />
-                )}
+                <Statistic title="Valor dolar actual" value={`$${dollar}`} loading={!dollar} />
               </Card>
-            </Col>
+            </Col> */}
           </Row>
         </Col>
-        <Col xs={24} md={16} style={{ position: 'sticky', top: '80px' }}>
+        <Col xs={24} md={16}>
           <CardSearch
             onSearch={handleSearch}
             onSelect={handleSelectChange}

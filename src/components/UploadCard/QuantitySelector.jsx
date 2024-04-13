@@ -15,7 +15,6 @@ const QuantitySelector = ({ stock, setStock }) => {
   return (
     <Flex align="center" gap={16}>
       <Button
-        size="large"
         icon={<MinusOutlined />}
         onClick={handleRes}
         disabled={stock === 1}
@@ -25,7 +24,7 @@ const QuantitySelector = ({ stock, setStock }) => {
           {stock}
         </Title>
       </div>
-      <Button size="large" icon={<PlusOutlined />} onClick={handleSum}></Button>
+      <Button icon={<PlusOutlined />} onClick={handleSum}></Button>
     </Flex>
   )
 }

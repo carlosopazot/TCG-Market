@@ -17,6 +17,7 @@
     "antd": "^5.11.5",
     "antd-img-crop": "^4.21.0",
     "axios": "^1.6.5",
+    "cors": "^2.8.5",
     "debounce": "^2.0.0",
     "firebase": "^10.7.1",
     "lodash": "^4.17.21",

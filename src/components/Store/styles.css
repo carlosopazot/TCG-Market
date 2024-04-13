@@ -1,6 +1,20 @@
 .hide-mobile {
   display: inline-block;
 }
+
+.ant-card-cover {
+  position: relative;
+}
+
+.tag-name {
+  position: absolute;
+  bottom: 1rem;
+  display: inline-block !important;
+  width: auto !important;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 @media (width <= 480px) {
   .hide-mobile {
     display: none !important;

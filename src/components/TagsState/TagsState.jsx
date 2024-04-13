@@ -1,6 +1,6 @@
 import { Flex, Tag } from 'antd'
 
-const TagsState = ({ item }) => {
+const TagsState = ({ item, hideDolar, stock }) => {
   let tagColor = ''
 
   if (item.state === 'NM') {
@@ -14,10 +14,9 @@ const TagsState = ({ item }) => {
       <Tag bordered={false} color={tagColor}>
         {item.state}
       </Tag>
-      <Tag bordered={false} color="green">
-        USD {item.dollarValue}
-      </Tag>
+      { hideDolar ? null : <Tag bordered={false} color="green">USD {item.dollarValue}</Tag> }
       {item.foil ? <Tag bordered={false} color="gold">Foil</Tag> : null}
+      {stock ? <Tag bordered={false}>Stock: {item.stock}</Tag> : null}
     </Flex>
   )
 }

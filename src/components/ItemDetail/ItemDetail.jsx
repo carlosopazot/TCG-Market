@@ -20,26 +20,36 @@ import './styles.css'
 import imgPlaceholder from '../../assets/images/magic_card_back.webp'
 import SetIcon from '../UploadCard/SetIcon'
 import WhatsappButton from '../WhatsappButton/WhatsappButton'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import BackButton from '../BackButton/BackButton'
+import { query, collection, where } from 'firebase/firestore'
+import { useNavigate } from 'react-router-dom'
+import AvatarProfile from '../AvatarProfile/AvatarProfile'
+
+import { db } from '../../firebase/config'
 
 const { Title } = Typography
 const { Meta } = Card
 
 
+
 const ItemDetail = ({ item }) => {
   const { user } = useContext(UserContext)
-  console.log(item.seller.phone)
+  const navigate = useNavigate()
+
+  const showStore = () => {
+    navigate(`/tienda/${item.seller.id}`)
+  }
   return (
     <div className='main'>
-      <Row>
-        <Col>
+      <Row justify='center'>
+        <Col xs={24} lg={18}>
           <BackButton></BackButton>
         </Col>
       </Row>
       <Row gutter={[16, 16]} justify="center">
-        <Col xs={24} sm={10} md={9} lg={8} xl={8}>
+        <Col xs={14} sm={10} md={9} lg={6} xl={6}>
           <Image
             className="img-card"
             src={item.image || imgPlaceholder}
@@ -48,11 +58,10 @@ const ItemDetail = ({ item }) => {
             placeholder
           />
         </Col>
-        <Col xs={24} sm={14} md={15} lg={16} xl={16}>
+        <Col xs={24} sm={14} md={15} lg={12} xl={12}>
           <Card className="card-info">
-            <Flex justify="space-between" vertical>
               <Flex vertical gap={4} align="flex-start" justify="flex-start">
-                <Title level={2} className="title-card">
+                <Title level={3} className="title-card">
                   {item.name}
                 </Title>
                 <SetIcon setCode={item.set} setName={item.set_name}></SetIcon>
@@ -67,7 +76,6 @@ const ItemDetail = ({ item }) => {
                   <Title level={3}>$ {item.price}</Title>
                 </Flex>
               </Flex>
-            </Flex>
           </Card>
           <Card title="Vendido por">
             {user.logged ? (
@@ -75,15 +83,11 @@ const ItemDetail = ({ item }) => {
                 <Col xs={24} md={14} lg={10}>
                   <Meta
                     avatar={
-                      <Avatar
-                        src={item.seller.avatar}
-                        placeholder="https://api.dicebear.com/7.x/miniavs/svg?seed=8"
-                      />
+                      <AvatarProfile name={item.seller.name} src={item.seller.avatar} />
                     }
                     title={<Title level={4}>{item.seller.name}</Title>}
                     description={
                       <Flex vertical gap={8}>
-                        {/* <Rate disabled defaultValue={5} /> */}
                         <Title level={5}>
                           <EnvironmentOutlined /> Santiago
                         </Title>
@@ -98,9 +102,9 @@ const ItemDetail = ({ item }) => {
                       sellerName={item.seller.name}
                       nameCard={item.name}
                       disabled={user.phone === null}
-                      number={item.seller.phone}
+                      number={item.seller.phone || null}
                     ></WhatsappButton>
-                    <Button icon={<ShopOutlined />} size="large" block>
+                    <Button icon={<ShopOutlined />} onClick={showStore} size="large" block>
                       Ver tienda
                     </Button>
                   </Flex>

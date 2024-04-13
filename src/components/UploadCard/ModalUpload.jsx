@@ -1,7 +1,8 @@
-import { Modal, Button, Divider, Row, Col, Radio, Flex, Typography } from 'antd'
+import { Modal, Button, Divider, Row, Col, Radio, Flex, Typography, Card } from 'antd'
 import QuantitySelector from './QuantitySelector'
+import { useNavigate } from 'react-router-dom'
 
-const { Title } = Typography
+const { Title, Text, Link } = Typography
 
 const ModalUpload = ({
   edition,
@@ -13,11 +14,10 @@ const ModalUpload = ({
   state,
   setState,
   dollarValue,
-  setDollarValue,
   total,
   unitaryTotal,
-  dollar,
 }) => {
+  const navigate = useNavigate()
   return (
     <Modal
       open={isModalOpen}
@@ -33,52 +33,52 @@ const ModalUpload = ({
         </Button>,
       ]}
     >
-      <Divider></Divider>
-      <Row gutter={[16, 32]}>
+      <Row gutter={[16, 16]}>
         <Col xs={24}>
-          <Title level={5}>Cantidad</Title>
-          <QuantitySelector
-            stock={stock}
-            setStock={setStock}
-          ></QuantitySelector>
+          <Divider style={{ marginTop: '0.5rem' }}></Divider>
+          <Flex justify='space-between' align='center'>
+            <Title style={{ margin: 0 }} level={5}>Valor referencia dólar</Title>
+            <Title style={{ margin: 0 }} level={4}>${dollarValue} CLP</Title>
+          </Flex>
+          <Flex vertical>
+            <Text type='secondary'>Este es el valor del dólar que configuraste en tu tienda</Text>
+            <Link onClick={()=> {navigate(-1)}}>Ir a tienda</Link>
+          </Flex>
         </Col>
         <Col xs={24}>
           <Row gutter={32}>
             <Col xs={24}>
-              <Title level={5}>Estado</Title>
-              <Radio.Group
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-                buttonStyle="solid"
-              >
-                <Radio.Button value="NM">NM</Radio.Button>
-                <Radio.Button value="PLD">PLD</Radio.Button>
-                <Radio.Button value="HP">HP</Radio.Button>
-              </Radio.Group>
+              <Divider style={{ marginTop: '0.5rem' }}></Divider>
+              <Flex justify='space-between' align='center'>
+                <Title style={{ margin: 0 }} level={5}>Estado</Title>
+                <Radio.Group
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  buttonStyle="solid"
+                >
+                  <Radio.Button value="NM">NM</Radio.Button>
+                  <Radio.Button value="PLD">PLD</Radio.Button>
+                  <Radio.Button value="HP">HP</Radio.Button>
+                </Radio.Group>
+              </Flex>
             </Col>
           </Row>
         </Col>
         <Col xs={24}>
-          <Title level={5}>Valor dólar</Title>
-          <Radio.Group
-            value={dollarValue}
-            buttonStyle="solid"
-            onChange={(e) => setDollarValue(e.target.value)}
-          >
-            <Radio.Button value={dollar}>{dollar}</Radio.Button>
-            <Radio.Button value={850}>850</Radio.Button>
-            <Radio.Button value={800}>800</Radio.Button>
-            <Radio.Button value={750}>750</Radio.Button>
-            <Radio.Button value={700}>700</Radio.Button>
-            <Radio.Button value={650}>650</Radio.Button>
-            <Radio.Button value={600}>600</Radio.Button>
-          </Radio.Group>
+          <Divider style={{ marginTop: '0.5rem' }}></Divider>
+          <Flex justify='space-between' align='center'>
+          <Title style={{ margin: 0 }} level={5}>Cantidad</Title>
+          <QuantitySelector
+            stock={stock}
+            setStock={setStock}
+          ></QuantitySelector>
+          </Flex>
         </Col>
-        <Divider></Divider>
+        <Divider style={{ margin: '0.25rem' }}></Divider>
         <Col xs={24}>
           <Flex justify="space-between">
             <Title level={5} type="secondary">
-              Total unitario
+              Precio
             </Title>
             <Title style={{ marginTop: 0 }} level={5} type="secondary">
               ${unitaryTotal} CLP

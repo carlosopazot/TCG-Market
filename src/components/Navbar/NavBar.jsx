@@ -26,16 +26,16 @@ const Navbar = () => {
     boxShadow: token.boxShadowSecondary,
     padding: '16px',
   };
-  
+
   return (
     <Header className={`navbar ${isDarkMode ? 'navbar-dark' : ''} `}>
       <div className="main">
         <Flex justify='space-between' align='center' gap={12}>
           <Link to="/" className="brand">
             <img src={Logo} className="logo" alt="Logo" />
-            <h2 className={`logo-title ${isDarkMode ? 'logo-title-dark' : ''} `}>
+            {/* <h2 className={`logo-title ${isDarkMode ? 'logo-title-dark' : ''} `}>
               Card Market
-            </h2>
+            </h2> */}
           </Link>
           <Searchbar></Searchbar>
           <Flex gap={24} align="center">

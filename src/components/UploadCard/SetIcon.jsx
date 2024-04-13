@@ -29,6 +29,7 @@ const SetIcon = ({ setCode, alt, setName }) => {
       {iconUrl && (
         <Flex gap={4} align="center">
           <img src={iconUrl} alt={alt} style={{ width: '18px' }} />
+          {/* <svg xmlns={iconUrl} width='18'/> */}
           <Title ellipsis style={{ margin: 0 }} level={5}>
             {setName}
           </Title>

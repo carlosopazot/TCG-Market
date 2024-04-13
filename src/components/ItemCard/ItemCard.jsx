@@ -1,8 +1,9 @@
-import { Card, Flex, Typography, Col } from 'antd'
+import { Card, Flex, Typography, Col, Divider } from 'antd'
 import { Link } from 'react-router-dom'
 import './styles.css'
 import imgPlaceholder from '../../assets/images/magic_card_back.webp'
 import TagsState from '../TagsState/TagsState'
+import { EnvironmentOutlined } from '@ant-design/icons'
 
 const { Title } = Typography
 
@@ -32,6 +33,10 @@ const ItemCard = ({ item }) => {
               ${item.price}
             </Title>
           </Flex>
+          <Divider style={{ margin: '0.5rem 0' }}></Divider>
+          <Title type='secondary' style={{ margin: 0 }} level={5}>
+            <EnvironmentOutlined /> {item.seller.location}
+          </Title>
         </Card>
       </Link>
     </Col>

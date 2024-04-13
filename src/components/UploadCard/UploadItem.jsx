@@ -12,6 +12,7 @@ import {
 import { useState, useContext } from 'react'
 import SetIcon from './SetIcon'
 import { UserContext } from '../../context/UserContext'
+import { StoreContext } from '../../context/StoreContext'
 import { db } from '../../firebase/config'
 import { collection, addDoc, writeBatch } from 'firebase/firestore'
 import ModalUpload from './ModalUpload'
@@ -26,6 +27,7 @@ const UploadItem = ({ edition, dollarPrice }) => {
   const [state, setState] = useState('NM')
 
   const { user } = useContext(UserContext)
+  const { store } = useContext(StoreContext)
   
   const [values, setValues] = useState({
     name: user.name || '',
@@ -35,13 +37,11 @@ const UploadItem = ({ edition, dollarPrice }) => {
     phone: user.phone,
   })
 
-
-
   const editionPrices =
     edition.prices?.usd ||
     edition.prices?.usd_foil ||
     edition.prices?.usd_etched
-  const priceClp = Number(editionPrices * dollarPrice).toFixed(0)
+  const priceClp = Number(editionPrices * store.dollar).toFixed(0)
 
   const calculateTotal = () => {
     const unitaryTotal = (editionPrices * Number(dollarValue)).toFixed(0)
@@ -67,7 +67,7 @@ const UploadItem = ({ edition, dollarPrice }) => {
       set_name: edition.set_name,
       dollarValue: dollarValue,
       sold: false,
-      seller: values,
+      seller: store,
     }
 
     const batch = writeBatch(db)
@@ -131,7 +131,7 @@ const UploadItem = ({ edition, dollarPrice }) => {
                 setStock={setStock}
                 state={state}
                 setState={setState}
-                dollarValue={dollarValue}
+                dollarValue={store.dollar}
                 setDollarValue={setDollarValue}
                 unitaryTotal={calculateTotal().unitaryTotal}
                 total={calculateTotal().total}

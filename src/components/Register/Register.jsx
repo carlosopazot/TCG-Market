@@ -17,6 +17,7 @@ const { Title, Text } = Typography
 
 const Register = () => {
   const { register } = useContext(UserContext)
+  const [loading, setLoading] = useState(false)
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -32,10 +33,13 @@ const Register = () => {
   }
 
   const onFinish = async (values) => {
+    setLoading(true)
     try {
       await register(values)
     } catch (error) {
       console.log('Registration failed:', error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -107,6 +111,7 @@ const Register = () => {
                   message: 'Ingresa una contraseña!',
                 },
               ]}
+              help="La contraseña debe tener al menos 6 caracteres"
             >
               <Input.Password
                 size="large"
@@ -116,7 +121,7 @@ const Register = () => {
               />
             </Form.Item>
             <Form.Item>
-              <Button block size="large" type="primary" htmlType="submit">
+              <Button loading={loading} block size="large" type="primary" htmlType="submit">
                 Crear cuenta
               </Button>
             </Form.Item>

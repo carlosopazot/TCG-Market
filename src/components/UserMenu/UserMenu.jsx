@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { Link, useNavigate } from 'react-router-dom'
 import DarkMode from '../DarkMode/DarkMode'
+import AvatarProfile from '../AvatarProfile/AvatarProfile'
 import './styles.css'
 
 const { Text } = Typography
@@ -38,7 +39,7 @@ const UserMenu = ({ name }) => {
       key: '1',
       label: (
         <>
-          <Link to="/tienda">
+          <Link to={`/tienda/${user.uid}`}>
             Tienda
           </Link>
           {user.phone === null && <ExclamationCircleOutlined style={{ marginLeft: '4px', color: `${color}` }} />}
@@ -90,9 +91,8 @@ const UserMenu = ({ name }) => {
     >
       <Button size="large">
         <Badge color={color} dot={show}>
-          <Avatar size="small" src={user.avatar || null }>
-            {name && name.charAt(0).toUpperCase()}
-          </Avatar>
+          <AvatarProfile name={name} size='small' src={user.avatar || null}>
+          </AvatarProfile>
         </Badge>
       </Button>
     </Dropdown>

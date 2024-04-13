@@ -1,8 +1,9 @@
-import { Button, Avatar, Dropdown, Badge, Typography, Flex  } from 'antd'
+import { Button, Dropdown, Badge, Typography, Flex  } from 'antd'
 import { LogoutOutlined, ShopOutlined, UserOutlined, ExclamationCircleOutlined, TagsOutlined } from '@ant-design/icons'
 import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
-import { Link, useNavigate } from 'react-router-dom'
+import { StoreContext } from '../../context/StoreContext'
+import { Link } from 'react-router-dom'
 import DarkMode from '../DarkMode/DarkMode'
 import AvatarProfile from '../AvatarProfile/AvatarProfile'
 import './styles.css'
@@ -11,9 +12,9 @@ const { Text } = Typography
 
 const UserMenu = ({ name }) => {
   const { logout, user } = useContext(UserContext)
+  const { store } = useContext(StoreContext)
   const [ show, setShow ] = useState(false)
   const color = '#FFC53D'
-  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -33,7 +34,7 @@ const UserMenu = ({ name }) => {
         </Link>
       ),
       icon: <TagsOutlined />,
-      disabled: user.phone === null,
+      disabled: user.phone === null || !store.location || !store.dollar,
     },
     {
       key: '1',

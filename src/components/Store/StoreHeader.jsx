@@ -118,7 +118,7 @@ const StoreHeader = ({ matchStore, item }) => {
         <Text type='secondary'><Spin indicator={<LoadingOutlined style={{ fontSize: 12 }} spin />} /></Text>) : 
         (store.location ? (
           <Text type='success'><CheckCircleOutlined/> {store.location}</Text>
-        ):(<Text type='warning'><ExclamationCircleOutlined/> Selecciona una ciudad</Text>))
+        ):(<Text type='warning'><ExclamationCircleOutlined/></Text>))
       )
     },
     {
@@ -149,7 +149,7 @@ const StoreHeader = ({ matchStore, item }) => {
         ) : (
           store.dollar ? (
             <Text type='success'><CheckCircleOutlined/> Dolar {store.dollar}</Text>
-          ) : (<Text type='warning'><ExclamationCircleOutlined/> Selecciona un valor</Text>)
+          ) : (<Text type='warning'><ExclamationCircleOutlined/></Text>)
         )
       )
     }

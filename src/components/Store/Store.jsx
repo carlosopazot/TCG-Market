@@ -17,6 +17,7 @@ import StoreStats from './StoreStats'
 import Loader from '../Loader/Loader'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../BackButton/BackButton'
+import { set } from 'lodash'
 
 const { Title, Text } = Typography
 
@@ -28,6 +29,22 @@ const Store = ({ item }) => {
   const matchStore = item.id === user.uid
 
   useEffect(() => {
+
+    if(user.phone) {
+      const setStoreNumber = async () => {
+        try {
+          const storeRef = doc(db, 'stores', item.id)
+          await updateDoc(storeRef, {
+            phone: user.phone
+          })
+        } catch (error) {
+          console.error('Error al actualizar el número de la tienda:', error)
+          message.error('Error al actualizar el número de la tienda')
+        }
+      }
+      setStoreNumber()
+    }
+
     const fetchCards = async () => {
       setLoading(true)
       const q = query(
@@ -47,7 +64,7 @@ const Store = ({ item }) => {
     }
 
       fetchCards()
-  }, [item.id])
+  }, [item.id, user.phone]);
 
   const handleDelete = async (id) => {
     console.log(id)

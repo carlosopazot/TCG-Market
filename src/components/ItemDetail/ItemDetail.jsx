@@ -7,7 +7,6 @@ import {
   Button,
   Flex,
   Alert,
-  Avatar,
 } from 'antd'
 import {
   EnvironmentOutlined,
@@ -20,19 +19,14 @@ import './styles.css'
 import imgPlaceholder from '../../assets/images/magic_card_back.webp'
 import SetIcon from '../UploadCard/SetIcon'
 import WhatsappButton from '../WhatsappButton/WhatsappButton'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, } from 'react'
 import { UserContext } from '../../context/UserContext'
 import BackButton from '../BackButton/BackButton'
-import { query, collection, where } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
 import AvatarProfile from '../AvatarProfile/AvatarProfile'
 
-import { db } from '../../firebase/config'
-
 const { Title } = Typography
 const { Meta } = Card
-
-
 
 const ItemDetail = ({ item }) => {
   const { user } = useContext(UserContext)

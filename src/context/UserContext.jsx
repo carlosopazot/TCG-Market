@@ -17,6 +17,7 @@ import { message } from 'antd'
 export const UserContext = createContext()
 
 export const UserProvider = ({ children }) => {
+  
   const [user, setUser] = useState({
     email: null,
     logged: false,
@@ -26,6 +27,8 @@ export const UserProvider = ({ children }) => {
     phone: null,
     emailVerified: null,
   })
+
+  
 
   const errorMessages = {
     'auth/invalid-email': 'El correo es inválido',

@@ -41,7 +41,6 @@ export const StoreProvider = ({ children }) => {
     fetchStore()
   }, [user.email])
 
-
   return (
     <StoreContext.Provider value={{ store, setStore, loading, setLoading }}>
       {children}

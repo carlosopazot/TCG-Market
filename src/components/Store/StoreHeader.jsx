@@ -18,7 +18,7 @@ const StoreHeader = ({ matchStore, item }) => {
   const [loading, setLoading] = useState(false);
   const [loadingDollar, setLoadingDollar] = useState(false);
   const disabledStore = user.phone === null;
-  const uploadDisabled = store.location && store.dollar ? false : true;
+  const uploadDisabled = store.location && store.dollar && !disabledStore ? false : true;
   console.log(uploadDisabled)
   const navigate = useNavigate()
 
@@ -164,7 +164,7 @@ const StoreHeader = ({ matchStore, item }) => {
       {matchStore ? (
         <>
           <Col xs={24} md={12} lg={20}>
-            <Title level={2}>Mi tienda</Title>
+            <Title style={{ marginBottom: '0.25rem' }} level={2}>Mi tienda</Title>
             <Flex gap={8}>
               {store.location ? (
                 <>

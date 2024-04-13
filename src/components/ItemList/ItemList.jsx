@@ -5,11 +5,11 @@ const { Title, Text } = Typography
 
 const ItemList = ({ cards, title }) => {
   return (
-    <main className='main'>
+    <section>
       <Title level={4}>{title}</Title>
       {cards.length > 0 ? (
         <main className="main">
-          <Row gutter={16} wrap>
+          <Row gutter={8} wrap>
             {cards.map((item) => (
               <ItemCard key={item.id} item={item} />
             ))}
@@ -27,7 +27,7 @@ const ItemList = ({ cards, title }) => {
           />
         </Card>
       )}
-    </main>
+    </section>
   )
 }
 

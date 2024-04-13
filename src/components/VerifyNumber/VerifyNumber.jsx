@@ -3,13 +3,17 @@ import { useState, useContext, useEffect } from 'react';
 import { auth } from '../../firebase/config';
 import { RecaptchaVerifier, linkWithPhoneNumber, } from 'firebase/auth';
 import { UserContext } from '../../context/UserContext';
+import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../context/ThemeContext';
+import { db } from '../../firebase/config';
+import { doc, updateDoc } from 'firebase/firestore';
 
 const { Title, Text } = Typography;
 
 const VerifyNumber = () => {
   const { user } = useContext(UserContext)
+  const { store } = useContext(StoreContext)
   const { openMessage } = useContext(ThemeContext)
   const [ number, setNumber ] = useState('')
   const [ code, setCode ] = useState('')
@@ -24,10 +28,6 @@ const VerifyNumber = () => {
   }
 
   const prefix = '+569'
-
-  const back = () => {
-    navigate('/verificar-numero')
-  }
 
   useEffect(() => {
     const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
@@ -46,6 +46,7 @@ const VerifyNumber = () => {
       setLoading(true);
       const currentUser = auth.currentUser
       const phoneNumber = `${prefix}${number}`
+      console.log(phoneNumber)
       console.log(currentUser)
       linkWithPhoneNumber(currentUser, phoneNumber, recaptchaVerifier)
         .then((result) => {

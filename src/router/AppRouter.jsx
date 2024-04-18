@@ -20,7 +20,7 @@ import StoreContainer from '../components/StoreContainer/StoreContainer'
 
 const AppRouter = () => {
   const { user } = useContext(UserContext)
-
+  console.log(user.logged)
   return (
     <BrowserRouter>
       <Layout className="layout">
@@ -32,10 +32,12 @@ const AppRouter = () => {
                   path="/"
                   element={<ItemListContainer title="Cartas" />}
                 ></Route>
-                {/* <Route path="/tienda" element={<Store />}></Route> */}
                 {user && user.logged && <Route path="/tienda/:storeId" element={<StoreContainer />}></Route>}
                 <Route path="/cuenta" element={<Account />}></Route>
-                {user && user.logged && <Route path="/verificar-numero" element={<VerifyNumber />}></Route>}
+                <Route
+                  path="/verificar-numero"
+                  element={<VerifyNumber />}
+                />
                 <Route path="/search" element={<Search />}></Route>
                 <Route
                   path="/cards/:stateId"

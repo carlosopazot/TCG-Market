@@ -35,7 +35,6 @@ const StoreContainer = () => {
           <div className="content" />
         </Spin>
       ) : (
-        // <MarketDetail item={item} />
         <Store item={item}/>
       )}
     </>

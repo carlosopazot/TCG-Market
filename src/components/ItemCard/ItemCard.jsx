@@ -1,11 +1,11 @@
 import { Card, Flex, Typography, Col, Divider } from 'antd'
 import { Link } from 'react-router-dom'
 import './styles.css'
-import imgPlaceholder from '../../assets/images/magic_card_back.webp'
 import TagsState from '../TagsState/TagsState'
 import { EnvironmentOutlined } from '@ant-design/icons'
+import CoverImage from '../CoverImage/CoverImage'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
 const ItemCard = ({ item }) => {
   return (
@@ -14,29 +14,20 @@ const ItemCard = ({ item }) => {
         <Card
           className="card-item"
           hoverable
-          cover={
-            <img
-              alt={item.name}
-              src={item.image || imgPlaceholder}
-              className="card-item-img"
-            />
-          }
+          cover={<CoverImage item={item} />}
         >
           <Flex gap={4} vertical>
-            <Title style={{ margin: 0 }} level={5} ellipsis>
-              {item.name}
-            </Title>
             <Flex>
               <TagsState item={item}></TagsState>
             </Flex>
-            <Title level={4} style={{ marginBottom: 0 }}>
+            <Title level={5} style={{ marginBottom: 0 }}>
               ${item.price}
             </Title>
           </Flex>
           <Divider style={{ margin: '0.5rem 0' }}></Divider>
-          <Title type='secondary' style={{ margin: 0 }} level={5}>
+          <Text type='secondary' style={{ margin: 0 }} >
             <EnvironmentOutlined /> {item.seller.location}
-          </Title>
+          </Text>
         </Card>
       </Link>
     </Col>

@@ -20,23 +20,16 @@ import ModalUpload from './ModalUpload'
 const { Title } = Typography
 
 const UploadItem = ({ edition, dollarPrice }) => {
+  const { user } = useContext(UserContext)
+  const { store } = useContext(StoreContext)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [stock, setStock] = useState(1)
-  const [dollarValue, setDollarValue] = useState(850)
+  const [dollarValue, setDollarValue] = useState(store.dollar)
   const [cardId, setCardId] = useState(null)
   const [state, setState] = useState('NM')
 
-  const { user } = useContext(UserContext)
-  const { store } = useContext(StoreContext)
-  
-  const [values, setValues] = useState({
-    name: user.name || '',
-    email: user.email || '',
-    uid: user.uid,
-    avatar: user.avatar,
-    phone: user.phone,
-  })
 
+  
   const editionPrices =
     edition.prices?.usd ||
     edition.prices?.usd_foil ||
@@ -136,6 +129,7 @@ const UploadItem = ({ edition, dollarPrice }) => {
                 unitaryTotal={calculateTotal().unitaryTotal}
                 total={calculateTotal().total}
                 dollar={dollarPrice}
+                item={store.id}
               ></ModalUpload>
             </Flex>
           </Col>

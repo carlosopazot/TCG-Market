@@ -13,7 +13,7 @@ const CardResults = ({ cardDetails, editions, clearSearch, dollarPrice }) => {
         return (
           <UploadItem
             edition={edition}
-            key={edition.set}
+            key={edition.set + edition.collector_number}
             dollarPrice={dollarPrice}
           />
         )

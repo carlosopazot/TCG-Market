@@ -1,4 +1,4 @@
-import { Row, Col, Typography, Card, Empty, message, Alert, Button } from 'antd'
+import { Row, Col, Typography, Card, Empty, message, Alert, Button, Divider } from 'antd'
 import {
   collection,
   getDocs,
@@ -17,9 +17,8 @@ import StoreStats from './StoreStats'
 import Loader from '../Loader/Loader'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../BackButton/BackButton'
-import { set } from 'lodash'
 
-const { Title, Text } = Typography
+const { Title } = Typography
 
 const Store = ({ item }) => {
   const [cards, setCards] = useState([])
@@ -29,21 +28,6 @@ const Store = ({ item }) => {
   const matchStore = item.id === user.uid
 
   useEffect(() => {
-
-    if(user.phone) {
-      const setStoreNumber = async () => {
-        try {
-          const storeRef = doc(db, 'stores', item.id)
-          await updateDoc(storeRef, {
-            phone: user.phone
-          })
-        } catch (error) {
-          console.error('Error al actualizar el número de la tienda:', error)
-          message.error('Error al actualizar el número de la tienda')
-        }
-      }
-      setStoreNumber()
-    }
 
     const fetchCards = async () => {
       setLoading(true)
@@ -110,7 +94,7 @@ const Store = ({ item }) => {
       <Row>
         <BackButton></BackButton>
       </Row>
-      <Row gutter={[16, 24]} justify='space-between'>
+      <Row gutter={[16, 16]} justify='space-between'>
       {user.uid === item.id && user.phone === null ? (
         <Col xs={24}>
           <Alert
@@ -128,26 +112,25 @@ const Store = ({ item }) => {
           </Col>) : (null)
         }
         <StoreHeader item={item} matchStore={matchStore}></StoreHeader>
+        {matchStore ? (
+          <StoreStats
+            totalStock={totalStock}
+            totalForSell={totalForSell}
+          />) : null 
+        }
+        <Col xs={24}>
+          <Divider orientation='left'>
+            <Title style={{ margin: 0}} level={4}>Colección</Title>
+          </Divider>
+        </Col>
         <Col xs={24}>
           {loading ? (
-            <Loader></Loader>
+            <Loader tip='Cargando cartas'></Loader>
           ) : (
             <Row gutter={[16, 16]}>
-              {matchStore ? (
-              <StoreStats
-                totalStock={totalStock}
-                totalForSell={totalForSell}
-              />) : null }
               {cards.length > 0 ? (
                 <Col xs={24}>
-                  {matchStore ? (
-                    <Row>
-                      <Col xs={24}>
-                        <Title level={3}>Carpeta</Title>
-                      </Col>
-                    </Row>
-                  ) : null}
-                  <Row gutter={[16, 16]}>
+                  <Row gutter={8}>
                     {cards.map((item) => (
                       <StoreItem
                         key={item.id}
@@ -157,9 +140,6 @@ const Store = ({ item }) => {
                         user={user.uid}
                       />
                     ))}
-                    {/* <Col xs={24}>
-                      <Table columns={columns} dataSource={cards}></Table>
-                    </Col> */}
                   </Row>
                 </Col>
               ) : (

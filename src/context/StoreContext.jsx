@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { useState, useEffect, useContext } from "react";
 import { db } from "../firebase/config";
-import { doc, updateDoc, getDoc, query, collection, where, getDocs } from "firebase/firestore";
+import { query, collection, where, getDocs, doc, updateDoc } from "firebase/firestore";
 import { message } from "antd";
 import { UserContext } from "./UserContext";
 
@@ -13,6 +13,7 @@ export const StoreProvider = ({ children }) => {
   const [store, setStore] = useState({})
 
   useEffect(() => {
+
     const fetchStore = async () => {
       try {
         const q = query(
@@ -28,7 +29,7 @@ export const StoreProvider = ({ children }) => {
           setTimeout(() => {
             setStore(store);
             console.log(store)
-          }, 2000);
+          }, 500);
         });
         
         

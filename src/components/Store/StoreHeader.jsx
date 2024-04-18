@@ -1,13 +1,14 @@
-import { Col, Typography, Button, Flex, Modal, Form, Input, Select, Radio, Divider, Collapse, message, Switch, Spin, Tag, Upload } from 'antd'
-import { Link } from 'react-router-dom'
+import { Col, Typography, Button, Flex, Modal, Form, Select, Radio, Divider, Collapse, message, Spin, Tag, } from 'antd'
 import { PlusOutlined, SettingOutlined, EnvironmentOutlined, DollarOutlined, ExclamationCircleOutlined, CheckCircleOutlined, LoadingOutlined} from '@ant-design/icons'
 import './styles.css'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { db } from '../../firebase/config'
 import { doc, updateDoc } from 'firebase/firestore'
 import { StoreContext } from '../../context/StoreContext'
 import { useNavigate } from 'react-router-dom'
+import AvatarProfile from '../AvatarProfile/AvatarProfile'
+import StoreTags from './StoreTags'
 
 const { Title, Text } = Typography
 
@@ -161,43 +162,31 @@ const StoreHeader = ({ matchStore, item }) => {
 
   return (
     <>
+      <Col xs={24} md={12} lg={20}>
+        <Flex gap={8}>
+          {!matchStore ? <AvatarProfile size={60} src={item.avatar} name={item.name}/> : null}
+          <Flex vertical gap={8}>
+            <Title  style={{ margin: 0 }} level={2}>{matchStore ? 'Mi tienda' : `Tienda de ${item.name}`}</Title>
+            {matchStore ? <StoreTags item={store} /> : <StoreTags item={item} />}
+          </Flex>
+        </Flex>
+      </Col>
       {matchStore ? (
-        <>
-          <Col xs={24} md={12} lg={20}>
-            <Title style={{ marginBottom: '0.25rem' }} level={2}>Mi tienda</Title>
-            <Flex gap={8}>
-              {store.location ? (
-                <>
-                  <Tag color='blue' style={{ fontSize: '16px', padding: '0.25rem 0.5rem'}}><EnvironmentOutlined/> {store.location}</Tag>
-                  <Tag color='green' style={{ fontSize: '16px', padding: '0.25rem 0.5rem'}}><DollarOutlined/> Dolar {store.dollar}</Tag>
-                </>
-              ):(<Tag color='warning' style={{ fontSize: '16px', padding: '0.25rem 0.5rem'}}><ExclamationCircleOutlined/> Sin configurar</Tag>)}
-            </Flex>
-          </Col>
-          <Col xs={24} md={12} lg={4}>
-            <Flex gap={8} justify="end">
-              <Button block disabled={disabledStore} onClick={showModal} icon={<SettingOutlined />} size="large">
-                Configurar
-              </Button>
-              {/* <Link  disabled={disabledStore || uploadDisabled} to="/agregar-carta">
-                <Button block disabled={uploadDisabled} type="primary" icon={<PlusOutlined />} size="large">
-                  Agregar carta
-                </Button>
-              </Link> */}
-              <Button onClick={()=>{navigate('/agregar-carta')}} block disabled={uploadDisabled} type="primary" icon={<PlusOutlined />} size="large">
-                Agregar carta
-              </Button>
-            </Flex>
-          </Col>
-        </>
+        <Col xs={24} md={12} lg={4}>
+          <Flex gap={8} justify="end">
+            <Button block disabled={disabledStore} onClick={showModal} icon={<SettingOutlined />} size="large">
+              Configurar
+            </Button>
+            <Button onClick={()=>{navigate('/agregar-carta')}} block disabled={uploadDisabled} type="primary" icon={<PlusOutlined />} size="large">
+              Agregar carta
+            </Button>
+          </Flex>
+        </Col>
       ) : (
-        <Col xs={24}>
-          <Title  style={{ margin: 0 }} level={2}>Tienda de {item.name}</Title>
+        <Col xs={24} md={12} lg={4}>
+          <Button block size='large' type='primary'>Contactar</Button>
         </Col> 
       )}
-      <Col>
-        
-      </Col>
       <Modal 
         footer={null} 
         open={isModalOpen} 

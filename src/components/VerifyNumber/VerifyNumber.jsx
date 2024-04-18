@@ -1,19 +1,16 @@
-import { Row, Col, Card, Form, Input, Button, Typography, Result, message, Flex } from 'antd';
+import { Row, Col, Card, Form, Input, Button, Typography, Result, Flex } from 'antd';
 import { useState, useContext, useEffect } from 'react';
 import { auth } from '../../firebase/config';
 import { RecaptchaVerifier, linkWithPhoneNumber, } from 'firebase/auth';
 import { UserContext } from '../../context/UserContext';
-import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../context/ThemeContext';
-import { db } from '../../firebase/config';
-import { doc, updateDoc } from 'firebase/firestore';
+import './styles.css'
 
 const { Title, Text } = Typography;
 
 const VerifyNumber = () => {
   const { user } = useContext(UserContext)
-  const { store } = useContext(StoreContext)
   const { openMessage } = useContext(ThemeContext)
   const [ number, setNumber ] = useState('')
   const [ code, setCode ] = useState('')
@@ -106,7 +103,8 @@ const VerifyNumber = () => {
   }
 
   const handleCodeChange = (e) => {
-    setCode(e.target.value)
+    setCode(e)
+    console.log(e)
   }
 
   if(user.phone !== null) {
@@ -164,12 +162,13 @@ const VerifyNumber = () => {
                   </Form>
                 </Flex>
               ) : (
+                // .ant-form-item .ant-form-item-control-input-content
                 <Flex gap={16} vertical>
-                  <Text>Te hemos enviado un código al número de teléfono proporcionado, ingresalo abajo.</Text>
+                  <Text>Te hemos enviado un código de <b>6 dígitos</b> al número de teléfono proporcionado, ingresalo abajo.</Text>
                   <Form layout='vertical' onFinish={verifyCode}>
                     <Form.Item
+                      style={{ marginBottom: '1rem' }}
                       name='code'
-                      label='Código '
                       rules={[
                         {
                           required: true,
@@ -177,10 +176,10 @@ const VerifyNumber = () => {
                         },
                       ]}
                     >
-                      <Input onChange={handleCodeChange} size='large'></Input>
+                      <Input.OTP size='large' onChange={handleCodeChange}/>
                     </Form.Item>
                     <Form.Item>
-                      <Flex justify='end'>
+                      <Flex>
                         <Button size='small' type='link' onClick={handleSendOtp}>Reenviar código</Button>
                       </Flex>
                     </Form.Item>

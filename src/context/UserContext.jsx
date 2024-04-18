@@ -28,8 +28,6 @@ export const UserProvider = ({ children }) => {
     emailVerified: null,
   })
 
-  
-
   const errorMessages = {
     'auth/invalid-email': 'El correo es inválido',
     'auth/invalid-credential': 'Credencial inválida',
@@ -101,6 +99,7 @@ export const UserProvider = ({ children }) => {
 
   const logout = () => {
     signOut(auth)
+    sessionStorage.removeItem('user', JSON.stringify(user));
   }
 
   const googleLogin = async () => {
@@ -139,7 +138,7 @@ export const UserProvider = ({ children }) => {
           avatar: user.photoURL,
           phone: user.phoneNumber,
           emailVerified: user.emailVerified,
-        })
+        })       
       } else {
         setUser({
           email: null,

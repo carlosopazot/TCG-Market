@@ -5,3 +5,7 @@
 .card-item-img {
   object-fit: contain;
 }
+
+.card-item-cover {
+  position: relative;
+}

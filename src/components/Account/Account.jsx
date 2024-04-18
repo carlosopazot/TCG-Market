@@ -1,14 +1,12 @@
-import { Row, Col, Typography, Card, Form, Input, Button, Flex, message, Tabs } from 'antd'
+import { Row, Col, Typography, Card, Form, Input, Button, Flex, Tabs } from 'antd'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 
 const { Title } = Typography
 
 const Account = () => {
   const { user } = useContext(UserContext)
   const [ disabled, setDisabled ] = useState(true)
-  const [loading, setLoading] = useState(false);
 
   const editForm = () => {
     setDisabled(false)

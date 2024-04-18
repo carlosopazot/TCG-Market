@@ -16,7 +16,6 @@ import {
 import TagsState from '../TagsState/TagsState'
 import { Link } from 'react-router-dom'
 import './styles.css'
-import imgPlaceholder from '../../assets/images/magic_card_back.webp'
 import SetIcon from '../UploadCard/SetIcon'
 import WhatsappButton from '../WhatsappButton/WhatsappButton'
 import { useContext, } from 'react'
@@ -24,6 +23,7 @@ import { UserContext } from '../../context/UserContext'
 import BackButton from '../BackButton/BackButton'
 import { useNavigate } from 'react-router-dom'
 import AvatarProfile from '../AvatarProfile/AvatarProfile'
+import CoverImage from '../CoverImage/CoverImage'
 
 const { Title } = Typography
 const { Meta } = Card
@@ -44,13 +44,7 @@ const ItemDetail = ({ item }) => {
       </Row>
       <Row gutter={[16, 16]} justify="center">
         <Col xs={14} sm={10} md={9} lg={6} xl={6}>
-          <Image
-            className="img-card"
-            src={item.image || imgPlaceholder}
-            alt={item.name}
-            preview={false}
-            placeholder
-          />
+          <CoverImage item={item}></CoverImage>
         </Col>
         <Col xs={24} sm={14} md={15} lg={12} xl={12}>
           <Card className="card-info">
@@ -82,8 +76,8 @@ const ItemDetail = ({ item }) => {
                     title={<Title level={4}>{item.seller.name}</Title>}
                     description={
                       <Flex vertical gap={8}>
-                        <Title level={5}>
-                          <EnvironmentOutlined /> Santiago
+                        <Title type='secondary' level={5}>
+                          <EnvironmentOutlined /> {item.seller.location}
                         </Title>
                       </Flex>
                     }

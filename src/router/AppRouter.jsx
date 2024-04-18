@@ -13,7 +13,6 @@ import UploadCard from '../components/UploadCard/UploadCard'
 import { useContext } from 'react'
 import { UserContext } from '../context/UserContext'
 import Account from '../components/Account/Account'
-import VerifiedAccount from '../components/VerifiedAccount/VerifiedAccount'
 import Search from '../components/Search/Search'
 import VerifyNumber from '../components/VerifyNumber/VerifyNumber'
 import FooterHome from '../components/Footer/Footer'
@@ -33,10 +32,10 @@ const AppRouter = () => {
                   path="/"
                   element={<ItemListContainer title="Cartas" />}
                 ></Route>
-                <Route path="/tienda" element={<Store />}></Route>
-                <Route path="/tienda/:storeId" element={<StoreContainer />}></Route>
+                {/* <Route path="/tienda" element={<Store />}></Route> */}
+                {user && user.logged && <Route path="/tienda/:storeId" element={<StoreContainer />}></Route>}
                 <Route path="/cuenta" element={<Account />}></Route>
-                <Route path='/verificar-numero' element={<VerifyNumber/>}></Route>
+                {user && user.logged && <Route path="/verificar-numero" element={<VerifyNumber />}></Route>}
                 <Route path="/search" element={<Search />}></Route>
                 <Route
                   path="/cards/:stateId"
@@ -53,7 +52,6 @@ const AppRouter = () => {
                 <Route path="/registro" element={<Register />}></Route>
                 <Route path="/not-found" element={<NotFound />}></Route>
                 <Route path="*" element={<Navigate to={'not-found'} />}></Route>
-                <Route path="/verificar-cuenta" element={<VerifiedAccount />}></Route>
               </Routes>
             </Col>
           </Row>

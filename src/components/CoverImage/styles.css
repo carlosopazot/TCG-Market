@@ -1,0 +1,18 @@
+.cover-container {
+  position: relative
+}
+
+.cover-container .cover-img {
+  border-radius: 8px;
+}
+
+.is-foil{
+  background: linear-gradient(135deg,rgba(222,197,37,0),rgba(222,197,37,0) 1%,rgba(255,8,8,.06) 19%,rgba(239,111,23,.1) 32%,rgba(222,213,37,.23) 45%,rgba(36,222,101,.39) 62%,rgba(47,221,109,.4) 63%,rgba(216,208,239,.39) 79%,rgba(131,123,173,.38) 88%,rgba(136,129,178,.38) 89%,rgba(193,191,234,0));
+  width: 100%;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  height: 100%;
+  position: absolute;
+  opacity: 0.6;
+  z-index: 5;
+}

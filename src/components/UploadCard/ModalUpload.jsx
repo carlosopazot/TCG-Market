@@ -1,4 +1,4 @@
-import { Modal, Button, Divider, Row, Col, Radio, Flex, Typography, Card } from 'antd'
+import { Modal, Button, Divider, Row, Col, Radio, Flex, Typography } from 'antd'
 import QuantitySelector from './QuantitySelector'
 import { useNavigate } from 'react-router-dom'
 
@@ -16,8 +16,30 @@ const ModalUpload = ({
   dollarValue,
   total,
   unitaryTotal,
+  item
 }) => {
   const navigate = useNavigate()
+
+  const formattedNumber = new Intl.NumberFormat('es-CL', {
+    style: 'currency',
+    currency: 'CLP',
+  }).format(total);
+
+  const states = [
+    {
+      value: 'NM',
+      label: 'NM',
+    },
+    {
+      value: 'PLD',
+      label: 'PLD',
+    },
+    {
+      value: 'HP',
+      label: 'HP',
+    }
+  ]
+
   return (
     <Modal
       open={isModalOpen}
@@ -42,7 +64,7 @@ const ModalUpload = ({
           </Flex>
           <Flex vertical>
             <Text type='secondary'>Este es el valor del dólar que configuraste en tu tienda</Text>
-            <Link onClick={()=> {navigate(-1)}}>Ir a tienda</Link>
+            <Link onClick={()=> {navigate(`/tienda/${item}`)}}>Ir a tienda</Link>
           </Flex>
         </Col>
         <Col xs={24}>
@@ -56,9 +78,11 @@ const ModalUpload = ({
                   onChange={(e) => setState(e.target.value)}
                   buttonStyle="solid"
                 >
-                  <Radio.Button value="NM">NM</Radio.Button>
-                  <Radio.Button value="PLD">PLD</Radio.Button>
-                  <Radio.Button value="HP">HP</Radio.Button>
+                  {states.map((state) => (
+                    <Radio.Button key={state.value} value={state.value}>
+                      {state.label}
+                    </Radio.Button>
+                  ))}
                 </Radio.Group>
               </Flex>
             </Col>
@@ -87,7 +111,7 @@ const ModalUpload = ({
           <Flex justify="space-between">
             <Title level={4}>Total</Title>
             <Title style={{ marginTop: 0 }} level={4}>
-              ${total} CLP
+              {formattedNumber} CLP
             </Title>
           </Flex>
         </Col>

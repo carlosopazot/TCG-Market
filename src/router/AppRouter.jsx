@@ -32,7 +32,7 @@ const AppRouter = () => {
                   path="/"
                   element={<ItemListContainer title="Cartas" />}
                 ></Route>
-                {user && user.logged && <Route path="/tienda/:storeId" element={<StoreContainer />}></Route>}
+                <Route path="/tienda/:storeId" element={<StoreContainer />}></Route>
                 <Route path="/cuenta" element={<Account />}></Route>
                 <Route
                   path="/verificar-numero"

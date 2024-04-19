@@ -9,7 +9,7 @@ const { Title, Text } = Typography
 
 const ItemCard = ({ item }) => {
   return (
-    <Col xs={12} sm={12} md={6} xl={4} xxl={4} style={{ marginBottom: '1rem' }}>
+    <Col style={{ margin: '0.25rem' }}>
       <Link to={`/item/${item.id}`}>
         <Card
           className="card-item"

@@ -130,7 +130,7 @@ const Store = ({ item }) => {
             <Row gutter={[16, 16]}>
               {cards.length > 0 ? (
                 <Col xs={24}>
-                  <Row gutter={8}>
+                  <Row gutter={[8,8]}>
                     {cards.map((item) => (
                       <StoreItem
                         key={item.id}

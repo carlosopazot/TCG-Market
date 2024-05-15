@@ -44,12 +44,27 @@ const VerifyNumber = () => {
     navigate('/')
   }
 
-  const updatePhoneNumber = async (phone) => {
-    const storeRef = doc(db, 'stores', store.id)
-    await updateDoc(storeRef, {
-      phone: phone
-    })
-  }
+  // const updatePhoneNumber = async (phone) => {
+  //   const storeRef = doc(db, 'stores', store.id)
+  //   await updateDoc(storeRef, {
+  //     phone: phone
+  //   })
+  // }
+
+  // if(user.phone) {
+  //   const setStoreNumber = async () => {
+  //     try {
+  //       const storeRef = doc(db, 'stores', store.id)
+  //       await updateDoc(storeRef, {
+  //         phone: user.phone
+  //       })
+  //     } catch (error) {
+  //       console.error('Error al actualizar el número de la tienda:', error)
+  //       openMessage('error','Error al actualizar el número de la tienda')
+  //     }
+  //   }
+  //   setStoreNumber()
+  // }
 
   const handleSendOtp = async () => {
     try {
@@ -78,8 +93,8 @@ const VerifyNumber = () => {
       confirmationResult.confirm(code)
         .then((result) => {
           const user = result.user;
-          console.log(user)
-          openMessage('success', 'Número verificado',)
+          console.log(user.phoneNumber)
+          openMessage('success', 'Número verificado') 
           window.location.reload()
         })
         .catch((err) => {
@@ -87,7 +102,6 @@ const VerifyNumber = () => {
         })
         .finally(() => {
           setLoading(false);
-          updatePhoneNumber(user.phoneNumber)
         });
     } catch (error) {
         console.log('error verifying code ' + error)

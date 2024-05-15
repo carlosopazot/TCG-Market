@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { useState, useEffect, useContext } from "react";
 import { db } from "../firebase/config";
-import { query, collection, where, getDocs } from "firebase/firestore";
+import { query, collection, where, getDocs, doc } from "firebase/firestore";
 import { message } from "antd";
 import { UserContext } from "./UserContext";
 
@@ -32,6 +32,7 @@ export const StoreProvider = ({ children }) => {
             console.log(store)
           }, 2000);
         });
+
       } catch (error) {
         console.error('Error fetching store:', error)
         message.error('Error al obtener la tienda')

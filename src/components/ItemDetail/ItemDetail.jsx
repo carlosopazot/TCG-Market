@@ -43,11 +43,6 @@ const ItemDetail = ({ item }) => {
         <title>{item.name} - Card Market</title>
         <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
       </Helmet>
-      <Row justify='center'>
-        <Col xs={24} lg={18}>
-          <BackButton></BackButton>
-        </Col>
-      </Row>
       <Row gutter={[16, 16]} justify="center">
         <Col xs={14} sm={10} md={9} lg={6} xl={6}>
           <CoverImage item={item}></CoverImage>

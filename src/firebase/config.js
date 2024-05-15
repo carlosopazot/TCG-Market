@@ -6,18 +6,16 @@ import {
   FacebookAuthProvider,
 } from 'firebase/auth'
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyC-odyJG-0TaOKEhyl-axx1YshXlfiRLW4',
-  authDomain: 'card-market-a238f.firebaseapp.com',
-  projectId: 'card-market-a238f',
-  storageBucket: 'card-market-a238f.appspot.com',
-  messagingSenderId: '634061937444',
-  appId: '1:634061937444:web:6a6a0755b82d871f0471b1',
-  measurementId: 'G-DT6652BX21',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 }
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig)
 export const db = getFirestore(app)
 export const auth = getAuth(app)

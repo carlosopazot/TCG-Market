@@ -18,7 +18,6 @@ import StoreItem from './StoreItem'
 import StoreStats from './StoreStats'
 import Loader from '../Loader/Loader'
 import { useNavigate } from 'react-router-dom'
-import BackButton from '../BackButton/BackButton'
 import { Helmet } from 'react-helmet-async'
 
 const { Title } = Typography
@@ -27,11 +26,27 @@ const Store = () => {
   const [cards, setCards] = useState([])
   const [loading, setLoading] = useState(true)
   const { user } = useContext(UserContext)
-  const { store, setStore } = useContext(StoreContext)
+  const { store } = useContext(StoreContext)
   const { openMessage  } = useContext(ThemeContext)
   const navigate = useNavigate()
 
   useEffect(() => {
+
+    if (!store.phone && user.phone) {
+      const setStoreNumber = async () => {
+        try {
+          const storeRef = doc(db, 'stores', store.id);
+          await updateDoc(storeRef, {
+            phone: user.phone
+          });
+        } catch (error) {
+          console.error('Error updating store phone number:', error);
+          openMessage('error', 'Error updating store phone number');
+        }
+      };
+      setStoreNumber();
+    }
+
     const fetchCards = async () => {
       setLoading(true)
       const q = query(
@@ -50,7 +65,7 @@ const Store = () => {
       setLoading(false)
     }
     fetchCards()
-  }, [store.id]);
+  }, [openMessage, store.id, store.phone, user.phone]);
 
   const handleDelete = async (id) => {
     console.log(id)

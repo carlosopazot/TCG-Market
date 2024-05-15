@@ -7,8 +7,10 @@ import { db } from "../../firebase/config"
 import Loader from "../Loader/Loader"
 import { formattedClp } from "../../utils/utils"
 import AvatarProfile from "../AvatarProfile/AvatarProfile"
+import CoverImage from "../CoverImage/CoverImage"
+import StoreTags from "../Store/StoreTags"
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
 
 const SellerDetail = ({ seller }) => {
@@ -42,19 +44,18 @@ const SellerDetail = ({ seller }) => {
         <title>Tienda de {seller.name} - Card Market</title>
         <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
       </Helmet>
-      <Row>
-        <BackButton></BackButton>
-      </Row>
       <Row gutter={[16, 16]} justify='space-between'>
         <Col xs={24}>
           <Flex gap={8} align="center">
-            <AvatarProfile src={seller.avatar} name={seller.name} size={60}></AvatarProfile>
-            <Title style={{ margin: 0}} level={2}>Tienda de {seller.name}</Title>
+            <AvatarProfile src={seller.avatar} name={seller.name} size={48}></AvatarProfile>
+            <Flex vertical>
+              <Title style={{ margin: 0}} level={3}>Tienda de {seller.name}</Title>
+              <StoreTags item={seller} />
+            </Flex>
           </Flex>
         </Col>
         <Col xs={24}>
           <Divider orientation='left'>
-            <Title style={{ margin: 0}} level={4}>Colección</Title>
           </Divider>
         </Col>
         <Col xs={24}>
@@ -66,14 +67,11 @@ const SellerDetail = ({ seller }) => {
                 <Col xs={24}>
                   <Row gutter={[8,8]}>
                     {cards.map((item) => (
-                      <Col xs={24} sm={12} md={4} lg={4} xl={4} key={item.id}>
+                      <Col xs={12} sm={12} md={6} xl={5} key={item.id}>
                         <Card
                           hoverable
-                          cover={<img alt={item.name} src={item.image} />}
+                          cover={<CoverImage item={item} />}
                         >
-                          <Card.Meta
-                            title={item.name}
-                          />
                           <Title level={5}>{formattedClp(item.price)} </Title>
                         </Card>
                       </Col>

@@ -1,4 +1,4 @@
-import { Row, Typography, Col, Card, Image, Empty, Button, Flex } from "antd"
+import { Row, Typography, Col, Card, Empty, Button, Flex } from "antd"
 import { useContext, useEffect, useState } from "react"                
 import { SearchContext } from "../../context/SearchContext"
 import { collection, getDocs, query, where } from 'firebase/firestore'

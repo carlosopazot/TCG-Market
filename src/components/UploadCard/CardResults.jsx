@@ -4,12 +4,15 @@ import { Row, Col, Button, Typography } from 'antd'
 const { Title } = Typography
 
 const CardResults = ({ cardDetails, editions, clearSearch, dollarPrice }) => {
+
+  const filteredEditions = editions.filter(edition => edition.prices.usd || edition.prices.usd_foil || edition.prices.usd_etched)
+  console.log('filteredEditions:', filteredEditions)
   return (
     <Row gutter={[16, 16]}>
       <Col xs={24}>
         <Title level={4}>Resultados para {cardDetails.name}:</Title>
       </Col>
-      {editions.map((edition) => {
+      {filteredEditions.map((edition) => {
         return (
           <UploadItem
             edition={edition}

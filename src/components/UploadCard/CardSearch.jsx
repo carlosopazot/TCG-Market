@@ -23,7 +23,6 @@ const CardSearch = ({
       optionLabelProp="label"
       filterOption={false}
       onSearch={handleSearch}
-      defaultOpen={false}
       onSelect={handleSelectChange}
       value={selectedCard}
       style={{ width: '100%' }}

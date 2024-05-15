@@ -16,51 +16,56 @@ import Account from '../components/Account/Account'
 import Search from '../components/Search/Search'
 import VerifyNumber from '../components/VerifyNumber/VerifyNumber'
 import FooterHome from '../components/Footer/Footer'
-import StoreContainer from '../components/StoreContainer/StoreContainer'
+import SellerContainer from '../components/SellerDetailContainer/SellerDetailContainer'
+import Breadcrumb from '../components/Breadcrumb/Breadcrumb'
 
 const AppRouter = () => {
   const { user } = useContext(UserContext)
+
   console.log(user.logged)
   return (
     <BrowserRouter>
       <Layout className="layout">
         <Navbar />
+        <main className="main">
           <Row justify="center">
             <Col xs={24}>
+              <Breadcrumb />
+            </Col>
+            <Col xs={24}>
               <Routes>
+                <Route path="/" element={<ItemListContainer title="Cartas" />} />
                 <Route
-                  path="/"
-                  element={<ItemListContainer title="Cartas" />}
-                ></Route>
-                <Route path="/tienda/:storeId" element={<StoreContainer />}></Route>
-                <Route path="/cuenta" element={<Account />}></Route>
+                  path="/tienda"
+                  element={user.logged ? <Store /> : <Navigate to={'not-found'} />}
+                />
+                <Route path="/vendedor/:sellerId" element={<SellerContainer />} />
+                <Route path="/cuenta" element={<Account />} />
                 <Route
                   path="/verificar-numero"
-                  element={<VerifyNumber />}
+                  element={ <VerifyNumber />}
                 />
-                <Route path="/search" element={<Search />}></Route>
+                <Route path="/search" element={<Search />} />
                 <Route
                   path="/cards/:stateId"
                   element={<ItemListContainer title="Cartas" />}
-                ></Route>
+                />
                 <Route path="/cart" element={<CartView />} />
-                <Route
-                  path="/item/:itemId"
-                  element={<ItemDetailContainer />}
-                ></Route>
-                <Route path="/agregar-carta" element={<UploadCard />}></Route>
-                <Route path="/checkout" element={<Checkout />}></Route>
-                <Route path="/login" element={<Login />}></Route>
-                <Route path="/registro" element={<Register />}></Route>
-                <Route path="/not-found" element={<NotFound />}></Route>
-                <Route path="*" element={<Navigate to={'not-found'} />}></Route>
+                <Route path="/item/:itemId" element={<ItemDetailContainer />} />
+                <Route path="/tienda/agregar-carta" element={<UploadCard />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/registro" element={<Register />} />
+                <Route path="/not-found" element={<NotFound />} />
+                <Route path="*" element={<Navigate to={'not-found'} />} />
               </Routes>
             </Col>
           </Row>
-          <FooterHome/>
+        </main>
+        <FooterHome />
       </Layout>
     </BrowserRouter>
-  )
+  );
 }
 
 export default AppRouter

@@ -2,7 +2,6 @@ import {
   Row,
   Col,
   Typography,
-  Image,
   Card,
   Button,
   Flex,
@@ -24,6 +23,8 @@ import BackButton from '../BackButton/BackButton'
 import { useNavigate } from 'react-router-dom'
 import AvatarProfile from '../AvatarProfile/AvatarProfile'
 import CoverImage from '../CoverImage/CoverImage'
+import { formattedClp } from '../../utils/utils'
+import { Helmet } from 'react-helmet-async'
 
 const { Title } = Typography
 const { Meta } = Card
@@ -33,10 +34,15 @@ const ItemDetail = ({ item }) => {
   const navigate = useNavigate()
 
   const showStore = () => {
-    navigate(`/tienda/${item.seller.id}`)
+    navigate(`/vendedor/${item.seller.id}`)
   }
+
   return (
-    <div className='main'>
+    <>
+      <Helmet>
+        <title>{item.name} - Card Market</title>
+        <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
+      </Helmet>
       <Row justify='center'>
         <Col xs={24} lg={18}>
           <BackButton></BackButton>
@@ -61,7 +67,7 @@ const ItemDetail = ({ item }) => {
                   ) : (
                     <Alert message={`Stock: ${item.stock}`} type="info" />
                   )}
-                  <Title level={3}>$ {item.price}</Title>
+                  <Title level={3}>{formattedClp(item.price)}</Title>
                 </Flex>
               </Flex>
           </Card>
@@ -118,7 +124,7 @@ const ItemDetail = ({ item }) => {
           </Card>
         </Col>
       </Row>
-    </div>
+    </>
   )
 }
 

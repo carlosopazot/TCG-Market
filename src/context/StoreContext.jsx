@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { useState, useEffect, useContext } from "react";
 import { db } from "../firebase/config";
-import { query, collection, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import { query, collection, where, getDocs } from "firebase/firestore";
 import { message } from "antd";
 import { UserContext } from "./UserContext";
 
@@ -11,6 +11,7 @@ export const StoreProvider = ({ children }) => {
   const { user } = useContext(UserContext)
   const [loading, setLoading] = useState(false)
   const [store, setStore] = useState({})
+  const [dollarUSD, setDollarUSD] = useState(null)
 
   useEffect(() => {
 
@@ -29,10 +30,8 @@ export const StoreProvider = ({ children }) => {
           setTimeout(() => {
             setStore(store);
             console.log(store)
-          }, 500);
+          }, 2000);
         });
-        
-        
       } catch (error) {
         console.error('Error fetching store:', error)
         message.error('Error al obtener la tienda')
@@ -43,7 +42,7 @@ export const StoreProvider = ({ children }) => {
   }, [user.email])
 
   return (
-    <StoreContext.Provider value={{ store, setStore, loading, setLoading }}>
+    <StoreContext.Provider value={{ store, setStore, loading, setLoading, dollarUSD, setDollarUSD }}>
       {children}
     </StoreContext.Provider>
   );

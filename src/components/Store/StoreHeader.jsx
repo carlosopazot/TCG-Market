@@ -1,26 +1,26 @@
-import { Col, Typography, Button, Flex, Modal, Form, Select, Radio, Divider, Collapse, message, Spin, Tag, } from 'antd'
+import { Col, Typography, Button, Flex, Modal, Form, Select, Radio, Divider, Collapse, message, Spin } from 'antd'
 import { PlusOutlined, SettingOutlined, EnvironmentOutlined, DollarOutlined, ExclamationCircleOutlined, CheckCircleOutlined, LoadingOutlined} from '@ant-design/icons'
 import './styles.css'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
+import { ThemeContext } from '../../context/ThemeContext'
 import { db } from '../../firebase/config'
 import { doc, updateDoc } from 'firebase/firestore'
 import { StoreContext } from '../../context/StoreContext'
 import { useNavigate } from 'react-router-dom'
-import AvatarProfile from '../AvatarProfile/AvatarProfile'
 import StoreTags from './StoreTags'
 
 const { Title, Text } = Typography
 
-const StoreHeader = ({ matchStore, item }) => {
+const StoreHeader = ({ item }) => {
   const { user } = useContext(UserContext)
+  const { openMessage } = useContext(ThemeContext)
   const { store, setStore } = useContext(StoreContext)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingDollar, setLoadingDollar] = useState(false);
   const disabledStore = user.phone === null;
   const uploadDisabled = store.location && store.dollar && !disabledStore ? false : true;
-  console.log(uploadDisabled)
   const navigate = useNavigate()
 
   const cities = [
@@ -62,11 +62,12 @@ const StoreHeader = ({ matchStore, item }) => {
         location: value
       })
     } catch (error) {
-      console.error('Error updating document:', error)
-      message.error('Error al actualizar la ubicación de la tienda')
+      openMessage('error', 'Error al actualizar la ubicación de la tienda')
     } finally {
       setLoading(false)
-      message.success('Ubicación de la tienda actualizada')
+      // message.success('Ubicación de la tienda actualizada')
+      openMessage('success', 'Ubicación de la tienda actualizada')
+      
     }
   };
 
@@ -83,12 +84,11 @@ const StoreHeader = ({ matchStore, item }) => {
         ...store,
         dollar: value
       })
-      message.success('Valor del dólar actualizado')
     } catch (error) {
-      console.error('Error updating document:', error)
-      message.error('Error al actualizar el valor del dolar')
+      openMessage('error', 'Error al actualizar el valor del dolar')
     } finally {
       setLoadingDollar(false)
+      openMessage('success', 'Valor del dolar actualizado')
     }
   };
 
@@ -164,29 +164,24 @@ const StoreHeader = ({ matchStore, item }) => {
     <>
       <Col xs={24} md={12} lg={20}>
         <Flex gap={8}>
-          {!matchStore ? <AvatarProfile size={60} src={item.avatar} name={item.name}/> : null}
           <Flex vertical gap={8}>
-            <Title  style={{ margin: 0 }} level={2}>{matchStore ? 'Mi tienda' : `Tienda de ${item.name}`}</Title>
-            {matchStore ? <StoreTags item={store} /> : <StoreTags item={item} />}
+            <Title  style={{ margin: 0 }} level={2}>Mi tienda</Title>
+            <StoreTags item={store} />
           </Flex>
         </Flex>
       </Col>
-      {matchStore ? (
-        <Col xs={24} md={12} lg={4}>
-          <Flex gap={8} justify="end">
-            <Button block disabled={disabledStore} onClick={showModal} icon={<SettingOutlined />} size="large">
-              Configurar
-            </Button>
-            <Button onClick={()=>{navigate('/agregar-carta')}} block disabled={uploadDisabled} type="primary" icon={<PlusOutlined />} size="large">
-              Agregar carta
-            </Button>
-          </Flex>
-        </Col>
-      ) : (
-        <Col xs={24} md={12} lg={4}>
-          <Button block size='large' type='primary'>Contactar</Button>
-        </Col> 
-      )}
+      
+      <Col xs={24} md={12} lg={4}>
+        <Flex gap={8} justify="end">
+          <Button block disabled={disabledStore} onClick={showModal} icon={<SettingOutlined />} size="large">
+            Configurar
+          </Button>
+          <Button onClick={()=>{navigate('/tienda/agregar-carta')}} block disabled={uploadDisabled} type="primary" icon={<PlusOutlined />} size="large">
+            Agregar carta
+          </Button>
+        </Flex>
+      </Col>
+     
       <Modal 
         footer={null} 
         open={isModalOpen} 

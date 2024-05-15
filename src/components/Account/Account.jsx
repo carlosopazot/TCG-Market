@@ -1,12 +1,15 @@
-import { Row, Col, Typography, Card, Form, Input, Button, Flex, Tabs } from 'antd'
+import { Row, Col, Typography, Card, Form, Input, Button, Flex, Tabs, Upload } from 'antd'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
+import ImgCrop from 'antd-img-crop';
+import { PlusOutlined, FileTextOutlined, UserOutlined, KeyOutlined } from '@ant-design/icons';
 
 const { Title } = Typography
 
 const Account = () => {
   const { user } = useContext(UserContext)
   const [ disabled, setDisabled ] = useState(true)
+  const fileList = []
 
   const editForm = () => {
     setDisabled(false)
@@ -32,9 +35,27 @@ const Account = () => {
           </Form>
         </Card>
       ), 
-      key: '1' 
+      key: '1',
+      icon: <FileTextOutlined />
     },
-    { label: 'Contraseña', children: 'Content of Tab Pane 2', key: '2' , disabled: true },
+    { label: 'Avatar', 
+      children: (
+        <Card title='Foto de perfil'>
+          <ImgCrop>
+            <Upload
+              maxCount={1}
+              listType="picture"
+              defaultFileList={[...fileList]}
+            >
+              <Button icon={<PlusOutlined />}>Upload</Button>
+            </Upload>
+          </ImgCrop>
+        </Card>
+      ), 
+      key: '3',
+      icon: <UserOutlined />
+    },
+    { label: 'Contraseña', children: 'Content of Tab Pane 2', key: '2' , disabled: true, icon: <KeyOutlined /> },
   ]
 
   const onChange = (key) => {
@@ -42,7 +63,6 @@ const Account = () => {
   };
   
   return (
-    <main className="main">
       
       <Row gutter={16}>
         <Col xs={24} lg={8}>
@@ -71,7 +91,6 @@ const Account = () => {
           </Card>
         </Col> */}
       </Row>
-    </main>
   )
 }
 

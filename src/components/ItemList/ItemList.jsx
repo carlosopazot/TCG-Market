@@ -1,5 +1,5 @@
 import ItemCard from '../ItemCard/ItemCard'
-import { Empty, Typography, Row, Card, Button } from 'antd'
+import { Empty, Typography, Card, Button } from 'antd'
 import Slider from "react-slick";
 import './styles.css'
 import { useRef } from 'react';
@@ -12,7 +12,7 @@ const ItemList = ({ cards, title }) => {
   const slider = useRef(null);
   
   const settings = {
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 6,
     slidesToScroll: 2,
@@ -24,9 +24,8 @@ const ItemList = ({ cards, title }) => {
       {
         breakpoint: 1280,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 5,
           slidesToScroll: 1,
-          infinite: true,
         }
       },
       {
@@ -34,13 +33,12 @@ const ItemList = ({ cards, title }) => {
         settings: {
           slidesToShow: 4,
           slidesToScroll: 1,
-          infinite: true,
         }
       },
       {
-        breakpoint: 600,
+        breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
           slidesToScroll: 1,
         }
       },
@@ -59,7 +57,6 @@ const ItemList = ({ cards, title }) => {
       <Title level={4}>{title || 'Cartas'}</Title>
       {cards.length > 0 ? (
         <div className="slider">
-          
           <Slider ref={slider} {...settings}>
             {cards.map((item) => (
               <ItemCard key={item.id} item={item} />

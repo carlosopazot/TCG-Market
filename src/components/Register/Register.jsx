@@ -12,6 +12,7 @@ import {
 import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 
 const { Title, Text } = Typography
 
@@ -48,7 +49,11 @@ const Register = () => {
   }
 
   return (
-    <div className="main">
+    <>
+      <Helmet>
+        <title>Crea tu cuenta - Card Market</title>
+        <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
+      </Helmet>
       <Row justify="center">
       <Col xs={24} md={12} lg={12} xl={8}>
         <Card>
@@ -122,7 +127,7 @@ const Register = () => {
             </Form.Item>
             <Form.Item>
               <Button loading={loading} block size="large" type="primary" htmlType="submit">
-                Crear cuenta
+                {loading ? 'Creando cuenta...' : 'Crear cuenta'}
               </Button>
             </Form.Item>
           </Form>
@@ -138,7 +143,7 @@ const Register = () => {
         </Card>
       </Col>
     </Row>
-    </div>
+  </>
   )
 }
 

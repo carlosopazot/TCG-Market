@@ -3,26 +3,29 @@ import { useState, useContext, useEffect } from 'react';
 import { auth } from '../../firebase/config';
 import { RecaptchaVerifier, linkWithPhoneNumber, } from 'firebase/auth';
 import { UserContext } from '../../context/UserContext';
+import { db } from '../../firebase/config';
+import { doc, updateDoc } from 'firebase/firestore';
+
 import { useNavigate } from 'react-router-dom';
+import { StoreContext } from '../../context/StoreContext';
 import { ThemeContext } from '../../context/ThemeContext';
+import { Helmet } from 'react-helmet-async';
 import './styles.css'
 
 const { Title, Text } = Typography;
 
 const VerifyNumber = () => {
   const { user } = useContext(UserContext)
-  const { openMessage } = useContext(ThemeContext)
+  const { store } = useContext(StoreContext)
+  const { openMessage, handleAuthError } = useContext(ThemeContext)
   const [ number, setNumber ] = useState('')
   const [ code, setCode ] = useState('')
   const [ confirmationResult, setConfirmationResult ] = useState(null)
   const [loading, setLoading] = useState(false);
-  const [loadingCode, setLoadingCode] = useState(false);
   const navigate = useNavigate()
   const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
 
-  const navigateToHome = () => {
-    navigate('/')
-  }
+
 
   const prefix = '+569'
 
@@ -37,29 +40,29 @@ const VerifyNumber = () => {
     setRecaptchaVerifier(recaptchaVerifier);
   }, []);
 
+  const navigateToHome = () => {
+    navigate('/')
+  }
+
+  const updatePhoneNumber = async (phone) => {
+    const storeRef = doc(db, 'stores', store.id)
+    await updateDoc(storeRef, {
+      phone: phone
+    })
+  }
 
   const handleSendOtp = async () => {
     try {
       setLoading(true);
       const currentUser = auth.currentUser
       const phoneNumber = `${prefix}${number}`
-      console.log(phoneNumber)
-      console.log(currentUser)
       linkWithPhoneNumber(currentUser, phoneNumber, recaptchaVerifier)
         .then((result) => {
           setConfirmationResult(result);
-          console.log(result)
           openMessage('success', 'Código enviado')
         })
         .catch((err) => {
-          if (err.code === 'auth/credential-already-in-use') {
-            openMessage('error', 'Número já em uso');
-          } else if(err.code === 'auth/too-many-requests') {
-            openMessage('error', 'Has solicitado demasiados códigos, intenta más tarde');
-          } else {
-            alert(err.message);
-          }
-          console.error(err);
+          handleAuthError(err);
         })
         .finally(() => {
           setLoading(false);
@@ -80,18 +83,11 @@ const VerifyNumber = () => {
           window.location.reload()
         })
         .catch((err) => {
-          if (err.code === 'auth/invalid-verification-code') {
-            openMessage('error', 'Código inválido')
-          } else if (err.code === 'auth/code-expired') {
-            openMessage('error', 'Código expirado')
-          } else if (err.code === 'auth/credential-already-in-use') {
-            openMessage('error', 'Número já em uso')
-          } else if (err.code === 'auth/account-exists-with-different-credential') {
-            openMessage('error', 'El número ya está en uso con otra cuenta')
-          } 
+          handleAuthError(err);
         })
         .finally(() => {
           setLoading(false);
+          updatePhoneNumber(user.phoneNumber)
         });
     } catch (error) {
         console.log('error verifying code ' + error)
@@ -104,7 +100,6 @@ const VerifyNumber = () => {
 
   const handleCodeChange = (e) => {
     setCode(e)
-    console.log(e)
   }
 
   if(user.phone !== null) {
@@ -131,7 +126,11 @@ const VerifyNumber = () => {
   }
 
   return (
-    <main className='main'>
+    <>
+      <Helmet>
+        <title>Verifica tu número - Card Market</title>
+        <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
+      </Helmet>
       <div id='recaptcha-container'></div>
       <Row justify='center'>
         <Col md={12} lg={8}>
@@ -195,7 +194,7 @@ const VerifyNumber = () => {
             </Card>
         </Col>
       </Row>
-    </main>
+    </>
   );
 }
 

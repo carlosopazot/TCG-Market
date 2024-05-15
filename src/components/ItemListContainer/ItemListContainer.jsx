@@ -1,12 +1,13 @@
 import { useState, useEffect, useContext } from 'react'
 import ItemList from '../ItemList/ItemList'
-import { Alert, Empty, Spin, Flex, Button } from 'antd'
+import { Empty, Spin, Flex, Card } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import { useParams } from 'react-router-dom'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import { StoreContext } from '../../context/StoreContext'
 import { UserContext } from '../../context/UserContext'
+import { Helmet } from 'react-helmet-async'
 
 
 const ItemListContainer = () => {
@@ -40,6 +41,10 @@ const ItemListContainer = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Inicio - Card Market</title>
+        <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
+      </Helmet>
       {loading ? (
         <Spin
           tip="Cargando"
@@ -48,32 +53,23 @@ const ItemListContainer = () => {
           <div className="content" />
         </Spin>
       ) : (
-        <main className='main'>
+        <>
           {cards.length > 0 ? (
             <Flex style={{ marginBottom: '2rem'}} gap={24} vertical>
-              {user && user.logged ? (
+              {user && user.logged && store.location ? (
                 <ItemList cards={cards.filter(card => card.seller.location === store.location )} title={`Últimas cartas en ${store.location}`} />
               ) : (
-                <Alert 
-                description='Ingresa ahora para ver las cartas más recientes en tu ubicación'
-                message='Aún no has iniciado sesión'
-                type="warning"
-                showIcon
-                closable
-                action={
-      
-                    <Button type="primary">
-                      Ingresar
-                    </Button>
-                }/>
+                null
               )}
               <ItemList cards={cards} title='Recientes' />
               <ItemList cards={cards.filter(card => card.foil )} title='✨ Todo foil' />
             </Flex>
           ) : (
-            <Empty description='No hay cartas' />
+            <Card>
+              <Empty description='No hay cartas' />
+            </Card>
           )}
-        </main>
+        </>
       )}
     </>
   )

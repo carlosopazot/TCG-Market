@@ -11,29 +11,32 @@ import {
 import { db } from '../../firebase/config'
 import { useEffect, useState, useContext, useMemo } from 'react'
 import { UserContext } from '../../context/UserContext'
+import { StoreContext } from '../../context/StoreContext'
+import { ThemeContext } from '../../context/ThemeContext'
 import StoreHeader from './StoreHeader'
 import StoreItem from './StoreItem'
 import StoreStats from './StoreStats'
 import Loader from '../Loader/Loader'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../BackButton/BackButton'
+import { Helmet } from 'react-helmet-async'
 
 const { Title } = Typography
 
-const Store = ({ item }) => {
+const Store = () => {
   const [cards, setCards] = useState([])
   const [loading, setLoading] = useState(true)
   const { user } = useContext(UserContext)
+  const { store, setStore } = useContext(StoreContext)
+  const { openMessage  } = useContext(ThemeContext)
   const navigate = useNavigate()
-  const matchStore = item.id === user.uid
 
   useEffect(() => {
-
     const fetchCards = async () => {
       setLoading(true)
       const q = query(
         collection(db, 'cards'),
-        where('seller.id', '==', item.id)
+        where('seller.id', '==', store.id)
       )
       const querySnapshot = await getDocs(q)
 
@@ -46,9 +49,8 @@ const Store = ({ item }) => {
       console.log(cardsData)
       setLoading(false)
     }
-
-      fetchCards()
-  }, [item.id, user.phone]);
+    fetchCards()
+  }, [store.id]);
 
   const handleDelete = async (id) => {
     console.log(id)
@@ -90,12 +92,13 @@ const Store = ({ item }) => {
   }, [cards])
 
   return (
-    <main className='main'>
-      <Row>
-        <BackButton></BackButton>
-      </Row>
+    <>
+      <Helmet>
+        <title>Mi tienda - Card Market</title>
+        <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
+      </Helmet>
       <Row gutter={[16, 16]} justify='space-between'>
-      {user.uid === item.id && user.phone === null ? (
+      {user.phone === null ? (
         <Col xs={24}>
           <Alert
             style={{ border : 0 }}
@@ -111,13 +114,11 @@ const Store = ({ item }) => {
           />
           </Col>) : (null)
         }
-        <StoreHeader item={item} matchStore={matchStore}></StoreHeader>
-        {matchStore ? (
-          <StoreStats
-            totalStock={totalStock}
-            totalForSell={totalForSell}
-          />) : null 
-        }
+        <StoreHeader item={store} ></StoreHeader>
+        <StoreStats
+          totalStock={totalStock}
+          totalForSell={totalForSell}
+        />
         <Col xs={24}>
           <Divider orientation='left'>
             <Title style={{ margin: 0}} level={4}>Colección</Title>
@@ -153,7 +154,7 @@ const Store = ({ item }) => {
           )}
         </Col>
       </Row>
-    </main>
+    </>
   )
 }
 

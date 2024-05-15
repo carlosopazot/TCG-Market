@@ -12,10 +12,14 @@ const { Text } = Typography
 
 const UserMenu = ({ name }) => {
   const { logout, user } = useContext(UserContext)
-  const { store } = useContext(StoreContext)
+  const { store, setStore } = useContext(StoreContext)
   const [ show, setShow ] = useState(false)
   const color = '#FFC53D'
 
+  const handleLogout = () => {
+    logout()
+    setStore(null)
+  }
 
   useEffect(() => {
     if (user.phone === null) {
@@ -27,20 +31,10 @@ const UserMenu = ({ name }) => {
   
   const items = [
     {
-      key: '0',
-      label: (
-        <Link to="/agregar-carta">
-          Vender carta
-        </Link>
-      ),
-      icon: <TagsOutlined />,
-      disabled: user.phone === null || !store.location || !store.dollar,
-    },
-    {
       key: '1',
       label: (
         <>
-          <Link to={`/tienda/${user.uid}`}>
+          <Link to={`/tienda`}>
             Tienda
           </Link>
           {user.phone === null && <ExclamationCircleOutlined style={{ marginLeft: '4px', color: `${color}` }} />}
@@ -75,7 +69,7 @@ const UserMenu = ({ name }) => {
     {
       key: '5',
       label: (
-        <Link onClick={logout}>
+        <Link onClick={handleLogout}>
           Cerrar sesión
         </Link>
       ),
@@ -92,8 +86,7 @@ const UserMenu = ({ name }) => {
     >
       <Button size="large">
         <Badge color={color} dot={show}>
-          <AvatarProfile name={name} size='small' src={user.avatar || null}>
-          </AvatarProfile>
+          <AvatarProfile name={name} size='small' src={user.avatar || null}/>
         </Badge>
       </Button>
     </Dropdown>

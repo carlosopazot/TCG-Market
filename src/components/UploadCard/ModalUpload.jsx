@@ -1,6 +1,7 @@
 import { Modal, Button, Divider, Row, Col, Radio, Flex, Typography } from 'antd'
 import QuantitySelector from './QuantitySelector'
 import { useNavigate } from 'react-router-dom'
+import { formattedClp } from '../../utils/utils'
 
 const { Title, Text, Link } = Typography
 
@@ -19,11 +20,6 @@ const ModalUpload = ({
   item
 }) => {
   const navigate = useNavigate()
-
-  const formattedNumber = new Intl.NumberFormat('es-CL', {
-    style: 'currency',
-    currency: 'CLP',
-  }).format(total);
 
   const states = [
     {
@@ -60,7 +56,7 @@ const ModalUpload = ({
           <Divider style={{ marginTop: '0.5rem' }}></Divider>
           <Flex justify='space-between' align='center'>
             <Title style={{ margin: 0 }} level={5}>Valor referencia dólar</Title>
-            <Title style={{ margin: 0 }} level={4}>${dollarValue} CLP</Title>
+            <Title style={{ margin: 0 }} level={4}>${dollarValue} <Text>CLP</Text> </Title>
           </Flex>
           <Flex vertical>
             <Text type='secondary'>Este es el valor del dólar que configuraste en tu tienda</Text>
@@ -98,22 +94,23 @@ const ModalUpload = ({
           ></QuantitySelector>
           </Flex>
         </Col>
-        <Divider style={{ margin: '0.25rem' }}></Divider>
         <Col xs={24}>
+          <Divider style={{ margin: '0.5rem' }}></Divider>
           <Flex justify="space-between">
             <Title level={5} type="secondary">
               Precio
             </Title>
             <Title style={{ marginTop: 0 }} level={5} type="secondary">
-              ${unitaryTotal} CLP
+              {formattedClp(unitaryTotal)}  <Text type="secondary">CLP</Text>
             </Title>
           </Flex>
           <Flex justify="space-between">
             <Title level={4}>Total</Title>
             <Title style={{ marginTop: 0 }} level={4}>
-              {formattedNumber} CLP
+              {formattedClp(total)}  <Text>CLP</Text>
             </Title>
           </Flex>
+          <Divider style={{ marginTop: '0.5rem' }}></Divider>
         </Col>
       </Row>
     </Modal>

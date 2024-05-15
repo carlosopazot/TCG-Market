@@ -7,6 +7,7 @@ import Loader from "../Loader/Loader"
 import TagsState from "../TagsState/TagsState"
 import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
+import CoverImage from "../CoverImage/CoverImage"
 
 const { Title, Text } = Typography
 
@@ -40,20 +41,17 @@ const Search = () => {
   
   if (cards.length === 0 && !loading) {
     return (
-      <main className="main">
-        <Row>
-          <Col xs={24}>
-            <Empty description='No se encontraron coincidencias en Card Market'>
-              <Button type="primary" onClick={() => navigate('/')}>Volver a inicio</Button>
-            </Empty>
-          </Col>
-        </Row>
-      </main>
+      <Row>
+        <Col xs={24}>
+          <Empty description='No se encontraron coincidencias en Card Market'>
+            <Button type="primary" onClick={() => navigate('/')}>Volver a inicio</Button>
+          </Empty>
+        </Col>
+      </Row>
     )
   }
 
   return (
-    <main className="main">
       <Row justify='center'>
         {loading ? (
           <Col xs={24}>
@@ -66,24 +64,24 @@ const Search = () => {
               <Link to={`/item/${card.id}`} key={card.id}>
                 <Card hoverable style={{ marginBottom: '1rem' }}>
                   <Row gutter={16}>
-                    <Col xs={10} md={8} lg={4}>
-                      <Image src={card.image} preview={false}></Image>
+                    <Col xs={8} md={8} lg={4}>
+                      <CoverImage noTag={true} item={card}></CoverImage>
                     </Col>
                     <Col xs={14} lg={20}>
                       <Row gutter={[16,16]}>
                         <Col xs={24} lg={16}>
-                          <Flex vertical gap={8}>
+                          <Flex vertical gap={16}>
                             <div>
-                              <Title style={{ marginBottom: 0 }} level={5}>{card.name}</Title>
-                              <Text>{card.set_name}</Text>
+                              <Title style={{ marginBottom: 0 }} level={4}>{card.name}</Title>
+                              <Text type="secondary">{card.set_name}</Text>
                             </div>
                             <TagsState item={card}></TagsState>
-                            <Title style={{ margin : 0 }} level={4}>${card.price}</Title>
                           </Flex>
                         </Col>
                         <Col xs={24} lg={8}>
-                          <Text>Vendido por</Text>
-                          <Title style={{ margin: 0}} level={5}>{card.seller.name}</Title>
+                          <Flex>
+                            <Title style={{ margin : 0 }} level={3}>${card.price}</Title>
+                          </Flex>
                         </Col>
                       </Row>
                     </Col>
@@ -94,7 +92,6 @@ const Search = () => {
           </Col>
         )}
       </Row>
-    </main>
   )
 }
 

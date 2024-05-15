@@ -11,13 +11,13 @@ import {
   browserLocalPersistence,
 } from 'firebase/auth'
 import { db } from '../firebase/config'
-import { setDoc, doc } from 'firebase/firestore'
-import { message } from 'antd'
+import { setDoc, doc, getDoc } from 'firebase/firestore'
+import { useContext } from 'react'
+import { ThemeContext } from './ThemeContext'
 
 export const UserContext = createContext()
 
 export const UserProvider = ({ children }) => {
-  
   const [user, setUser] = useState({
     email: null,
     logged: false,
@@ -28,21 +28,26 @@ export const UserProvider = ({ children }) => {
     emailVerified: null,
   })
 
-  const errorMessages = {
-    'auth/invalid-email': 'El correo es inválido',
-    'auth/invalid-credential': 'Credencial inválida',
-    'auth/wrong-password': 'Contraseña incorrecta',
-    'auth/user-not-found': 'Usuario no encontrado',
-    'auth/invalid-email-verified': 'Email no verificado',
-    'auth/weak-password' : 'La contraseña es muy débil',
-    'auth/email-already-in-use' : 'Correo ya está en uso'
-  }
+  const { handleAuthError } = useContext(ThemeContext)
 
-  const handleAuthError = (error) => {
-    console.error('Error:', error);
-    const errorMessage =
-    errorMessages[error.code] || 'Ha ocurrido un error. Por favor, inténtalo de nuevo.';
-    message.error(errorMessage);
+  const createStore = async (user) => {
+    try {
+      const userRef = doc(db, 'stores', user.uid);
+      const userDoc = await getDoc(userRef);
+      if (!userDoc.exists()) {
+        await setDoc(userRef, {
+          email: user.email,
+          name: user.displayName,
+          avatar: user.photoURL,
+          phone: user.phoneNumber || null,
+        });
+        console.log('Document created for new user:', user.uid);
+      } else {
+        console.log('Existing user logged in:', user.uid);
+      }
+    } catch (error) {
+      console.error('Error creating store:', error)
+    }
   }
 
   const login = async (values) => {
@@ -56,7 +61,6 @@ export const UserProvider = ({ children }) => {
       // Usuario autenticado con éxito
 
       console.log(user)
-      console.log('Tienda creada')
       // Continuar con cualquier lógica adicional después del inicio de sesión...
     } catch (error) {
       handleAuthError(error)
@@ -77,13 +81,8 @@ export const UserProvider = ({ children }) => {
         displayName: values.name
       });
 
-      await setDoc(doc(db, "stores", user.uid), {
-        email: user.email,
-        name: user.displayName,
-        avatar: user.photoURL,
-        phone: user.phoneNumber,
-      });
-      console.log('Tienda creada')
+      // Crear un documento de tienda para el usuario
+      await createStore(user)
        
 
       // await sendEmailVerification(user)
@@ -99,24 +98,17 @@ export const UserProvider = ({ children }) => {
 
   const logout = () => {
     signOut(auth)
-    sessionStorage.removeItem('user', JSON.stringify(user));
   }
 
   const googleLogin = async () => {
     try {
-      // await signInWithPopup(auth, provider)
-      const userCredential = await signInWithPopup(auth, provider)
-      const user = userCredential.user
-      await setDoc(doc(db, "stores", user.uid), {
-        email: user.email,
-        name: user.displayName,
-        avatar: user.photoURL,
-        phone: user.phoneNumber,
-      });
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      await createStore(user)
     } catch (error) {
-      handleAuthError(error)
+      console.error('Error during Google authentication:', error);
     }
-  }
+  };
 
   const facebookLogin = () => {
     signInWithPopup(auth, fbProvider)
@@ -138,7 +130,7 @@ export const UserProvider = ({ children }) => {
           avatar: user.photoURL,
           phone: user.phoneNumber,
           emailVerified: user.emailVerified,
-        })       
+        })
       } else {
         setUser({
           email: null,

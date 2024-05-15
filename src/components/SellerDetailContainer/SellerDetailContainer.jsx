@@ -2,18 +2,18 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Spin } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
-import Store from '../Store/Store'
+import SellerDetail from '../SellerDetail/SellerDetail'
 import { db } from '../../firebase/config'
 import { doc, getDoc } from 'firebase/firestore'
 
-const StoreContainer = () => {
+const SellerContainer = () => {
   const [loading, setLoading] = useState(true)
   const [item, setItem] = useState(null)
-  const { storeId } = useParams()
+  const { sellerId } = useParams()
 
   useEffect(() => {
     setLoading(true)
-    const docRef = doc(db, 'stores', storeId)
+    const docRef = doc(db, 'stores', sellerId)
     getDoc(docRef)
       .then((docSnapshot) => {
         const doc = {
@@ -23,7 +23,7 @@ const StoreContainer = () => {
         setItem(doc)
       })
       .finally(() => setLoading(false))
-  }, [storeId])
+  }, [sellerId])
 
   return (
     <>
@@ -35,10 +35,10 @@ const StoreContainer = () => {
           <div className="content" />
         </Spin>
       ) : (
-        <Store item={item}/>
+        <SellerDetail seller={item}/>
       )}
     </>
   )
 }
 
-export default StoreContainer
+export default SellerContainer

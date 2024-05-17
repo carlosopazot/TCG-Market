@@ -21,8 +21,6 @@ import Breadcrumb from '../components/Breadcrumb/Breadcrumb'
 
 const AppRouter = () => {
   const { user } = useContext(UserContext)
-
-  console.log(user.logged)
   return (
     <BrowserRouter>
       <Layout className="layout">
@@ -34,17 +32,18 @@ const AppRouter = () => {
             </Col>
             <Col xs={24}>
               <Routes>
+                {user.logged && (
+                    <Route path="/tienda" element={<Store />}/>,
+                    <Route path="/tienda/agregar-carta" element={<UploadCard />} />,
+                    <Route
+                      path="/verificar-numero"
+                      element={ <VerifyNumber />}
+                    />,
+                    <Route path="/cuenta" element={<Account />} />
+                  )
+                }
                 <Route path="/" element={<ItemListContainer title="Cartas" />} />
-                <Route
-                  path="/tienda"
-                  element={user.logged ? <Store /> : <Navigate to={'not-found'} />}
-                />
                 <Route path="/vendedor/:sellerId" element={<SellerContainer />} />
-                <Route path="/cuenta" element={<Account />} />
-                <Route
-                  path="/verificar-numero"
-                  element={ <VerifyNumber />}
-                />
                 <Route path="/search" element={<Search />} />
                 <Route
                   path="/cards/:stateId"
@@ -52,7 +51,7 @@ const AppRouter = () => {
                 />
                 <Route path="/cart" element={<CartView />} />
                 <Route path="/item/:itemId" element={<ItemDetailContainer />} />
-                <Route path="/tienda/agregar-carta" element={<UploadCard />} />
+                
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/registro" element={<Register />} />

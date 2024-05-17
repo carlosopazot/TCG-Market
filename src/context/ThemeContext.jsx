@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from 'react'
+import { useState, createContext } from 'react'
 import { ConfigProvider, theme, message } from 'antd'
 
 export const ThemeContext = createContext()
@@ -50,13 +50,6 @@ export const ThemeProvider = ({ children }) => {
       return newValue
     })
   }
-
-  useEffect(() => {
-    // Remove the stored value from localStorage when the component unmounts
-    return () => {
-      localStorage.removeItem('isDarkMode')
-    }
-  }, [])
 
   return (
     <ThemeContext.Provider

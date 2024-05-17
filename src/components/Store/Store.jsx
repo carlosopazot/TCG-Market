@@ -26,46 +26,64 @@ const Store = () => {
   const [cards, setCards] = useState([])
   const [loading, setLoading] = useState(true)
   const { user } = useContext(UserContext)
-  const { store } = useContext(StoreContext)
+  const { store, setStore } = useContext(StoreContext)
+  const [ isStoreUpdated, setIsStoreUpdated ] = useState()
   const { openMessage  } = useContext(ThemeContext)
   const navigate = useNavigate()
 
   useEffect(() => {
+    const fetchStore = async () => {
+      try {
+        const q = query(
+          collection(db, 'stores'),
+          where('email', '==', user.email)
+        )
+        const querySnapshot = await getDocs(q)
+        const storeData = []
+        querySnapshot.forEach((doc) => {
+          storeData.push({ id: doc.id, ...doc.data() })
+        })
+        storeData.forEach((store) => {
+          if (!isStoreUpdated) {
+            setStore(store);
+            setIsStoreUpdated(true);
+            localStorage.setItem('store', JSON.stringify(store));
+            console.log(store);
+          } 
+        });
 
-    if (!store.phone && user.phone) {
-      const setStoreNumber = async () => {
-        try {
-          const storeRef = doc(db, 'stores', store.id);
-          await updateDoc(storeRef, {
-            phone: user.phone
-          });
-        } catch (error) {
-          console.error('Error updating store phone number:', error);
-          openMessage('error', 'Error updating store phone number');
-        }
-      };
-      setStoreNumber();
+      } catch (error) {
+        console.error('Error fetching store:', error)
+        openMessage('error','Error al obtener la tienda')
+      }
     }
 
-    const fetchCards = async () => {
-      setLoading(true)
-      const q = query(
-        collection(db, 'cards'),
-        where('seller.id', '==', store.id)
-      )
-      const querySnapshot = await getDocs(q)
+    fetchStore()
+  }, [isStoreUpdated, openMessage, setStore, user]);
 
-      const cardsData = []
-      querySnapshot.forEach((doc) => {
-        cardsData.push({ id: doc.id, ...doc.data() })
-      })
+useEffect(() => {
+    if (store.id) {
+      const fetchCards = async () => {
+        setLoading(true)
+        const q = query(
+          collection(db, 'cards'),
+          where('seller.id', '==', store.id)
+        )
+        const querySnapshot = await getDocs(q)
 
-      setCards(cardsData)
-      console.log(cardsData)
-      setLoading(false)
+        const cardsData = []
+        querySnapshot.forEach((doc) => {
+          cardsData.push({ id: doc.id, ...doc.data() })
+        })
+
+        setCards(cardsData)
+        console.log(cardsData)
+        setLoading(false)
+      }
+
+      fetchCards()
     }
-    fetchCards()
-  }, [openMessage, store.id, store.phone, user.phone]);
+}, [store]);
 
   const handleDelete = async (id) => {
     console.log(id)
@@ -82,7 +100,6 @@ const Store = () => {
 
   const handleSold = async (id) => {
     try {
-      
       const docRef = doc(db, 'cards', id) 
       await updateDoc(docRef, {
         'stock' : 0

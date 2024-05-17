@@ -3,7 +3,6 @@ import axios from 'axios'
 import { useState, useContext, useEffect } from 'react'
 import CardSearch from './CardSearch'
 import CardResults from './CardResults'
-import BackButton from '../BackButton/BackButton'
 import { StoreContext } from '../../context/StoreContext'
 
 const { Title } = Typography
@@ -17,32 +16,21 @@ const UploadCard = () => {
   const { dollarUSD, setDollarUSD } = useContext(StoreContext)
 
   useEffect(() => {
-    // Función para llamar a la API
     const fetchDollarValue = async () => {
       if (dollarUSD === null) {
         try {
-          const response = await fetch(
-            'https://api.cmfchile.cl/api-sbifv3/recursos_api/dolar?apikey=02f2e2e7a7dcc80cd3987fd612866f56dd7a04ef&formato=json'
-          )
-          if (!response.ok) {
-            throw new Error('Network response was not ok')
-          }
-          const data = await response.json()
-          // Suponiendo que el valor del dólar se encuentra en data.Dolares[0].Valor
-          const dollarValue = parseFloat(data.Dolares[0].Valor)
-          setDollarUSD(dollarValue)
-          console.log(data.Dolares[0].Valor)
+          const response = await axios.get('https://api.cmfchile.cl/api-sbifv3/recursos_api/dolar?apikey=02f2e2e7a7dcc80cd3987fd612866f56dd7a04ef&formato=json');
+          const data = response.data;
+          const dollarValue = parseFloat(data.Dolares[0].Valor);
+          setDollarUSD(dollarValue);
         } catch (error) {
-          console.error('Error fetching dollar value:', error)
+          console.error('Error fetching dollar value:', error);
         }
-      } else {
-        console.log(dollarUSD)
       }
-    }
-
-    // Llamar a la función para obtener el valor del dólar al cargar el componente
-    fetchDollarValue()
-  }, [])
+    };
+  
+    fetchDollarValue();
+  }, [dollarUSD, setDollarUSD]);
 
   const handleSearch = async (value) => {
     try {
@@ -123,7 +111,7 @@ const UploadCard = () => {
 
   return (
     <>
-      <Row justify="center" gutter={[16, 24]}>
+      <Row gutter={[16, 24]}>
         <Col xs={24} md={16}>
           <Row justify="space-between">
             <Col xs={24} md={14}>

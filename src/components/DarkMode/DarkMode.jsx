@@ -1,17 +1,16 @@
-import { Switch } from 'antd'
+import { Button } from 'antd'
 import { useContext } from 'react'
 import { ThemeContext } from '../../context/ThemeContext'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons'
+import { SunOutlined, MoonOutlined } from '@ant-design/icons'
 
 const DarkMode = () => {
   const { isDarkMode, toggleDarkMode } = useContext(ThemeContext)
   return (
-    <Switch
-      checked={isDarkMode}
-      onChange={toggleDarkMode}
-      checkedChildren={<FontAwesomeIcon icon={faMoon} />}
-      unCheckedChildren={<FontAwesomeIcon icon={faSun} />}
+    <Button 
+      size='large' 
+      onClick={toggleDarkMode} 
+      icon={isDarkMode ? <SunOutlined /> : <MoonOutlined /> } 
+      type='Text'
     />
   )
 }

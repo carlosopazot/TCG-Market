@@ -4,10 +4,9 @@ import { auth } from '../../firebase/config';
 import { RecaptchaVerifier, linkWithPhoneNumber, } from 'firebase/auth';
 import { UserContext } from '../../context/UserContext';
 import { db } from '../../firebase/config';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 import { useNavigate } from 'react-router-dom';
-import { StoreContext } from '../../context/StoreContext';
 import { ThemeContext } from '../../context/ThemeContext';
 import { Helmet } from 'react-helmet-async';
 import './styles.css'
@@ -15,8 +14,7 @@ import './styles.css'
 const { Title, Text } = Typography;
 
 const VerifyNumber = () => {
-  const { user } = useContext(UserContext)
-  const { store } = useContext(StoreContext)
+  const { user, setUser } = useContext(UserContext)
   const { openMessage, handleAuthError } = useContext(ThemeContext)
   const [ number, setNumber ] = useState('')
   const [ code, setCode ] = useState('')
@@ -44,27 +42,22 @@ const VerifyNumber = () => {
     navigate('/')
   }
 
-  // const updatePhoneNumber = async (phone) => {
-  //   const storeRef = doc(db, 'stores', store.id)
-  //   await updateDoc(storeRef, {
-  //     phone: phone
-  //   })
-  // }
-
-  // if(user.phone) {
-  //   const setStoreNumber = async () => {
-  //     try {
-  //       const storeRef = doc(db, 'stores', store.id)
-  //       await updateDoc(storeRef, {
-  //         phone: user.phone
-  //       })
-  //     } catch (error) {
-  //       console.error('Error al actualizar el número de la tienda:', error)
-  //       openMessage('error','Error al actualizar el número de la tienda')
-  //     }
-  //   }
-  //   setStoreNumber()
-  // }
+  const createStore = async (user) => {
+    try {
+      const userRef = doc(db, 'stores', user.uid);
+      const userDoc = await getDoc(userRef);
+      if (!userDoc.exists()) {
+        await setDoc(userRef, {
+          ...JSON.parse(JSON.stringify(user))
+        });
+        console.log('Document created for new user:', user.uid);
+      } else {
+        console.log('Existing user logged in:', user.uid);
+      }
+    } catch (error) {
+      console.error('Error creating store:', error)
+    }
+  }
 
   const handleSendOtp = async () => {
     try {
@@ -92,10 +85,15 @@ const VerifyNumber = () => {
       setLoading(true);
       confirmationResult.confirm(code)
         .then((result) => {
-          const user = result.user;
-          console.log(user.phoneNumber)
+          const userPhone = result.user;
+          setUser({
+            ...user,
+            logged: true, // Assuming this is how you indicate that the user is logged in
+            phone: userPhone.phone
+          })
+          createStore(user)
           openMessage('success', 'Número verificado') 
-          window.location.reload()
+          // window.location.reload()
         })
         .catch((err) => {
           handleAuthError(err);
@@ -104,7 +102,7 @@ const VerifyNumber = () => {
           setLoading(false);
         });
     } catch (error) {
-        console.log('error verifying code ' + error)
+      console.log('error verifying code ' + error)
     }
   }
 

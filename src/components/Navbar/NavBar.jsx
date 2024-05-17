@@ -1,4 +1,4 @@
-import { Layout, Flex, Button, Typography, theme, Divider, Dropdown } from 'antd'
+import { Layout, Flex, Button, theme, Dropdown } from 'antd'
 import UserMenu from '../UserMenu/UserMenu'
 import Searchbar from '../Searchbar/Searchbar'
 import Logo from '../../assets/images/card-games.png'
@@ -11,7 +11,6 @@ import './styles.css'
 import { MenuOutlined } from '@ant-design/icons'
 
 const { Header } = Layout
-const { Text } = Typography
 const { useToken } = theme
 
 const Navbar = () => {
@@ -38,7 +37,8 @@ const Navbar = () => {
             </h2> */}
           </Link>
           <Searchbar></Searchbar>
-          <Flex gap={24} align="center">
+          <Flex gap={8} align="center">
+            <DarkMode></DarkMode>
             <Flex gap={10} align="center">
               {!user.logged ? (
                 
@@ -46,15 +46,6 @@ const Navbar = () => {
                   <Flex style={contentStyle} gap={8} justify='start' vertical>
                     {menu}
                     <Button size='large' onClick={() => {navigate('/login')}} type="primary">Ingresar ahora</Button>
-                    <Divider
-                      style={{
-                        margin: '0.5rem',
-                      }}
-                    />
-                    <Flex justify='space-between'>
-                      <Text>Tema</Text>
-                      <DarkMode></DarkMode>
-                    </Flex>
                   </Flex>
                 )}>
                   <Button size='large' icon={<MenuOutlined />}></Button>

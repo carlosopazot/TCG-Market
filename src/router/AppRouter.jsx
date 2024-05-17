@@ -32,15 +32,17 @@ const AppRouter = () => {
             </Col>
             <Col xs={24}>
               <Routes>
-                {user.logged && (
-                    <Route path="/tienda" element={<Store />}/>,
-                    <Route path="/tienda/agregar-carta" element={<UploadCard />} />,
-                    <Route
-                      path="/verificar-numero"
-                      element={ <VerifyNumber />}
-                    />,
-                    <Route path="/cuenta" element={<Account />} />
-                  )
+                {user && user.logged ? (
+                   <>
+                     <Route path="/tienda" element={<Store />}/>
+                      <Route path="/tienda/agregar-carta" element={<UploadCard />} />
+                      <Route
+                        path="/verificar-numero"
+                        element={ <VerifyNumber />}
+                      />
+                      <Route path="/cuenta" element={<Account />} />
+                   </>
+                  ) : null
                 }
                 <Route path="/" element={<ItemListContainer title="Cartas" />} />
                 <Route path="/vendedor/:sellerId" element={<SellerContainer />} />

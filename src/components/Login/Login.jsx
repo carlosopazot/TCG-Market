@@ -9,7 +9,7 @@ import {
   Form,
   Input,
 } from 'antd'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { FacebookFilled, GoogleOutlined } from '@ant-design/icons'
 import { useNavigate, Link } from 'react-router-dom'
@@ -20,22 +20,12 @@ const { Title, Text } = Typography
 
 const Login = () => {
   const { googleLogin, facebookLogin, login } = useContext(UserContext)
-  const { user } = useContext(UserContext)
-
   const [values, setValues] = useState({
     email: '',
     password: '',
   })
 
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (user.logged === true && user.phone !== null) {
-      navigate(-1)
-    } else if (user.logged === true && user.phone === null) {
-      navigate('/verificar-numero')
-    }
-  }, [user.logged, user.phone, navigate])
 
   const handleInputChange = (e) => {
     setValues({
@@ -46,6 +36,7 @@ const Login = () => {
 
   const onFinish = (values) => {
     login(values)
+    navigate('/')
   }
 
   const onFinishFailed = (errorInfo) => {

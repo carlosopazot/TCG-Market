@@ -8,17 +8,21 @@ import {
   Flex,
   Divider,
   Button,
+  Result,
 } from 'antd'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { useNavigate } from 'react-router-dom'
 
 const { Title, Text } = Typography
 
 const Register = () => {
   const { register } = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -37,6 +41,7 @@ const Register = () => {
     setLoading(true)
     try {
       await register(values)
+      window.location.reload()
     } catch (error) {
       console.log('Registration failed:', error)
     } finally {
@@ -48,6 +53,29 @@ const Register = () => {
     console.log('Failed:', errorInfo)
   }
 
+  
+
+  if (user.logged) {
+    return (
+      <Row justify="center">
+        <Col xs={24} md={12} lg={12} xl={8}>
+          <Card>
+            <Result
+              status="success"
+              title="Listo!"
+              subTitle="Tu cuenta ya está creada."
+              extra={[
+                <Button size='large' onClick={() => {navigate('/verificar-numero')}} type="primary" key="home">
+                  Continuar
+                </Button>
+              ]}
+            />
+          </Card>
+        </Col>
+      </Row>
+    )
+  }
+
   return (
     <>
       <Helmet>
@@ -55,93 +83,93 @@ const Register = () => {
         <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
       </Helmet>
       <Row justify="center">
-      <Col xs={24} md={12} lg={12} xl={8}>
-        <Card>
-          <Title level={3}>Crea tu cuenta</Title>
-          <Divider></Divider>
-          <Form
-            name="basic"
-            initialValues={{
-              remember: true,
-            }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-            layout="vertical"
-          >
-            <Form.Item
-              label="Nombre"
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: 'Ingresa tu nombre!',
-                },
-              ]}
+        <Col xs={24} md={12} lg={12} xl={8}>
+          <Card>
+            <Title level={3}>Crea tu cuenta</Title>
+            <Divider></Divider>
+            <Form
+              name="basic"
+              initialValues={{
+                remember: true,
+              }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+              layout="vertical"
             >
-              <Input
-                size="large"
-                onChange={handleInputChange}
-                value={values.name}
+              <Form.Item
+                label="Nombre"
                 name="name"
-              />
-            </Form.Item>
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ingresa tu nombre!',
+                  },
+                ]}
+              >
+                <Input
+                  size="large"
+                  onChange={handleInputChange}
+                  value={values.name}
+                  name="name"
+                />
+              </Form.Item>
 
-            <Form.Item
-              label="Correo"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: 'Ingresa un correo válido!',
-                  type: 'email',
-                },
-              ]}
-            >
-              <Input
-                size="large"
-                onChange={handleInputChange}
-                value={values.email}
+              <Form.Item
+                label="Correo"
                 name="email"
-                placeholder="Ej: juan@email.com"
-              />
-            </Form.Item>
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ingresa un correo válido!',
+                    type: 'email',
+                  },
+                ]}
+              >
+                <Input
+                  size="large"
+                  onChange={handleInputChange}
+                  value={values.email}
+                  name="email"
+                  placeholder="Ej: juan@email.com"
+                />
+              </Form.Item>
 
-            <Form.Item
-              label="Contraseña"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: 'Ingresa una contraseña!',
-                },
-              ]}
-              help="La contraseña debe tener al menos 6 caracteres"
-            >
-              <Input.Password
-                size="large"
-                onChange={handleInputChange}
-                value={values.password}
+              <Form.Item
+                label="Contraseña"
                 name="password"
-              />
-            </Form.Item>
-            <Form.Item>
-              <Button loading={loading} block size="large" type="primary" htmlType="submit">
-                {loading ? 'Creando cuenta...' : 'Crear cuenta'}
-              </Button>
-            </Form.Item>
-          </Form>
-          <Divider></Divider>
-          <Flex>
-            <Text>¿Ya tienes una cuenta?</Text>
-            <Link to="/login">
-              <Button type="link" size="small">
-                Inicia sesión
-              </Button>
-            </Link>
-          </Flex>
-        </Card>
-      </Col>
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ingresa una contraseña!',
+                  },
+                ]}
+                help="La contraseña debe tener al menos 6 caracteres"
+              >
+                <Input.Password
+                  size="large"
+                  onChange={handleInputChange}
+                  value={values.password}
+                  name="password"
+                />
+              </Form.Item>
+              <Form.Item>
+                <Button loading={loading} block size="large" type="primary" htmlType="submit">
+                  {loading ? 'Creando cuenta...' : 'Crear cuenta'}
+                </Button>
+              </Form.Item>
+            </Form>
+            <Divider></Divider>
+            <Flex>
+              <Text>¿Ya tienes una cuenta?</Text>
+              <Link to="/login">
+                <Button type="link" size="small">
+                  Inicia sesión
+                </Button>
+              </Link>
+            </Flex>
+          </Card>
+        </Col>
     </Row>
   </>
   )

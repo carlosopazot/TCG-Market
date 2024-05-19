@@ -88,12 +88,17 @@ const VerifyNumber = () => {
           const userPhone = result.user;
           setUser({
             ...user,
-            logged: true, // Assuming this is how you indicate that the user is logged in
-            phone: userPhone.phone
+            phone: userPhone.phoneNumber,
+            logged: true,
           })
-          createStore(user)
+          createStore({
+            name: user.name,
+            email: user.email,
+            uid: user.uid,
+            avatar: user.avatar,
+            phone: userPhone.phoneNumber,
+          })
           openMessage('success', 'Número verificado') 
-          // window.location.reload()
         })
         .catch((err) => {
           handleAuthError(err);

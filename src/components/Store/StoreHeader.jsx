@@ -1,11 +1,11 @@
-import { Col, Typography, Button, Flex, Modal, Form, Select, Radio, Divider, Collapse, message, Spin } from 'antd'
+import { Col, Typography, Button, Flex, Modal, Form, Select, Radio, Divider, Collapse, Spin } from 'antd'
 import { PlusOutlined, SettingOutlined, EnvironmentOutlined, DollarOutlined, ExclamationCircleOutlined, CheckCircleOutlined, LoadingOutlined} from '@ant-design/icons'
 import './styles.css'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { ThemeContext } from '../../context/ThemeContext'
 import { db } from '../../firebase/config'
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc, collection, query, getDocs, where, writeBatch } from 'firebase/firestore'
 import { StoreContext } from '../../context/StoreContext'
 import { useNavigate } from 'react-router-dom'
 import StoreTags from './StoreTags'
@@ -48,6 +48,20 @@ const StoreHeader = ({ item }) => {
     setIsModalOpen(false);
   };
 
+  const updateLocation = async (location) => {
+    const q = query(
+      collection(db, 'cards'),
+      where('seller.id', '==', store.id)
+    )
+    const querySnapshot = await getDocs(q);
+    const batch = writeBatch(db)
+
+    querySnapshot.forEach((doc) => {
+      batch.update(doc.ref, { 'seller.location': location });
+    });
+    await batch.commit();
+  };
+
   const handleChange = async (value) => {
     console.log('Ubicación:', value)
     setLoading(true)
@@ -61,6 +75,7 @@ const StoreHeader = ({ item }) => {
         ...store,
         location: value
       })
+      await updateLocation(value);
     } catch (error) {
       openMessage('error', 'Error al actualizar la ubicación de la tienda')
     } finally {
@@ -71,6 +86,26 @@ const StoreHeader = ({ item }) => {
     }
   };
 
+  const updateSellerDollarValue = async (newSellerDollarValue) => {
+    const q = query(
+      collection(db, 'cards'),
+      where('seller.id', '==', store.id)
+    )
+    const querySnapshot = await getDocs(q);
+    const batch = writeBatch(db)
+
+    querySnapshot.forEach((doc) => {
+      batch.update(doc.ref, { 'seller.dollar': newSellerDollarValue });
+    });
+    await batch.commit();
+  };
+
+  const options = [
+    { value: 850, label: '850' },
+    { value: 800, label: '800' },
+    { value: 750, label: '750' },
+  ]
+
   const handleDollar = async ({ target: { value } }) => {
     console.log('Dolar:', value)
     setLoadingDollar(true)
@@ -80,6 +115,7 @@ const StoreHeader = ({ item }) => {
         ...store,
         dollar: value,
       });
+      await updateSellerDollarValue(value);
       setStore({
         ...store,
         dollar: value
@@ -91,12 +127,6 @@ const StoreHeader = ({ item }) => {
       openMessage('success', 'Valor del dolar actualizado')
     }
   };
-
-  const options = [
-    { value: 850, label: '850' },
-    { value: 800, label: '800' },
-    { value: 750, label: '750' },
-  ]
 
   const items = [
     {

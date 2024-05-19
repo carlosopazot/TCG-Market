@@ -1,4 +1,4 @@
-import { Row, Col, Typography, Card, Empty, message, Alert, Button, Divider } from 'antd'
+import { Row, Col, Typography, Card, Empty, message, Alert, Button, Divider, Tabs, Table } from 'antd'
 import {
   collection,
   getDocs,
@@ -61,7 +61,7 @@ const Store = () => {
     fetchStore()
   }, [isStoreUpdated, openMessage, setStore, user]);
 
-useEffect(() => {
+  useEffect(() => {
     if (store.id) {
       const fetchCards = async () => {
         setLoading(true)
@@ -83,7 +83,7 @@ useEffect(() => {
 
       fetchCards()
     }
-}, [store]);
+  }, [store]);
 
   const handleDelete = async (id) => {
     console.log(id)
@@ -102,26 +102,92 @@ useEffect(() => {
     try {
       const docRef = doc(db, 'cards', id) 
       await updateDoc(docRef, {
-        'stock' : 0
+        'sold' : true
       })
-      setCards(cards.filter((card) => card.stock !== 0))
-      message.success('Se archivo la carta como vendida')
+      setCards(cards.filter((card) => card.id !== id))
+      openMessage('success', 'Carta marcada como vendida')
     } catch (error) {
       console.error('Error al marcar la carta como vendida:', error)
-      message.error('Error al marcar la carta como vendida')
+      openMessage('error', 'Error al marcar la carta como vendida')
     }
   }
 
+
+
+  const onSaleCards = cards.filter((item) => item.sold === false)
+  const soldCards = cards.filter((item) => item.sold === true)
+
   const totalStock = useMemo(() => {
-    return cards.reduce(
+    return onSaleCards.reduce(
       (accumulator, currentCard) => accumulator + currentCard.stock,
       0
     )
-  }, [cards])
+  }, [onSaleCards])
 
   const totalForSell = useMemo(() => {
-    return cards.reduce((total, item) => total + Number(item.total), 0)
-  }, [cards])
+    return onSaleCards.reduce((total, item) => total + Number(item.price * item.seller.dollar) * item.stock, 0)
+  }, [onSaleCards])
+
+  const totalSold = useMemo(() => {
+    return soldCards.reduce((total, item) => total + Number(item.price * item.seller.dollar) * item.stock, 0)
+  }, [soldCards])
+
+  const tabsItems = [
+    {
+      key: '1',
+      label: 'Activas',
+      children: (
+        <Col xs={24}>
+          <Row gutter={[8,8]}>
+            {onSaleCards
+              .map((item) => (
+                <StoreItem
+                  key={item.id}
+                  item={item}
+                  onDelete={handleDelete}
+                  onSold={handleSold}
+                  user={user.uid}
+                />
+            ))}
+            {onSaleCards.length === 0 && (
+              <Col xs={24}>
+                <Card>
+                  <Empty description="No hay cartas para mostrar"></Empty>
+                </Card>
+              </Col>
+            )}
+          </Row>
+        </Col>
+      )
+    },
+    {
+      key: '2',
+      label: 'Vendidas',
+      children: (
+        <Col xs={24}>
+          <Row gutter={[8,8]}>
+            {soldCards
+              .map((item) => (
+              <StoreItem
+                key={item.id}
+                item={item}
+                onDelete={handleDelete}
+                onSold={handleSold}
+                user={user.uid}
+              />
+            ))}
+            {soldCards.length === 0 && (
+              <Col xs={24}>
+                <Card>
+                  <Empty description="No hay cartas para mostrar"></Empty>
+                </Card>
+              </Col>
+            )}
+          </Row>
+        </Col>
+      )
+    }
+  ]
 
   return (
     <>
@@ -130,50 +196,23 @@ useEffect(() => {
         <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
       </Helmet>
       <Row gutter={[16, 16]} justify='space-between'>
-      {user.phone === null ? (
-        <Col xs={24}>
-          <Alert
-            style={{ border : 0 }}
-            message="Todavia no verificas tu número"
-            description="Para usar tu tienda, debes verificar tu número de teléfono."
-            type="warning"
-            showIcon
-            action={
-              <Button type="primary" onClick={() => navigate('/verificar-numero')}>
-                Verificar
-              </Button>
-            }
-          />
-          </Col>) : (null)
-        }
         <StoreHeader item={store} ></StoreHeader>
         <StoreStats
           totalStock={totalStock}
           totalForSell={totalForSell}
+          totalSold={totalSold}
+          loading={loading}
         />
         <Col xs={24}>
-          <Divider orientation='left'>
-            <Title style={{ margin: 0}} level={4}>Colección</Title>
-          </Divider>
-        </Col>
-        <Col xs={24}>
           {loading ? (
-            <Loader tip='Cargando cartas'></Loader>
+            <div style={{ marginTop: '3rem'}}>
+              <Loader tip='Cargando cartas'></Loader>
+            </div>
           ) : (
-            <Row gutter={[16, 16]}>
+            <Row gutter={[16, 16]} style={{ marginBottom: '2rem'}}>
               {cards.length > 0 ? (
                 <Col xs={24}>
-                  <Row gutter={[8,8]}>
-                    {cards.map((item) => (
-                      <StoreItem
-                        key={item.id}
-                        item={item}
-                        onDelete={handleDelete}
-                        onSold={handleSold}
-                        user={user.uid}
-                      />
-                    ))}
-                  </Row>
+                  <Tabs defaultActiveKey="1" items={tabsItems} destroyInactiveTabPane />
                 </Col>
               ) : (
                 <Col xs={24}>

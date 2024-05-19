@@ -1,4 +1,4 @@
-import { Modal, Button, Divider, Row, Col, Radio, Flex, Typography } from 'antd'
+import { Modal, Button, Divider, Row, Col, Flex, Typography } from 'antd'
 import QuantitySelector from './QuantitySelector'
 import { useNavigate } from 'react-router-dom'
 import { formattedClp } from '../../utils/utils'
@@ -12,29 +12,11 @@ const ModalUpload = ({
   handleCancel,
   stock,
   setStock,
-  state,
-  setState,
   dollarValue,
   total,
   unitaryTotal,
-  item
 }) => {
   const navigate = useNavigate()
-
-  const states = [
-    {
-      value: 'NM',
-      label: 'NM',
-    },
-    {
-      value: 'PLD',
-      label: 'PLD',
-    },
-    {
-      value: 'HP',
-      label: 'HP',
-    }
-  ]
 
   return (
     <Modal
@@ -60,29 +42,8 @@ const ModalUpload = ({
           </Flex>
           <Flex vertical>
             <Text type='secondary'>Este es el valor del dólar que configuraste en tu tienda</Text>
-            <Link onClick={()=> {navigate(`/tienda/${item}`)}}>Ir a tienda</Link>
+            <Link onClick={()=> {navigate('/tienda')}}>Ir a tienda</Link>
           </Flex>
-        </Col>
-        <Col xs={24}>
-          <Row gutter={32}>
-            <Col xs={24}>
-              <Divider style={{ marginTop: '0.5rem' }}></Divider>
-              <Flex justify='space-between' align='center'>
-                <Title style={{ margin: 0 }} level={5}>Estado</Title>
-                <Radio.Group
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                  buttonStyle="solid"
-                >
-                  {states.map((state) => (
-                    <Radio.Button key={state.value} value={state.value}>
-                      {state.label}
-                    </Radio.Button>
-                  ))}
-                </Radio.Group>
-              </Flex>
-            </Col>
-          </Row>
         </Col>
         <Col xs={24}>
           <Divider style={{ marginTop: '0.5rem' }}></Divider>
@@ -95,7 +56,7 @@ const ModalUpload = ({
           </Flex>
         </Col>
         <Col xs={24}>
-          <Divider style={{ margin: '0.5rem' }}></Divider>
+          <Divider></Divider>
           <Flex justify="space-between">
             <Title level={5} type="secondary">
               Precio

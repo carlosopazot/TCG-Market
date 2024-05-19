@@ -6,7 +6,6 @@ import {
   Flex,
   Button,
   Image,
-  message,
   Tag,
 } from 'antd'
 import { useState, useContext } from 'react'
@@ -20,18 +19,17 @@ import { formattedClp } from '../../utils/utils'
 
 const { Title, Text } = Typography
 
-const UploadItem = ({ edition, dollarPrice }) => {
+const UploadItem = ({ edition, dollarPrice, foil }) => {
   const { store, dollarUSD } = useContext(StoreContext)
   const { openMessage } = useContext(ThemeContext)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [stock, setStock] = useState(1)
   const [dollarValue, setDollarValue] = useState(store.dollar)
   const [cardId, setCardId] = useState(null)
-  const [state, setState] = useState('NM')
 
-  const editionPrices = edition.foil ? edition.prices?.usd_foil : edition.prices?.usd || edition.prices?.usd_etched
-    
+  const editionPrices = foil ? edition.prices?.usd_foil : edition.prices?.usd || edition.prices?.usd_etched
   const priceClp = (value) => Number(editionPrices * (value)).toFixed(0)
+  const isFoil = foil ? true : false
 
   const calculateTotal = () => {
     const unitaryTotal = (editionPrices * Number(dollarValue)).toFixed(0)
@@ -49,10 +47,8 @@ const UploadItem = ({ edition, dollarPrice }) => {
       date: new Date(),
       stock: stock,
       image: edition.image_uris?.normal,
-      price: calculateTotal().unitaryTotal,
-      total: calculateTotal().total,
-      foil: edition.foil,
-      state: state,
+      price: editionPrices,
+      foil: isFoil,
       set: edition.set,
       set_name: edition.set_name,
       dollarValue: dollarValue,
@@ -81,7 +77,7 @@ const UploadItem = ({ edition, dollarPrice }) => {
 
   return (
     <Col xs={24} key={`${edition.cardmarket_id}`}>
-      <Card>
+      <Card style={{ marginBottom: '1rem'}}>
         <Row gutter={[24, 24]}>
           <Col xs={12} sm={6}>
             <Image
@@ -100,13 +96,19 @@ const UploadItem = ({ edition, dollarPrice }) => {
                   <Title type="secondary" style={{ marginBottom: '0' }} level={5}>
                     {edition.set_name}
                   </Title>
-                  {edition.foil ? <Tag color="gold">Foil</Tag> : <Tag>Non Foil</Tag>}
+                  {foil? <Tag color="gold">Foil</Tag> : <Tag>Non Foil</Tag>}
                 </Flex>
               </Col>
               <Col xs={24}>
-                <Title style={{ marginTop: '1rem' }} type="secondary" level={5}>
-                  $ {editionPrices} <Text type="secondary">USD</Text>
-                </Title>
+                {foil ? (
+                  <Title style={{ marginTop: '1rem' }} type="secondary" level={5}>
+                    $ {edition.prices?.usd_foil} <Text type="secondary">USD</Text>
+                  </Title>
+                ) : (
+                  <Title style={{ marginTop: '1rem' }} type="secondary" level={5}>
+                    $ {edition.prices?.usd} <Text type="secondary">USD</Text>
+                  </Title>
+                )}
                 <Title style={{ margin: 0 }} level={4}>
                   {formattedClp(priceClp(dollarUSD))} <Text>CLP</Text>
                 </Title>
@@ -123,8 +125,6 @@ const UploadItem = ({ edition, dollarPrice }) => {
                     isModalOpen={isModalOpen}
                     stock={stock}
                     setStock={setStock}
-                    state={state}
-                    setState={setState}
                     dollarValue={store.dollar}
                     setDollarValue={setDollarValue}
                     unitaryTotal={calculateTotal().unitaryTotal}

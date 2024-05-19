@@ -57,11 +57,11 @@ export const UserProvider = ({ children }) => {
 
       await updateProfile(user, {
         displayName: values.name
-      })     
+      })
+      // TODO: Enviar correo de verificación
+      // await sendEmailVerification(user);
     } catch (error) {
       handleAuthError(error)
-    } finally {
-      window.location.href = '/verificar-numero'
     }
   }
 
@@ -83,7 +83,7 @@ export const UserProvider = ({ children }) => {
     setPersistence(auth, browserLocalPersistence)
     .then(() => {
       // Continue with the onAuthStateChanged logic
-      onAuthStateChanged(auth, async (user) => {
+      onAuthStateChanged(auth, (user) => {
         if (user) {
           console.log('User:', user)
           setUser({
@@ -95,6 +95,7 @@ export const UserProvider = ({ children }) => {
             phone: user.phoneNumber,
             emailVerified: user.emailVerified,
           })
+          localStorage.setItem('user', JSON.stringify(user))
         } else {
           setUser({
             email: null,
@@ -105,6 +106,7 @@ export const UserProvider = ({ children }) => {
             phone: null,
             emailVerified: null,
           })
+          localStorage.removeItem('user')
         }
       })
     })

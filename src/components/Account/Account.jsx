@@ -3,6 +3,7 @@ import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import ImgCrop from 'antd-img-crop';
 import { PlusOutlined, FileTextOutlined, UserOutlined, KeyOutlined } from '@ant-design/icons';
+import { Helmet } from 'react-helmet-async'
 
 const { Title } = Typography
 
@@ -63,34 +64,18 @@ const Account = () => {
   };
   
   return (
-      
+    <>
+      <Helmet>
+        <title>Mi cuenta - Card Market</title>
+        <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
+      </Helmet>
       <Row gutter={16}>
         <Col xs={24} lg={8}>
           <Title level={2}>Mi cuenta</Title>
           <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
         </Col>
-
-        {/* <Col xs={8}>
-          <Card title='Foto de perfil'>
-            <ImgCrop>
-              <Upload 
-                name="avatar"
-                listType="picture-circle"
-                className="avatar-uploader"
-                beforeUpload={beforeUpload}
-                onChange={handleChange}
-                showUploadList={false}
-              >
-                {imageUrl ? (
-                  <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-                ) : (
-                  <PlusOutlined/>
-                )}
-              </Upload>
-            </ImgCrop>
-          </Card>
-        </Col> */}
       </Row>
+    </>
   )
 }
 

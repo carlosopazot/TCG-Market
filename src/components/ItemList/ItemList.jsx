@@ -1,5 +1,5 @@
 import ItemCard from '../ItemCard/ItemCard'
-import { Empty, Typography, Card, Button } from 'antd'
+import { Empty, Typography, Card, Button, Flex } from 'antd'
 import Slider from "react-slick";
 import './styles.css'
 import { useRef } from 'react';
@@ -54,11 +54,13 @@ const ItemList = ({ cards, title }) => {
 
   return (
     <section>
-      <Title level={4}>{title || 'Cartas'}</Title>
+      <Flex justify='space-between'>
+        <Title level={4}>{title || 'Cartas'}</Title>
+      </Flex>
       {cards.length > 0 ? (
         <div className="slider">
           <Slider ref={slider} {...settings}>
-            {cards.map((item) => (
+            {cards.slice(0, 10).map((item) => (
               <ItemCard key={item.id} item={item} />
             ))}
           </Slider>

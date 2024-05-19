@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import ItemList from '../ItemList/ItemList'
-import { Empty, Spin, Flex, Card } from 'antd'
+import { Empty, Spin, Flex, Card, Button, Col, Alert } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import { useParams } from 'react-router-dom'
 import { collection, getDocs, query, where } from 'firebase/firestore'
@@ -8,6 +8,7 @@ import { db } from '../../firebase/config'
 import { StoreContext } from '../../context/StoreContext'
 import { UserContext } from '../../context/UserContext'
 import { Helmet } from 'react-helmet-async'
+import { useNavigate } from 'react-router-dom'
 
 
 const ItemListContainer = () => {
@@ -15,6 +16,7 @@ const ItemListContainer = () => {
   const [loading, setLoading] = useState(true)
   const { store } = useContext(StoreContext)
   const { user } = useContext(UserContext)
+  const navigate = useNavigate()
 
   const { stateId } = useParams()
 
@@ -34,7 +36,7 @@ const ItemListContainer = () => {
             id: doc.id,
           }
         })
-        setCards(docs)
+        setCards(docs.filter(card => card.sold === false))
       })
       .finally(() => setLoading(false))
   }, [stateId])
@@ -54,6 +56,22 @@ const ItemListContainer = () => {
         </Spin>
       ) : (
         <>
+          {user.logged && user.phone === null ? (
+            <Col xs={24}>
+              <Alert
+                style={{ border : 0, marginBottom: '2rem'}}
+                message="Todavia no verificas tu número"
+                description="Para usar tu tienda, debes verificar tu número de teléfono."
+                type="warning"
+                showIcon
+                action={
+                  <Button type="primary" onClick={() => navigate('/verificar-numero')}>
+                    Verificar
+                  </Button>
+                }
+              />
+              </Col>) : (null)
+          }
           {cards.length > 0 ? (
             <Flex style={{ marginBottom: '2rem'}} gap={24} vertical>
               {user && user.logged && store.location ? (

@@ -22,7 +22,7 @@ const ItemCard = ({ item }) => {
               <TagsState item={item}></TagsState>
             </Flex>
             <Title level={5} style={{ marginBottom: 0 }}>
-              {formattedClp(item.price)}
+              {formattedClp(item.price * item.seller.dollar)}
             </Title>
           </Flex>
           <Divider style={{ margin: '0.5rem 0' }}></Divider>

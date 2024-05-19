@@ -5,10 +5,10 @@ const NotFound = () => (
   <Result
     status="404"
     title="404"
-    subTitle="Sorry, the page you visited does not exist."
+    subTitle="Lo sentimos, no pudimos encontrar lo que buscabas."
     extra={
       <Link to={'/'}>
-        <Button type="primary">Volver a inicio</Button>
+        <Button size='large' type="primary">Volver a inicio</Button>
       </Link>
     }
   />

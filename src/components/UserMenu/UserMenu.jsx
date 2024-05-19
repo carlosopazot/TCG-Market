@@ -1,18 +1,15 @@
-import { Button, Dropdown, Badge, Typography, Flex  } from 'antd'
-import { LogoutOutlined, ShopOutlined, UserOutlined, ExclamationCircleOutlined, TagsOutlined } from '@ant-design/icons'
+import { Button, Dropdown, Badge,  } from 'antd'
+import { LogoutOutlined, ShopOutlined, UserOutlined, ExclamationCircleOutlined, } from '@ant-design/icons'
 import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { StoreContext } from '../../context/StoreContext'
 import { Link } from 'react-router-dom'
-import DarkMode from '../DarkMode/DarkMode'
 import AvatarProfile from '../AvatarProfile/AvatarProfile'
 import './styles.css'
 
-const { Text } = Typography
-
 const UserMenu = ({ name }) => {
   const { logout, user } = useContext(UserContext)
-  const { store, setStore } = useContext(StoreContext)
+  const { setStore } = useContext(StoreContext)
   const [ show, setShow ] = useState(false)
   const color = '#FFC53D'
 
@@ -41,6 +38,7 @@ const UserMenu = ({ name }) => {
         </>
       ),
       icon: <ShopOutlined />,
+      disabled: user.phone === null,
     },
     {
       key: '3',
@@ -50,18 +48,6 @@ const UserMenu = ({ name }) => {
         </Link>
       ),
       icon: <UserOutlined />,
-    },
-    {
-      type: 'divider',
-    },
-    {
-      key: '4',
-      label: (
-        <Flex justify='space-between'>
-          <Text>Tema</Text>
-          <DarkMode/>
-        </Flex>
-      ),
     },
     {
       type: 'divider',
@@ -84,11 +70,15 @@ const UserMenu = ({ name }) => {
       placement="bottomRight"
       trigger={['click']}
     >
-      <Button size="large">
-        <Badge color={color} dot={show}>
-          <AvatarProfile name={name} size='small' src={user.avatar || null}/>
-        </Badge>
-      </Button>
+      <Button 
+        type='text' 
+        size="large" 
+        icon={
+          <Badge color={color} dot={show}>
+            <AvatarProfile name={name} size='small' src={user.avatar || null}/>
+          </Badge>
+        }
+      />
     </Dropdown>
   )
 }

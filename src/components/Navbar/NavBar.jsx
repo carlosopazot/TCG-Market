@@ -40,7 +40,7 @@ const Navbar = () => {
           <Flex gap={8} align="center">
             <DarkMode></DarkMode>
             <Flex gap={10} align="center">
-              {!user.logged ? (
+              {/* {!user.logged ? (
                 
                 <Dropdown placement='bottomRight' dropdownRender={(menu) => (
                   <Flex style={contentStyle} gap={8} justify='start' vertical>
@@ -48,11 +48,23 @@ const Navbar = () => {
                     <Button size='large' onClick={() => {navigate('/login')}} type="primary">Ingresar ahora</Button>
                   </Flex>
                 )}>
-                  <Button size='large' icon={<MenuOutlined />}></Button>
+                  <Button type='text' size='large' icon={<MenuOutlined />}></Button>
                 </Dropdown>
               ) : (
                 <UserMenu name={user.name} />
-              )}
+              )} */}
+              {user && user.logged ? (
+                <UserMenu name={user.name} />
+               ) : (
+                  <Dropdown placement='bottomRight' dropdownRender={(menu) => (
+                    <Flex style={contentStyle} gap={8} justify='start' vertical>
+                      {menu}
+                      <Button size='large' onClick={() => {navigate('/login')}} type="primary">Ingresar ahora</Button>
+                    </Flex>
+                  )}>
+                    <Button type='text' size='large' icon={<MenuOutlined />}></Button>
+                  </Dropdown>
+               )}
             </Flex>
           </Flex>
         </Flex>

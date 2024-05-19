@@ -19,7 +19,6 @@ import SetIcon from '../UploadCard/SetIcon'
 import WhatsappButton from '../WhatsappButton/WhatsappButton'
 import { useContext, } from 'react'
 import { UserContext } from '../../context/UserContext'
-import BackButton from '../BackButton/BackButton'
 import { useNavigate } from 'react-router-dom'
 import AvatarProfile from '../AvatarProfile/AvatarProfile'
 import CoverImage from '../CoverImage/CoverImage'
@@ -62,7 +61,7 @@ const ItemDetail = ({ item }) => {
                   ) : (
                     <Alert message={`Stock: ${item.stock}`} type="info" />
                   )}
-                  <Title level={3}>{formattedClp(item.price)}</Title>
+                  <Title level={3}>{formattedClp(item.price * item.seller.dollar)}</Title>
                 </Flex>
               </Flex>
           </Card>

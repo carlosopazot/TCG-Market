@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet-async"
 import { Col, Divider, Row, Typography, Card, Empty, Flex } from "antd"
-import BackButton from "../BackButton/BackButton"
 import { useEffect, useState } from "react"
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { db } from "../../firebase/config"
@@ -10,7 +9,7 @@ import AvatarProfile from "../AvatarProfile/AvatarProfile"
 import CoverImage from "../CoverImage/CoverImage"
 import StoreTags from "../Store/StoreTags"
 
-const { Title, Text } = Typography
+const { Title } = Typography
 
 
 const SellerDetail = ({ seller }) => {
@@ -41,15 +40,15 @@ const SellerDetail = ({ seller }) => {
   return (
     <>
       <Helmet>
-        <title>Tienda de {seller.name} - Card Market</title>
+        <title>{`Tienda de ${seller.name} - Card Market`}</title>
         <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
       </Helmet>
       <Row gutter={[16, 16]} justify='space-between'>
         <Col xs={24}>
-          <Flex gap={8} align="center">
-            <AvatarProfile src={seller.avatar} name={seller.name} size={48}></AvatarProfile>
+          <Flex gap={16} align="center">
+            <AvatarProfile src={seller.avatar || null } name={seller.name} size={56}></AvatarProfile>
             <Flex vertical>
-              <Title style={{ margin: 0}} level={3}>Tienda de {seller.name}</Title>
+              <Title style={{ marginBottom: '0.55rem'}} level={3}>Tienda de {seller.name}</Title>
               <StoreTags item={seller} />
             </Flex>
           </Flex>
@@ -67,12 +66,12 @@ const SellerDetail = ({ seller }) => {
                 <Col xs={24}>
                   <Row gutter={[8,8]}>
                     {cards.map((item) => (
-                      <Col xs={12} sm={12} md={6} xl={5} key={item.id}>
+                      <Col xs={12} sm={12} md={6} xl={4} key={item.id}>
                         <Card
                           hoverable
                           cover={<CoverImage item={item} />}
                         >
-                          <Title level={5}>{formattedClp(item.price)} </Title>
+                          <Title level={5}>{formattedClp(item.price * item.seller.dollar)} </Title>
                         </Card>
                       </Col>
                     ))}

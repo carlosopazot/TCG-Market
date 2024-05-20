@@ -1,57 +1,25 @@
-import { Row, Col, Typography, Card, Form, Input, Button, Flex, Tabs, Upload } from 'antd'
-import { useContext, useState } from 'react'
-import { UserContext } from '../../context/UserContext'
-import ImgCrop from 'antd-img-crop';
-import { PlusOutlined, FileTextOutlined, UserOutlined, KeyOutlined } from '@ant-design/icons';
+import { Row, Col, Typography, Tabs } from 'antd'
+import { FileTextOutlined, UserOutlined, KeyOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet-async'
+import AvatarUpdate from './AvatarUpdate'
+import InfoUpdate from './InfoUpdate';
 
 const { Title } = Typography
 
 const Account = () => {
-  const { user } = useContext(UserContext)
-  const [ disabled, setDisabled ] = useState(true)
-  const fileList = []
 
-  const editForm = () => {
-    setDisabled(false)
-  }
 
   const items = [
     { label: 'Mis datos', 
       children: (
-        <Card title='Mis datos' extra={<Button onClick={editForm}>Editar</Button>}>
-          <Form layout='vertical' disabled={disabled}>
-            <Form.Item label='Nombre'>
-              <Input size='large' value={user.name}></Input>
-            </Form.Item>
-            <Form.Item  label='Correo electrónico'>
-              <Input size='large' value={user.email}></Input>
-            </Form.Item>
-            <Form.Item label='Número de teléfono'>
-              <Input size='large' value={user.phone}></Input>
-            </Form.Item>
-            <Flex justify='flex-end'>
-              <Button size='large' htmlType='submit' type='primary'>Guardar</Button>
-            </Flex>
-          </Form>
-        </Card>
+        <InfoUpdate />
       ), 
       key: '1',
       icon: <FileTextOutlined />
     },
     { label: 'Avatar', 
       children: (
-        <Card title='Foto de perfil'>
-          <ImgCrop>
-            <Upload
-              maxCount={1}
-              listType="picture"
-              defaultFileList={[...fileList]}
-            >
-              <Button icon={<PlusOutlined />}>Upload</Button>
-            </Upload>
-          </ImgCrop>
-        </Card>
+        <AvatarUpdate />
       ), 
       key: '3',
       icon: <UserOutlined />

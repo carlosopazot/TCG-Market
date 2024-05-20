@@ -15,7 +15,7 @@ const ItemList = ({ cards, title }) => {
     infinite: true,
     speed: 500,
     slidesToShow: 6,
-    slidesToScroll: 2,
+    slidesToScroll: 1,
     initialSlide: 0,
     arrows: false,
     lazyLoad: true,

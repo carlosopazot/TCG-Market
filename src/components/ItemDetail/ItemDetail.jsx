@@ -25,7 +25,7 @@ import CoverImage from '../CoverImage/CoverImage'
 import { formattedClp } from '../../utils/utils'
 import { Helmet } from 'react-helmet-async'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 const { Meta } = Card
 
 const ItemDetail = ({ item }) => {
@@ -65,20 +65,20 @@ const ItemDetail = ({ item }) => {
                 </Flex>
               </Flex>
           </Card>
-          <Card title="Vendido por">
+          <Card title="Vendedor">
             {user.logged ? (
               <Row gutter={[16, 16]}>
-                <Col xs={24} md={14} lg={10}>
+                <Col xs={24} md={14} lg={12}>
                   <Meta
                     avatar={
-                      <AvatarProfile name={item.seller.name} src={item.seller.avatar} />
+                      <AvatarProfile size={48} name={item.seller.name} src={item.seller.avatar} />
                     }
-                    title={<Title level={4}>{item.seller.name}</Title>}
+                    title={<Title level={4} style={{ margin: 0 }}>{item.seller.name}</Title>}
                     description={
                       <Flex vertical gap={8}>
-                        <Title type='secondary' level={5}>
+                        <Text type='secondary' level={5}>
                           <EnvironmentOutlined /> {item.seller.location}
-                        </Title>
+                        </Text>
                       </Flex>
                     }
                   />

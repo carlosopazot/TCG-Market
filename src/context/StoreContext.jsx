@@ -2,7 +2,7 @@ import { createContext, useEffect } from "react";
 import { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
 import { db } from "../firebase/config";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, writeBatch } from "firebase/firestore";
 import { ThemeContext } from "./ThemeContext";
 
 export const StoreContext = createContext();
@@ -16,6 +16,37 @@ export const StoreProvider = ({ children }) => {
     return storedStore ? JSON.parse(storedStore) : {};
   });
   const [isStoreUpdated, setIsStoreUpdated] = useState(false);
+  const [dollarUSD, setDollarUSD] = useState(null)
+
+  const updateAvatarCards = async (avatar) => {
+    const q = query(
+      collection(db, 'cards'),
+      where('seller.id', '==', store.id)
+    )
+    const querySnapshot = await getDocs(q);
+    const batch = writeBatch(db)
+
+    querySnapshot.forEach((doc) => {
+      batch.update(doc.ref, { 'seller.avatar': avatar });
+    });
+    await batch.commit();
+  };
+
+
+  const updateAvatarStore = async (value) => {
+    try {
+      setStore({
+        ...store,
+        avatar: value
+      })
+      await updateAvatarCards(value);
+    } catch (error) {
+      openMessage('error', 'Error al actualizar el avatar de la tienda')
+    } finally {
+      setLoading(false)
+    }
+  };
+
 
   useEffect(() => {
     if (!user.logged) {
@@ -51,11 +82,9 @@ export const StoreProvider = ({ children }) => {
       fetchStore()
     }
   }, [isStoreUpdated, openMessage, store, user]);
-  
-  const [dollarUSD, setDollarUSD] = useState(null)
 
   return (
-    <StoreContext.Provider value={{ store, setStore, loading, setLoading, dollarUSD, setDollarUSD }}>
+    <StoreContext.Provider value={{ store, setStore, loading, setLoading, dollarUSD, setDollarUSD, updateAvatarStore }}>
       {children}
     </StoreContext.Provider>
   );

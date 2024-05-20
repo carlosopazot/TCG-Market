@@ -27,6 +27,7 @@ export const UserProvider = ({ children }) => {
   })
 
   const { handleAuthError } = useContext(ThemeContext)
+  const currentUser = auth.currentUser
 
   const login = async (values) => {
     try {
@@ -78,6 +79,20 @@ export const UserProvider = ({ children }) => {
     signInWithPopup(auth, fbProvider)
   }
 
+  const updateAvatar = async (avatar) => {
+    try {
+      await updateProfile(currentUser, {
+        photoURL: avatar,
+      })
+      setUser({
+        ...user,
+        avatar: avatar,
+      })
+    } catch (error) {
+      handleAuthError(error)
+    }
+  }
+
   // Set persistence for the authentication state
   useEffect(() => {
     setPersistence(auth, browserLocalPersistence)
@@ -117,7 +132,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, googleLogin, logout, facebookLogin, login, register }}
+      value={{ user, setUser, googleLogin, logout, facebookLogin, login, register, currentUser, updateAvatar }}
     >
       {children}
     </UserContext.Provider>

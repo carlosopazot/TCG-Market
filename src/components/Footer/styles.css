@@ -1,9 +1,12 @@
 .footer {
-  background-color: black;
-  color: #fff;
+  background-color: white;
   text-align: center;
-  padding: 10px;
+  padding: 2rem 0;
   bottom: 0;
   width: 100%;
   margin-top: auto;
+}
+
+.footer.footer-dark {
+  background-color: #141414;
 }

@@ -192,7 +192,7 @@ const VerifyNumber = () => {
                         },
                       ]}
                     >
-                      <Input.OTP size='large' onChange={handleCodeChange}/>
+                      <Input.OTP type='number' size='large' onChange={handleCodeChange}/>
                     </Form.Item>
                     <Form.Item>
                       <Flex>

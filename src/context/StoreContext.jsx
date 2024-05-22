@@ -2,7 +2,7 @@ import { createContext, useEffect } from "react";
 import { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
 import { db } from "../firebase/config";
-import { collection, getDocs, query, where, writeBatch } from "firebase/firestore";
+import { collection, getDocs, query, where, writeBatch, doc, updateDoc } from "firebase/firestore";
 import { ThemeContext } from "./ThemeContext";
 
 export const StoreContext = createContext();
@@ -32,13 +32,17 @@ export const StoreProvider = ({ children }) => {
     await batch.commit();
   };
 
-
   const updateAvatarStore = async (value) => {
     try {
       setStore({
         ...store,
         avatar: value
       })
+      const storeRef = doc(db, 'stores', store.id);
+      await updateDoc(storeRef, {
+        ...store,
+        avatar: value,
+      }) 
       await updateAvatarCards(value);
     } catch (error) {
       openMessage('error', 'Error al actualizar el avatar de la tienda')

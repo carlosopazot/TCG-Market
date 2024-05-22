@@ -25,7 +25,7 @@ const AppRouter = () => {
     <BrowserRouter>
       <Layout className="layout">
         <Navbar />
-        <main className="main">
+        <main className="main main-container">
           <Row justify="center">
             <Col xs={24}>
               <Breadcrumb />

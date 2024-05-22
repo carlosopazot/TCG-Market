@@ -2,6 +2,7 @@ import { Modal, Button, Divider, Row, Col, Flex, Typography } from 'antd'
 import QuantitySelector from './QuantitySelector'
 import { useNavigate } from 'react-router-dom'
 import { formattedClp } from '../../utils/utils'
+import { ExportOutlined } from '@ant-design/icons'
 
 const { Title, Text, Link } = Typography
 
@@ -36,14 +37,16 @@ const ModalUpload = ({
       <Row gutter={[16, 16]}>
         <Col xs={24}>
           <Divider style={{ marginTop: '0.5rem' }}></Divider>
-          <Flex justify='space-between' align='center'>
-            <Title style={{ margin: 0 }} level={5}>Valor referencia dólar</Title>
-            <Title style={{ margin: 0 }} level={4}>${dollarValue} <Text>CLP</Text> </Title>
-          </Flex>
-          <Flex vertical>
-            <Text type='secondary'>Este es el valor del dólar que configuraste en tu tienda</Text>
-            <Link onClick={()=> {navigate('/tienda')}}>Ir a tienda</Link>
-          </Flex>
+          <Row>
+            <Col xs={16} md={18}>
+              <Title style={{ margin: 0 }} level={5}>Valor referencia dólar</Title>
+              <Text type='secondary'>Este es el valor del dólar que configuraste en tu tienda. </Text>
+              <Link onClick={()=> {navigate('/tienda')}}>Ir a tienda <ExportOutlined /></Link>
+            </Col>
+            <Col xs={8} md={6} style={{ textAlign: 'right'}}>
+              <Title style={{ margin: 0 }} level={4}>${dollarValue} <Text>CLP</Text> </Title>
+            </Col>
+          </Row>
         </Col>
         <Col xs={24}>
           <Divider style={{ marginTop: '0.5rem' }}></Divider>

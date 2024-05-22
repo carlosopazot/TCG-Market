@@ -90,11 +90,11 @@ const Store = () => {
     try {
       await deleteDoc(doc(db, 'cards', id))
       setCards(cards.filter((card) => card.id !== id))
-      message.success('Carta eliminada con éxito')
+      openMessage('success','Carta eliminada con éxito')
       console.log(id)
     } catch (error) {
       console.error('Error al eliminar la carta:', error)
-      message.error('Error al eliminar la carta')
+      openMessage('error', 'Error al eliminar la carta')
     }
   }
 
@@ -196,7 +196,7 @@ const Store = () => {
         <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
       </Helmet>
       <Row gutter={[16, 16]} justify='space-between'>
-        <StoreHeader item={store} ></StoreHeader>
+        <StoreHeader item={store}></StoreHeader>
         <StoreStats
           totalStock={totalStock}
           totalForSell={totalForSell}

@@ -38,7 +38,7 @@ const Account = () => {
         <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
       </Helmet>
       <Row gutter={16}>
-        <Col xs={24} lg={8}>
+        <Col xs={24} lg={12} xl={8}>
           <Title level={2}>Mi cuenta</Title>
           <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
         </Col>

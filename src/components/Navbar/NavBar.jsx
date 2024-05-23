@@ -1,14 +1,16 @@
-import { Layout, Flex, Button, theme, Dropdown } from 'antd'
+import { Layout, Flex, Button, theme, Dropdown, Drawer, Badge } from 'antd'
 import UserMenu from '../UserMenu/UserMenu'
 import Searchbar from '../Searchbar/Searchbar'
 import Logo from '../../assets/images/card-games.png'
 import DarkMode from '../DarkMode/DarkMode'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { ThemeContext } from '../../context/ThemeContext'
 import { Link, useNavigate } from 'react-router-dom'
 import './styles.css'
 import { MenuOutlined } from '@ant-design/icons'
+import Sidebar from '../Sidebar/Sidebar'
+import AvatarProfile from '../AvatarProfile/AvatarProfile'
 
 const { Header } = Layout
 const { useToken } = theme
@@ -16,7 +18,9 @@ const { useToken } = theme
 const Navbar = () => {
   const { user } = useContext(UserContext)
   const { isDarkMode } = useContext(ThemeContext)
+  const [ openDrawer, setOpenDrawer ] = useState(false)
   const navigate = useNavigate()
+  const showDot = user && user.phone === null ? true : false
 
   const { token } = useToken();
   const contentStyle = {
@@ -25,6 +29,14 @@ const Navbar = () => {
     boxShadow: token.boxShadowSecondary,
     padding: '16px',
   };
+
+  const openDrawerMenu = () => {
+    setOpenDrawer(true)
+  }
+
+  const closeDrawerMenu = () => {
+    setOpenDrawer(false)
+  }
 
   return (
     <Header className={`navbar ${isDarkMode ? 'navbar-dark' : ''} `}>
@@ -40,18 +52,12 @@ const Navbar = () => {
           <Flex gap={8} align="center">
             <DarkMode></DarkMode>
             <Flex gap={10} align="center">
-              {user && user.logged ? (
-                <UserMenu name={user.name} />
-               ) : (
-                  <Dropdown placement='bottomRight' dropdownRender={(menu) => (
-                    <Flex style={contentStyle} gap={8} justify='start' vertical>
-                      {menu}
-                      <Button size='large' onClick={() => {navigate('/login')}} type="primary">Ingresar ahora</Button>
-                    </Flex>
-                  )}>
-                    <Button type='text' size='large' icon={<MenuOutlined />}></Button>
-                  </Dropdown>
+               {user && user.logged ? (
+                  <Button onClick={openDrawerMenu} type='text' size='large' icon={<Badge dot={showDot}><AvatarProfile item={user} /></Badge>} />
+                ) : (
+                  <Button onClick={openDrawerMenu}  type='text' size='large' icon={<MenuOutlined />}></Button>
                )}
+               <Sidebar onClose={closeDrawerMenu} open={openDrawer}/>
             </Flex>
           </Flex>
         </Flex>

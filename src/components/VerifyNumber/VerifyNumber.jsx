@@ -23,8 +23,6 @@ const VerifyNumber = () => {
   const navigate = useNavigate()
   const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
 
-
-
   const prefix = '+569'
 
   useEffect(() => {

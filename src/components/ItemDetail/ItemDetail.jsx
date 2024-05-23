@@ -71,7 +71,7 @@ const ItemDetail = ({ item }) => {
                 <Col xs={24} md={14} lg={12}>
                   <Meta
                     avatar={
-                      <AvatarProfile size={48} name={item.seller.name} src={item.seller.avatar} />
+                      <AvatarProfile size={48} item={item.seller} />
                     }
                     title={<Title level={4} style={{ margin: 0 }}>{item.seller.name}</Title>}
                     description={

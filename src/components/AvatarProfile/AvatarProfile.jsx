@@ -1,9 +1,9 @@
 import { Avatar } from "antd"
 
-const AvatarProfile = ({ size, src, name }) => {
+const AvatarProfile = ({ size, item }) => {
   return (
-    <Avatar size={size} src={src}>
-      {name && name.charAt(0).toUpperCase()}
+    <Avatar size={size} src={item.avatar}>
+      {item.name && item.name.charAt(0).toUpperCase()}
     </Avatar>
   )
 }

@@ -68,7 +68,6 @@ export const UserProvider = ({ children }) => {
 
   const logout = () => {
     signOut(auth)
-    window.location.href('/')
   }
 
   const googleLogin = () => {

@@ -34,8 +34,7 @@ const AppRouter = () => {
               <Routes>
                 {user && user.logged ? (
                    <>
-                     <Route path="/tienda" element={<Store />}/>
-                      <Route path="/tienda/agregar-carta" element={<UploadCard />} />
+                      <Route path="/tienda" element={<Store />}/>
                       <Route
                         path="/verificar-numero"
                         element={ <VerifyNumber />}
@@ -44,6 +43,9 @@ const AppRouter = () => {
                    </>
                   ) : null
                 }
+                {user && user.logged && user.phone ? (
+                  <Route path="/tienda/agregar-carta" element={<UploadCard />} />
+                ) : null}
                 <Route path="/" element={<ItemListContainer title="Cartas" />} />
                 <Route path="/vendedor/:sellerId" element={<SellerContainer />} />
                 <Route path="/search" element={<Search />} />

@@ -59,7 +59,7 @@ export const ThemeProvider = ({ children }) => {
         theme={{
           algorithm: algorithm,
           token: {
-            fontFamily: 'DM Sans',
+            fontFamily: 'DM Sans'
           },
         }}
       >

@@ -1,0 +1,8 @@
+.ant-menu {
+  border-radius: 8px;
+ 
+}
+
+.ant-menu-light.ant-menu-root.ant-menu-vertical {
+  border-inline-end: 0;
+}

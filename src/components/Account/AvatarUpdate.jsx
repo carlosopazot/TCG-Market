@@ -1,5 +1,5 @@
 
-import { Card, Upload, Button, Flex, Spin, Typography } from 'antd'
+import { Card, Upload, Button, Flex, Spin, Typography, Avatar } from 'antd'
 import ImgCrop from 'antd-img-crop'
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons'
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
@@ -70,9 +70,9 @@ const AvatarUpdate = () => {
           </Flex>
         ) : (
           imageUrl ? (
-            <AvatarProfile size={120} src={imageUrl} />
+            <Avatar size={120} src={imageUrl} />
           ) : (
-            <AvatarProfile size={120} name={user.name} src={user.avatar} />
+            <AvatarProfile size={120} item={user} />
           )
         )}
         <ImgCrop

@@ -9,7 +9,7 @@ import { StoreContext } from '../../context/StoreContext'
 import { UserContext } from '../../context/UserContext'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
-
+import Hero from '../Hero/Hero'
 
 const ItemListContainer = () => {
   const [cards, setCards] = useState([])
@@ -41,6 +41,10 @@ const ItemListContainer = () => {
       .finally(() => setLoading(false))
   }, [stateId])
 
+  const recentCards = cards.sort((a, b) => b.date - a.date)
+  const cardsInLocation = recentCards.filter(card => card.seller.location === store.location)
+  const cardsFoil = recentCards.filter(card => card.foil)
+
   return (
     <>
       <Helmet>
@@ -55,7 +59,7 @@ const ItemListContainer = () => {
           <div className="content" />
         </Spin>
       ) : (
-        <>
+        <Flex gap={24} vertical>
           {user.logged && user.phone === null ? (
             <Col xs={24}>
               <Alert
@@ -72,22 +76,23 @@ const ItemListContainer = () => {
               />
               </Col>) : (null)
           }
+          <Hero />
           {cards.length > 0 ? (
             <Flex style={{ marginBottom: '2rem'}} gap={24} vertical>
               {user && user.logged && store.location ? (
-                <ItemList cards={cards.filter(card => card.seller.location === store.location )} title={`Últimas cartas en ${store.location}`} />
+                <ItemList cards={cardsInLocation} title={`Últimas cartas en ${store.location}`} />
               ) : (
                 null
               )}
-              <ItemList cards={cards} title='Recientes' />
-              <ItemList cards={cards.filter(card => card.foil )} title='✨ Todo foil' />
+              <ItemList cards={recentCards} title='Recientes' />
+              <ItemList cards={cardsFoil} title='✨ Todo foil' />
             </Flex>
           ) : (
             <Card>
               <Empty description='No hay cartas' />
             </Card>
           )}
-        </>
+        </Flex>
       )}
     </>
   )

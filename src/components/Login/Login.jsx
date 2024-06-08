@@ -19,7 +19,7 @@ import { Helmet } from 'react-helmet-async'
 const { Title, Text } = Typography
 
 const Login = () => {
-  const { googleLogin, facebookLogin, login } = useContext(UserContext)
+  const { googleLogin, facebookLogin, login, user } = useContext(UserContext)
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -43,6 +43,18 @@ const Login = () => {
     console.log('Failed:', errorInfo)
   }
 
+  const loginGoogle = async () => {
+    try {
+      await googleLogin()
+    } catch (error) {
+      console.error('Error logging in with Google:', error)
+    } finally {
+      if(user) {
+        navigate('/')
+      }
+    }
+  }
+
   return (
     <>
       <Helmet>
@@ -56,7 +68,7 @@ const Login = () => {
             <Divider></Divider>
             <Flex gap={8} vertical>
               <Title level={5}>Ingresa con tus redes</Title>
-              <Button onClick={googleLogin} size="large">
+              <Button onClick={loginGoogle} size="large">
                 <GoogleOutlined style={{ color: 'red' }} />
                 Ingresa con Google
               </Button>

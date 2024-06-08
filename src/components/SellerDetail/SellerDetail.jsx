@@ -8,6 +8,7 @@ import { formattedClp } from "../../utils/utils"
 import AvatarProfile from "../AvatarProfile/AvatarProfile"
 import CoverImage from "../CoverImage/CoverImage"
 import StoreTags from "../Store/StoreTags"
+import ItemCard from "../ItemCard/ItemCard"
 
 const { Title } = Typography
 
@@ -46,7 +47,7 @@ const SellerDetail = ({ seller }) => {
       <Row gutter={[16, 16]} justify='space-between'>
         <Col xs={24}>
           <Flex gap={16} align="center">
-            <AvatarProfile src={seller.avatar || null } name={seller.name} size={56}></AvatarProfile>
+            <AvatarProfile item={seller} size={56}></AvatarProfile>
             <Flex vertical>
               <Title style={{ marginBottom: '0.55rem'}} level={3}>Tienda de {seller.name}</Title>
               <StoreTags item={seller} />
@@ -64,15 +65,10 @@ const SellerDetail = ({ seller }) => {
             <Row gutter={[16, 16]}>
               {cards.length > 0 ? (
                 <Col xs={24}>
-                  <Row gutter={[8,8]}>
+                  <Row gutter={[0,8]}>
                     {cards.map((item) => (
                       <Col xs={12} sm={12} md={6} xl={4} key={item.id}>
-                        <Card
-                          hoverable
-                          cover={<CoverImage item={item} />}
-                        >
-                          <Title level={5}>{formattedClp(item.price * item.seller.dollar)} </Title>
-                        </Card>
+                        <ItemCard item={item}></ItemCard>
                       </Col>
                     ))}
                   </Row>

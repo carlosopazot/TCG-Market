@@ -41,7 +41,7 @@ a {
   margin-inline-end: 0;
 }
 
-.ant-card .ant-card-body {
+.card-item.ant-card .ant-card-body {
   padding: 1rem;
 }
 

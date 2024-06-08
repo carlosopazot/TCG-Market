@@ -54,7 +54,7 @@ const AppRouter = () => {
                   element={<ItemListContainer title="Cartas" />}
                 />
                 <Route path="/cart" element={<CartView />} />
-                <Route path="/item/:itemId" element={<ItemDetailContainer />} />
+                <Route path="/cartas/:itemId" element={<ItemDetailContainer />} />
                 
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/login" element={<Login />} />

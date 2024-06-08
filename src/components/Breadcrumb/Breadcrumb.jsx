@@ -6,6 +6,8 @@ const capitalize = (str) => {
 };
 
 const Breadcrumb = () => {
+  const currentTitle = document.title
+  console.log(currentTitle)
   const location = useLocation()
   const paths = location.pathname.split('/').filter((path) => path)
   const breadcrumbItems = [
@@ -29,7 +31,7 @@ const Breadcrumb = () => {
     })
   );
 
-  if (['/login', '/registro', '/', '/verificar-numero', '/not-found'].includes(location.pathname)) {
+  if (['/login', '/registro', '/', '/verificar-numero', '/not-found',  ].includes(location.pathname)) {
     return null;
   }
 

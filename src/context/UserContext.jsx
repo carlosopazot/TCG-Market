@@ -9,6 +9,7 @@ import {
   updateProfile,
   setPersistence,
   browserLocalPersistence,
+  browserSessionPersistence
 } from 'firebase/auth'
 import { useContext } from 'react'
 import { ThemeContext } from './ThemeContext'
@@ -69,10 +70,14 @@ export const UserProvider = ({ children }) => {
   const logout = () => {
     signOut(auth)
   }
-
-  const googleLogin = () => {
-    signInWithPopup(auth, provider);
-  };
+  
+  const googleLogin = async () => {
+    try {
+      await signInWithPopup(auth, provider)
+    } catch (error) {
+      handleAuthError(error)
+    }
+  }
 
   const facebookLogin = () => {
     signInWithPopup(auth, fbProvider)
@@ -94,39 +99,43 @@ export const UserProvider = ({ children }) => {
 
   // Set persistence for the authentication state
   useEffect(() => {
+    const storedUser = localStorage.getItem('user')
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
+    }
     setPersistence(auth, browserLocalPersistence)
-    .then(() => {
-      // Continue with the onAuthStateChanged logic
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          console.log('User:', user)
-          setUser({
-            email: user.email,
-            uid: user.uid,
-            logged: true,
-            name: user.displayName,
-            avatar: user.photoURL,
-            phone: user.phoneNumber,
-            emailVerified: user.emailVerified,
-          })
-          localStorage.setItem('user', JSON.stringify(user))
-        } else {
-          setUser({
-            email: null,
-            uid: null,
-            logged: false,
-            name: null,
-            avatar: null,
-            phone: null,
-            emailVerified: null,
-          })
-          localStorage.removeItem('user')
-        }
+      .then(() => {
+        // Continue with the onAuthStateChanged logic
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            console.log('User:', user)
+            setUser({
+              email: user.email,
+              uid: user.uid,
+              logged: true,
+              name: user.displayName,
+              avatar: user.photoURL,
+              phone: user.phoneNumber,
+              emailVerified: user.emailVerified,
+            })
+            localStorage.setItem('user', JSON.stringify(user))
+          } else {
+            setUser({
+              email: null,
+              uid: null,
+              logged: false,
+              name: null,
+              avatar: null,
+              phone: null,
+              emailVerified: null,
+            })
+            localStorage.removeItem('user')
+          }
+        })
       })
-    })
-    .catch((error) => {
-      console.error('Error setting persistence:', error)
-    })
+      .catch((error) => {
+        console.error('Error setting persistence:', error)
+      })
   }, [])
 
   return (

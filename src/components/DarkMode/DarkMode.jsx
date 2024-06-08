@@ -10,8 +10,9 @@ const DarkMode = () => {
       size='large' 
       onClick={toggleDarkMode} 
       icon={isDarkMode ? <SunOutlined /> : <MoonOutlined /> } 
-      type='Text'
+      type='text'
     />
+    
   )
 }
 

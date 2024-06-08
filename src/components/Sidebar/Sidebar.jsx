@@ -1,13 +1,12 @@
 
 import { Drawer, Menu, Flex, Result, Button, Typography, Card } from 'antd'
 import { useState, useContext } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../context/UserContext'
 import Logo from '../../assets/images/card-games.png'
 import './styles.css'
 import AvatarProfile from '../AvatarProfile/AvatarProfile'
 import { HomeOutlined, ShopOutlined, UserOutlined } from '@ant-design/icons'
-
 
 const { Title, Text } = Typography
 
@@ -15,7 +14,7 @@ const Sidebar = ({ onClose, open}) => {
 
   const navigate = useNavigate()
   const { user, logout } = useContext(UserContext) 
-  const [current, setCurrent] = useState('1')
+  const [current, setCurrent] = useState('home')
 
   const items = [
     {
@@ -39,11 +38,38 @@ const Sidebar = ({ onClose, open}) => {
     }
   ]
 
+  const others = [
+    {
+      key: 'faq',
+      label: 'Preguntas frecuentes',
+      path: '/faq',
+    },
+    {
+      key: 'soporte',
+      label: 'Soporte',
+      path: '/soporte',
+    },
+    {
+      key: 'Contacto',
+      label: 'Contacto',
+      path: '/contacto',
+    },
+    {
+      key: 'terminos',
+      label: 'Términos y condiciones',
+      path: '/terminos',
+    },
+    {
+      key: 'privacidad',
+      label: 'Política de privacidad',
+      path: '/privacidad',
+    },
+  ]
+
   const onClick = ({ key }) => {
     setCurrent(key)
     onClose()
     navigate(items.find(item => item.key === key).path)
-    console.log('click', key)
   }
 
   const handleLogin = () => {
@@ -59,18 +85,19 @@ const Sidebar = ({ onClose, open}) => {
   return (
     <Drawer onClose={onClose} open={open}>
       {user && user.logged ? (
-        <Flex vertical gap={8}>
+        <Flex vertical gap={16}>
           <Card bordered={false}>
-            <Flex gap={8}>
+            <Flex gap={16}>
               <AvatarProfile size={48} item={user} />
               <Flex vertical>
-                <Text type='secondary'>Bienvenido</Text>
                 <Title style={{ margin: 0 }} level={4}>{user.name}</Title>
+                <Text type='secondary'>{user.email}</Text>
               </Flex>
             </Flex>
           </Card>
           <Menu onClick={onClick} selectedKeys={[current]} mode="vertical" items={items} />
-          <Button onClick={handleLogout} type='default' block >Cerrar sesión</Button>
+          <Menu onClick={onClick} selectedKeys={[current]} mode="vertical" items={others} />
+          <Button size='large' onClick={handleLogout} type='text' block >Cerrar sesión</Button>
         </Flex>
       ) : (
         <>
@@ -84,9 +111,6 @@ const Sidebar = ({ onClose, open}) => {
                 <Button onClick={handleLogin} block size='large' type="primary">
                   Ingresar ahora
                 </Button>
-                {/* <Button block size='large' type="default">
-                  Registrarme
-                </Button> */}
               </Flex>
             ]}
           />

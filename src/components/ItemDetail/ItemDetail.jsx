@@ -6,6 +6,7 @@ import {
   Button,
   Flex,
   Alert,
+  Result
 } from 'antd'
 import {
   EnvironmentOutlined,
@@ -24,6 +25,7 @@ import AvatarProfile from '../AvatarProfile/AvatarProfile'
 import CoverImage from '../CoverImage/CoverImage'
 import { formattedClp } from '../../utils/utils'
 import { Helmet } from 'react-helmet-async'
+import ItemCardDate from '../ItemCardDate/ItemCardDate'
 
 const { Title, Text } = Typography
 const { Meta } = Card
@@ -42,30 +44,25 @@ const ItemDetail = ({ item }) => {
         <title>{item.name} - Card Market</title>
         <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
       </Helmet>
-      <Row gutter={[16, 16]} justify="center">
+      <Row gutter={[16, 16]}>
         <Col xs={14} sm={10} md={9} lg={6} xl={6}>
           <CoverImage item={item}></CoverImage>
         </Col>
         <Col xs={24} sm={14} md={15} lg={12} xl={12}>
           <Card className="card-info">
-              <Flex vertical gap={4} align="flex-start" justify="flex-start">
-                <Title level={3} className="title-card">
+            <Flex gap={16} vertical>
+              <Flex vertical gap={4}>
+                <ItemCardDate item={item} size={14}></ItemCardDate>
+                <Title level={3} style={{ margin: 0}} className="title-card">
                   {item.name}
                 </Title>
                 <SetIcon setCode={item.set} setName={item.set_name}></SetIcon>
-                <TagsState item={item}></TagsState>
-                <p>{item.description} </p>
-                <Flex vertical align="flex-start" gap={8}>
-                  {item.stock === 0 ? (
-                    <Alert message="Agotado" type="error" />
-                  ) : (
-                    <Alert message={`Stock: ${item.stock}`} type="info" />
-                  )}
-                  <Title level={3}>{formattedClp(item.price * item.seller.dollar)}</Title>
-                </Flex>
+              </Flex>
+              <TagsState size={16} stock={true} item={item}></TagsState>
+              <Title level={3}>{formattedClp(item.customPrice || item.price * item.seller.dollar)}</Title>
               </Flex>
           </Card>
-          <Card title="Vendedor">
+          <Card>
             {user.logged ? (
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={14} lg={12}>
@@ -99,19 +96,17 @@ const ItemDetail = ({ item }) => {
                 </Col>
               </Row>
             ) : (
-              <Row justify="center">
-                <Col md={16} style={{ textAlign: 'center' }}>
-                  <Title level={2} color="blue">
-                    <LoginOutlined />
-                  </Title>
-                  <Title level={4} style={{ marginTop: 0 }}>
-                    Inicia sesión para ver la información del vendedor
-                  </Title>
-                  <Link to="/login">
-                    <Button size="large" type="primary">
-                      Ingresar ahora
-                    </Button>
-                  </Link>
+              <Row justify='center'>
+                <Col xs={20}>
+                  <Result
+                    title="Inicia sesión"
+                    subTitle="Ingresa ahora a TCG Market para contactar al vendedor y comprar esta carta."
+                    extra={
+                      <Button onClick={()=> {navigate('/login')}} type="primary" key="console">
+                        Ingresar ahora
+                      </Button>
+                    }
+                  />
                 </Col>
               </Row>
             )}

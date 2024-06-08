@@ -61,7 +61,7 @@ const ItemList = ({ cards, title }) => {
         <div className="slider">
           <Slider ref={slider} {...settings}>
             {cards.slice(0, 10).map((item) => (
-              <ItemCard key={item.id} item={item} />
+              <ItemCard key={item.id} item={item} showLocation={true} />
             ))}
           </Slider>
           <Button className='slider-nav slider-prev' onClick={() => slider?.current?.slickPrev()} icon={<LeftOutlined/>} shape='circle'></Button>

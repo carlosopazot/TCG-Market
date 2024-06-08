@@ -17,7 +17,7 @@ const NotFound = () => (
           <Button size='large' type="primary">Volver a inicio</Button>
         </Link>
       }
-  />
+    />
   </>
 )
 export default NotFound

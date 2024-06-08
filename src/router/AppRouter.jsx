@@ -17,6 +17,7 @@ import Search from '../components/Search/Search'
 import VerifyNumber from '../components/VerifyNumber/VerifyNumber'
 import FooterHome from '../components/Footer/Footer'
 import SellerContainer from '../components/SellerDetailContainer/SellerDetailContainer'
+import ResetPassword from '../components/ResetPassword/ResetPassword'
 import Breadcrumb from '../components/Breadcrumb/Breadcrumb'
 
 const AppRouter = () => {
@@ -46,6 +47,7 @@ const AppRouter = () => {
                 {user && user.logged && user.phone ? (
                   <Route path="/tienda/agregar-carta" element={<UploadCard />} />
                 ) : null}
+                <Route path="/recuperar-contrasena" element={<ResetPassword />} />
                 <Route path="/" element={<ItemListContainer title="Cartas" />} />
                 <Route path="/vendedor/:sellerId" element={<SellerContainer />} />
                 <Route path="/search" element={<Search />} />

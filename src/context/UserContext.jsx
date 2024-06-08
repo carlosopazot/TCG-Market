@@ -9,7 +9,6 @@ import {
   updateProfile,
   setPersistence,
   browserLocalPersistence,
-  browserSessionPersistence
 } from 'firebase/auth'
 import { useContext } from 'react'
 import { ThemeContext } from './ThemeContext'
@@ -96,7 +95,6 @@ export const UserProvider = ({ children }) => {
       handleAuthError(error)
     }
   }
-
   // Set persistence for the authentication state
   useEffect(() => {
     const storedUser = localStorage.getItem('user')

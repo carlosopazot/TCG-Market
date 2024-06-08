@@ -18,19 +18,27 @@ const StoreList = ({ handleDelete, handleSold, list, user, cards }) => {
       key: 'name',
     },
     {
+      title: 'Edición',
+      dataIndex: 'set_name',
+      key: 'set',
+    },
+    {
       title: 'Stock',
       dataIndex: 'stock',
       key: 'stock',
+      sorter: (a, b) => a.stock - b.stock,
     },
     {
       title: 'Precio USD',
       dataIndex: 'price',
       key: 'price',
+      sorter: (a, b) => a.price - b.price,
     },
     {
       title: 'Precio',
       key: 'price',
-      render: (item) => formattedClp(item.customPrice || item.price * item.seller.dollar)
+      render: (item) => formattedClp(item.customPrice || item.price * item.seller.dollar),
+      sorter: (a, b) => a.price - b.price,
     },
     {
       title: 'Acciones',

@@ -130,7 +130,7 @@ const Login = () => {
                   icon={<QuestionCircleFilled />}
                   type="link"
                   size="small"
-                  disabled
+                  onClick={() => navigate('/recuperar-contrasena')}
                 >
                   Olvidé mi contrasena
                 </Button>

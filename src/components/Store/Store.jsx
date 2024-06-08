@@ -1,4 +1,4 @@
-import { Row, Col, Typography, Card, Empty, message, Alert, Button, Divider, Tabs, Table } from 'antd'
+import { Row, Col, Card, Empty, Tabs, Segmented } from 'antd'
 import {
   collection,
   getDocs,
@@ -14,13 +14,11 @@ import { UserContext } from '../../context/UserContext'
 import { StoreContext } from '../../context/StoreContext'
 import { ThemeContext } from '../../context/ThemeContext'
 import StoreHeader from './StoreHeader'
-import StoreItem from './StoreItem'
 import StoreStats from './StoreStats'
 import Loader from '../Loader/Loader'
-import { useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-
-const { Title } = Typography
+import { BarsOutlined, AppstoreOutlined } from '@ant-design/icons'
+import StoreList from './StoreList'
 
 const Store = () => {
   const [cards, setCards] = useState([])
@@ -29,7 +27,7 @@ const Store = () => {
   const { store, setStore } = useContext(StoreContext)
   const [ isStoreUpdated, setIsStoreUpdated ] = useState()
   const { openMessage  } = useContext(ThemeContext)
-  const navigate = useNavigate()
+  const [list, setList] = useState('list')
 
   useEffect(() => {
     const fetchStore = async () => {
@@ -137,57 +135,49 @@ const Store = () => {
       key: '1',
       label: 'Activas',
       children: (
-        <Col xs={24}>
-          <Row gutter={[8,8]}>
-            {onSaleCards
-              .map((item) => (
-                <StoreItem
-                  key={item.id}
-                  item={item}
-                  onDelete={handleDelete}
-                  onSold={handleSold}
-                  user={user.uid}
-                />
-            ))}
-            {onSaleCards.length === 0 && (
-              <Col xs={24}>
-                <Card>
-                  <Empty description="No hay cartas para mostrar"></Empty>
-                </Card>
-              </Col>
-            )}
-          </Row>
-        </Col>
+        <StoreList
+          list={list}
+          handleDelete={handleDelete}
+          handleSold={handleSold}
+          user={user}
+          cards={onSaleCards}
+        />
       )
     },
     {
       key: '2',
       label: 'Vendidas',
       children: (
-        <Col xs={24}>
-          <Row gutter={[8,8]}>
-            {soldCards
-              .map((item) => (
-              <StoreItem
-                key={item.id}
-                item={item}
-                onDelete={handleDelete}
-                onSold={handleSold}
-                user={user.uid}
-              />
-            ))}
-            {soldCards.length === 0 && (
-              <Col xs={24}>
-                <Card>
-                  <Empty description="No hay cartas para mostrar"></Empty>
-                </Card>
-              </Col>
-            )}
-          </Row>
-        </Col>
+        <StoreList
+          list={list}
+          handleDelete={handleDelete}
+          handleSold={handleSold}
+          user={user}
+          cards={soldCards}
+        />
       )
     }
   ]
+
+  const options = [
+    {
+      label: 'Lista',
+      value: 'list',
+      icon: <BarsOutlined />,
+    },
+    {
+      label: 'Galería',
+      value: 'galery',
+      icon: <AppstoreOutlined />,
+    }
+  ]
+
+  const toggleList = (value) => {
+    setList(value)
+    console.log(value)
+  }
+
+  const listToggle =  <Segmented options={options} defaultValue={list} onChange={toggleList}/>
 
   return (
     <>
@@ -212,7 +202,7 @@ const Store = () => {
             <Row gutter={[16, 16]} style={{ marginBottom: '2rem'}}>
               {cards.length > 0 ? (
                 <Col xs={24}>
-                  <Tabs defaultActiveKey="1" items={tabsItems} destroyInactiveTabPane />
+                  <Tabs tabBarExtraContent={listToggle} defaultActiveKey="1" items={tabsItems} destroyInactiveTabPane  />
                 </Col>
               ) : (
                 <Col xs={24}>

@@ -58,7 +58,7 @@ const StoreItem = ({ item, onDelete, user, onSold}) => {
             <TagsState stock hideDolar={true} item={item}></TagsState>
           </Col>
           <Col xs={24}>
-            <Title style={{ margin: 0 }} level={5}>{formattedClp(item.price * item.seller.dollar)}</Title>
+            <Title style={{ margin: 0 }} level={5}>{formattedClp(item.customPrice || item.price * item.seller.dollar)}</Title>
           </Col>
         </Row>
       </Card>

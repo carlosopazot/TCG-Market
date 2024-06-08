@@ -1,4 +1,4 @@
-import { Flex, Typography } from 'antd'
+import { Flex, Typography, Image } from 'antd'
 import { useState, useEffect } from 'react'
 
 const { Title } = Typography
@@ -28,7 +28,8 @@ const SetIcon = ({ setCode, alt, setName }) => {
     <>
       {iconUrl && (
         <Flex gap={4} align="center">
-          <img src={iconUrl} alt={alt} style={{ width: '18px' }} />
+          {/* <img src={iconUrl} alt={alt} style={{ width: '18px' }} /> */}
+          <Image src={iconUrl} alt={alt} style={{ width: '18px' }} preview={false} />
           <Title type='secondary' ellipsis style={{ margin: 0 }} level={5}>
             {setName}
           </Title>

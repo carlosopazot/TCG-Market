@@ -16,6 +16,7 @@ import { db } from '../../firebase/config'
 import { collection, addDoc, writeBatch } from 'firebase/firestore'
 import ModalUpload from './ModalUpload'
 import { formattedClp } from '../../utils/utils'
+import { set } from 'lodash'
 
 const { Title, Text } = Typography
 
@@ -25,17 +26,17 @@ const UploadItem = ({ edition, dollarPrice, foil }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [stock, setStock] = useState(1)
   const [dollarValue, setDollarValue] = useState(store.dollar)
+  console.log(stock)
   const [cardId, setCardId] = useState(null)
 
   const editionPrices = foil ? edition.prices?.usd_foil : edition.prices?.usd || edition.prices?.usd_etched
   const priceClp = (value) => Number(editionPrices * (value)).toFixed(0)
   const isFoil = foil ? true : false
 
-  const calculateTotal = () => {
-    const unitaryTotal = (editionPrices * Number(dollarValue)).toFixed(0)
-    const total = (unitaryTotal * stock).toFixed(0)
-    return { unitaryTotal, total }
-  }
+  const unitPrice = (editionPrices * Number(dollarValue)).toFixed(0)
+  const [ unitaryTotal, setUnitaryTotal ] = useState(unitPrice)
+  const [ customPrice, setCustomPrice ] = useState(null)
+  const total = unitaryTotal * stock
 
   const showModal = () => {
     setIsModalOpen(true)
@@ -54,6 +55,7 @@ const UploadItem = ({ edition, dollarPrice, foil }) => {
       dollarValue: dollarValue,
       sold: false,
       seller: store,
+      customPrice: customPrice,
     }
 
     const batch = writeBatch(db)
@@ -127,10 +129,12 @@ const UploadItem = ({ edition, dollarPrice, foil }) => {
                     setStock={setStock}
                     dollarValue={store.dollar}
                     setDollarValue={setDollarValue}
-                    unitaryTotal={calculateTotal().unitaryTotal}
-                    total={calculateTotal().total}
+                    unitaryTotal={unitaryTotal}
+                    total={total}
                     dollar={dollarPrice}
+                    priceChange={setCustomPrice}
                     item={store.id}
+                    customPrice={customPrice}
                   ></ModalUpload>
                 </Flex>
               </Col>

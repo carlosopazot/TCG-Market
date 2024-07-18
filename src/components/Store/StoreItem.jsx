@@ -1,29 +1,53 @@
-import { EllipsisOutlined } from '@ant-design/icons'
-import { Card, Col, Typography, Dropdown, Button, Row } from 'antd'
-import TagsState from '../TagsState/TagsState'
+import { SettingOutlined } from '@ant-design/icons'
+import { Card, Col, Typography, Dropdown, Button, Flex } from 'antd'
 import CoverImage from '../CoverImage/CoverImage'
-import { formattedClp } from '../../utils/utils'
+import ItemCardPrice from '../ItemCardPrice/ItemCardPrice'
+import QuantitySelector from '../UploadCard/QuantitySelector'
+import { useState } from 'react'
 
-const { Title } = Typography
+const { Text } = Typography
 
 const StoreItem = ({ item, onDelete, user, onSold}) => {
+
+  const [stock, setStock] = useState(item.stock)
+
   const handleMenuClick = ({ key }) => {
-    if (key === '1') {
+    if (key === '2') {
       onDelete(item.id)
-    } else if (key === '0') {
+    } else if (key === '1') {
       console.log('Actualizar stock')
       onSold(item.id)
     }
   }
   const items = [
     {
-      label: 'Marcar como vendida',
+      label: (
+        <Flex justify='space-between'>
+          <Text>Precio </Text>
+          <ItemCardPrice item={item} />
+        </Flex>
+      ),
       key: '0',
-      disabled: item.sold,
+      disabled: true,
+    },
+    {
+      label: (
+        <Flex justify='space-between'>
+          <Text>Stock </Text>
+          <QuantitySelector size='small' stock={stock} setStock={setStock} item={item} />
+        </Flex>
+      ),
+      key: '1',
+      disabled: true,
+    },
+    {
+      label: 'Marcar como vendida',
+      key: '2',
+      disabled: item.stock === 0,
     },
     {
       label: 'Eliminar',
-      key: '1',
+      key: '3',
       danger: true,
     },
   ]
@@ -37,31 +61,38 @@ const StoreItem = ({ item, onDelete, user, onSold}) => {
         }}
         placement="top"
         trigger={['click']}
+        dropdownRender={(menu) => (
+          <div>
+            {menu}
+          </div>
+        )}
         key={item.id}
       >
-        <Button size='small' block type='link' onClick={(e) => e.preventDefault()}>
-          <EllipsisOutlined key="ellipsis" />
-        </Button>
+        <div style={{ padding: '0 10px'}}>
+          <Button icon={<SettingOutlined/>} block type='text' onClick={(e) => e.preventDefault()}>
+          Configurar
+          </Button>
+        </div>
       </Dropdown>
    ])
 
   return (
     <Col xs={12} sm={8} lg={6} xl={4}>
       <Card
+       className='card-item-store'
         actions={
           item.seller.id === user ? actionMenu : null
         }
         cover={<CoverImage item={item}></CoverImage>}
-      >
-        <Row justify='space-between' gutter={[16,8]}>
+      />
+        {/* <Row justify='space-between' gutter={[16,8]}>
           <Col xs={24}>
             <TagsState stock hideDolar={true} item={item}></TagsState>
           </Col>
           <Col xs={24}>
-            <Title style={{ margin: 0 }} level={5}>{formattedClp(item.customPrice || item.price * item.seller.dollar)}</Title>
+            <ItemCardPrice title item={item}></ItemCardPrice>
           </Col>
-        </Row>
-      </Card>
+        </Row> */}
     </Col>
   )
 }

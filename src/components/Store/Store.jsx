@@ -100,7 +100,7 @@ const Store = () => {
     try {
       const docRef = doc(db, 'cards', id) 
       await updateDoc(docRef, {
-        'sold' : true
+        stock: 0,
       })
       setCards(cards.filter((card) => card.id !== id))
       openMessage('success', 'Carta marcada como vendida')
@@ -112,8 +112,8 @@ const Store = () => {
 
 
 
-  const onSaleCards = cards.filter((item) => item.sold === false)
-  const soldCards = cards.filter((item) => item.sold === true)
+  const onSaleCards = cards.filter((item) => item.stock !== 0)
+  const soldCards = cards.filter((item) => item.stock === 0)
 
   const totalStock = useMemo(() => {
     return onSaleCards.reduce(
@@ -123,11 +123,11 @@ const Store = () => {
   }, [onSaleCards])
 
   const totalForSell = useMemo(() => {
-    return onSaleCards.reduce((total, item) => total + Number(item.price * item.seller.dollar) * item.stock, 0)
+    return onSaleCards.reduce((total, item) => total + Number(item.price) * item.stock, 0)
   }, [onSaleCards])
 
   const totalSold = useMemo(() => {
-    return soldCards.reduce((total, item) => total + Number(item.price * item.seller.dollar) * item.stock, 0)
+    return soldCards.reduce((total, item) => total + Number(item.price) * item.stock, 0)
   }, [soldCards])
 
   const tabsItems = [
@@ -186,7 +186,7 @@ const Store = () => {
         <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
       </Helmet>
       <Row gutter={[16, 16]} justify='space-between'>
-        <StoreHeader item={store}></StoreHeader>
+        <StoreHeader/>
         <StoreStats
           totalStock={totalStock}
           totalForSell={totalForSell}

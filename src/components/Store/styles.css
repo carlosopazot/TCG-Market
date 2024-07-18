@@ -21,3 +21,16 @@
     display: none !important;
   }
 }
+
+.card-table-container {
+  overflow-x: scroll;
+  border-radius: 8px;
+}
+
+.card-table-container::-webkit-scrollbar {
+  background-color: transparent;
+}
+
+.card-item-store.ant-card .ant-card-body {
+  padding: 0;
+}

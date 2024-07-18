@@ -34,9 +34,12 @@ const Login = () => {
     })
   }
 
-  const onFinish = (values) => {
-    login(values)
-    navigate('/')
+  const onFinish = async (values) => {
+    try {
+      await login(values)
+    } catch (error) {
+      console.error('Error logging in:', error)
+    } 
   }
 
   const onFinishFailed = (errorInfo) => {
@@ -50,7 +53,7 @@ const Login = () => {
       console.error('Error logging in with Google:', error)
     } finally {
       if(user) {
-        navigate('/')
+        navigate(-1)
       }
     }
   }
@@ -63,9 +66,7 @@ const Login = () => {
       </Helmet>
       <Row justify="center">
         <Col xs={24} md={12} lg={12} xl={8}>
-          <Card>
-            <Title level={3}>Inicia sesión</Title>
-            <Divider></Divider>
+          <Card title={<Title style={{ margin: 0 }} level={3}>Inicia sesión</Title>} >
             <Flex gap={8} vertical>
               <Title level={5}>Ingresa con tus redes</Title>
               <Button onClick={loginGoogle} size="large">

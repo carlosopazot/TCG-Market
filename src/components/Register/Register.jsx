@@ -8,27 +8,28 @@ import {
   Flex,
   Divider,
   Button,
-  Result,
 } from 'antd'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
+import HelmetMeta from '../HelmetMeta/HelmetMeta'
 
 const { Title, Text } = Typography
 
 const Register = () => {
+
   const { register } = useContext(UserContext)
   const { user } = useContext(UserContext)
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
   const [values, setValues] = useState({
     email: '',
     password: '',
     name: '',
     phone: '',
   })
+
+  const navigate = useNavigate()
 
   const handleInputChange = (e) => {
     setValues({
@@ -41,7 +42,11 @@ const Register = () => {
     setLoading(true)
     try {
       await register(values)
-      window.location.reload()
+      if (user.logged && user.emailVerified) {
+        navigate('/')
+      } else {
+        navigate('/verificar-email')
+      }
     } catch (error) {
       console.log('Registration failed:', error)
     } finally {
@@ -53,40 +58,12 @@ const Register = () => {
     console.log('Failed:', errorInfo)
   }
 
-  
-
-  if (user.logged) {
-    return (
-      <Row justify="center">
-        <Col xs={24} md={12} lg={12} xl={8}>
-          <Card>
-            <Result
-              status="success"
-              title="Listo!"
-              subTitle="Tu cuenta ya está creada."
-              extra={[
-                <Button size='large' onClick={() => {navigate('/verificar-numero')}} type="primary" key="home">
-                  Continuar
-                </Button>
-              ]}
-            />
-          </Card>
-        </Col>
-      </Row>
-    )
-  }
-
   return (
     <>
-      <Helmet>
-        <title>Crea tu cuenta - Card Market</title>
-        <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
-      </Helmet>
+      <HelmetMeta title="Crear cuenta" />
       <Row justify="center">
         <Col xs={24} md={12} lg={12} xl={8}>
-          <Card>
-            <Title level={3}>Crea tu cuenta</Title>
-            <Divider></Divider>
+          <Card title={<Title className='m-0' level={3}>Crea tu cuenta</Title>}>
             <Form
               name="basic"
               initialValues={{
@@ -145,6 +122,7 @@ const Register = () => {
                   },
                 ]}
                 help="La contraseña debe tener al menos 6 caracteres"
+                style={{ marginBottom: '2.5rem' }}
               >
                 <Input.Password
                   size="large"

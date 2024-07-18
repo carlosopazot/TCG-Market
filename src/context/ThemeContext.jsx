@@ -9,7 +9,10 @@ export const ThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem('isDarkMode') === 'true' || false
   })
-  const algorithm = isDarkMode ? darkAlgorithm : defaultAlgorithm
+
+  const systemAlgorithm = window.matchMedia('(prefers-color-scheme: dark)').matches
+  const algorithm = isDarkMode ? darkAlgorithm : defaultAlgorithm || systemAlgorithm
+  
 
   const [messageApi, contextHolder] = message.useMessage()
 

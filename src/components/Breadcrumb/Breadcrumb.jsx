@@ -10,6 +10,7 @@ const Breadcrumb = () => {
   console.log(currentTitle)
   const location = useLocation()
   const paths = location.pathname.split('/').filter((path) => path)
+  
   const breadcrumbItems = [
     {
       title: (
@@ -20,6 +21,12 @@ const Breadcrumb = () => {
   ].concat(
     paths.map((last, index) => {
       const url = `/${paths.slice(0, index + 1).join('/')}`;
+      if (index === paths.length - 1) {
+        return {
+          title: capitalize(last),
+          key: url,
+        };
+      }
       return (
         {
           title: (
@@ -31,7 +38,7 @@ const Breadcrumb = () => {
     })
   );
 
-  if (['/login', '/registro', '/', '/verificar-numero', '/not-found',  ].includes(location.pathname)) {
+  if (['/login', '/registro', '/', '/verificar-numero', '/not-found', '/search'  ].includes(location.pathname)) {
     return null;
   }
 

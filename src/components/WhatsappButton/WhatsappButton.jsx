@@ -16,7 +16,7 @@ const WhatsappButton = ({ nameCard, sellerName, disabled, number, block }) => {
   return (
     <Button
       icon={<WhatsAppOutlined />}
-      type="primary"
+      type="text"
       size="large"
       block={block}
       onClick={sendMessage}

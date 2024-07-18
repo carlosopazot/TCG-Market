@@ -9,6 +9,7 @@ import {
   updateProfile,
   setPersistence,
   browserLocalPersistence,
+  sendEmailVerification,
 } from 'firebase/auth'
 import { useContext } from 'react'
 import { ThemeContext } from './ThemeContext'
@@ -16,14 +17,17 @@ import { ThemeContext } from './ThemeContext'
 export const UserContext = createContext()
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    email: null,
-    logged: false,
-    uid: null,
-    name: '',
-    avatar: null,
-    phone: null,
-    emailVerified: null,
+  const [user, setUser] = useState(() => {
+    const user = localStorage.getItem('user')
+    return user ? JSON.parse(user) : {
+      email: null,
+      uid: null,
+      logged: false,
+      name: null,
+      avatar: null,
+      phone: null,
+      emailVerified: null,
+    }
   })
 
   const { handleAuthError } = useContext(ThemeContext)
@@ -60,7 +64,7 @@ export const UserProvider = ({ children }) => {
         displayName: values.name
       })
       // TODO: Enviar correo de verificación
-      // await sendEmailVerification(user);
+      await sendEmailVerification(user);
     } catch (error) {
       handleAuthError(error)
     }
@@ -97,13 +101,8 @@ export const UserProvider = ({ children }) => {
   }
   // Set persistence for the authentication state
   useEffect(() => {
-    const storedUser = localStorage.getItem('user')
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
-    }
     setPersistence(auth, browserLocalPersistence)
       .then(() => {
-        // Continue with the onAuthStateChanged logic
         onAuthStateChanged(auth, (user) => {
           if (user) {
             console.log('User:', user)

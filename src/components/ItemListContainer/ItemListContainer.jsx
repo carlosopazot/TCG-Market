@@ -1,15 +1,15 @@
 import { useState, useEffect, useContext } from 'react'
 import ItemList from '../ItemList/ItemList'
-import { Empty, Spin, Flex, Card, Button, Col, Alert } from 'antd'
-import { LoadingOutlined } from '@ant-design/icons'
+import { Empty, Flex, Card, Button, Col, Alert } from 'antd'
+import Loader from '../Loader/Loader'
 import { useParams } from 'react-router-dom'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import { StoreContext } from '../../context/StoreContext'
 import { UserContext } from '../../context/UserContext'
-import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import Hero from '../Hero/Hero'
+import HelmetMeta from '../HelmetMeta/HelmetMeta'
 
 const ItemListContainer = () => {
   const [cards, setCards] = useState([])
@@ -36,28 +36,34 @@ const ItemListContainer = () => {
             id: doc.id,
           }
         })
-        setCards(docs.filter(card => card.sold === false))
+        setCards(docs.filter(card => card.stock !== 0))
       })
       .finally(() => setLoading(false))
   }, [stateId])
 
-  const recentCards = cards.sort((a, b) => b.date - a.date)
-  const cardsInLocation = recentCards.filter(card => card.seller.location === store.location)
-  const cardsFoil = recentCards.filter(card => card.foil)
+  // const recentCards = cards.sort((a, b) => b.date - a.date)
+  const cardsInLocation = cards.filter(card => card.seller.location === store.location)
+  // const cardsFoil = recentCards.filter(card => card.foil)
+
+  const cardsObject = [
+    {
+      title: 'Recientes',
+      cards: cards.sort((a, b) => b.date - a.date),
+      key: 'recent',
+      onClick: () => navigate('/cartas/')
+    },
+    {
+      title: 'Todo foil',
+      cards: cards.filter(card => card.foil),
+      key: 'foil'
+    },
+  ]
 
   return (
     <>
-      <Helmet>
-        <title>Inicio - Card Market</title>
-        <meta name="description" content="Card Market - Compra y vende cartas de Magic: The Gathering" />
-      </Helmet>
+      <HelmetMeta title='Inicio' />
       {loading ? (
-        <Spin
-          tip="Cargando"
-          indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
-        >
-          <div className="content" />
-        </Spin>
+        <Loader tip='Cargando' />
       ) : (
         <Flex gap={24} vertical>
           {user.logged && user.phone === null ? (
@@ -80,12 +86,13 @@ const ItemListContainer = () => {
           {cards.length > 0 ? (
             <Flex style={{ marginBottom: '2rem'}} gap={24} vertical>
               {user && user.logged && store.location ? (
-                <ItemList cards={cardsInLocation} title={`Últimas cartas en ${store.location}`} />
+                <ItemList cards={cardsInLocation} title='Ultimas cartas en tu ubicación' />
               ) : (
                 null
               )}
-              <ItemList cards={recentCards} title='Recientes' />
-              <ItemList cards={cardsFoil} title='✨ Todo foil' />
+              {cardsObject.map((object) => (
+                <ItemList loading={loading} onClick={object.onClick} cards={object.cards} title={object.title} key={object.key} />
+              ))}
             </Flex>
           ) : (
             <Card>

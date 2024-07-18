@@ -1,98 +1,146 @@
-import { Row, Typography, Col, Card, Empty, Button, Flex } from "antd"
-import { useContext, useEffect, useState } from "react"                
-import { SearchContext } from "../../context/SearchContext"
-import { collection, getDocs, query, where } from 'firebase/firestore'
-import { db } from '../../firebase/config'
-import Loader from "../Loader/Loader"
-import TagsState from "../TagsState/TagsState"
-import { useNavigate } from "react-router-dom"
-import { Link } from "react-router-dom"
-import CoverImage from "../CoverImage/CoverImage"
+import { Row, Typography, Col, Card, Empty, Button, Tabs } from "antd";
+import { useContext, useEffect, useState } from "react";
+import { SearchContext } from "../../context/SearchContext";
+import Loader from "../Loader/Loader";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import SearchItem from "./SearchItem";
+import { Helmet } from "react-helmet-async";
 
-const { Title, Text } = Typography
+const { Title } = Typography;
 
 const Search = () => {
-  const { searchValue } = useContext(SearchContext)
-  const [loading, setLoading] = useState(true)
-  const [cards, setCards] = useState([])
-  const navigate = useNavigate()
+  const { searchValue } = useContext(SearchContext);
+  const [loading, setLoading] = useState(false);
+  const [cards, setCards] = useState([]);
+  const [editions, setEditions] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCards = async () => {
-      setLoading(true)
-      const q = query(
-        collection(db, 'cards'),
-        where('name', '==', searchValue)
-      )
-      const querySnapshot = await getDocs(q)
+    const fetchEditions = async (printsSearchUri) => {
+      try {
+        const response = await axios.get(printsSearchUri);
+        return response.data.data;
+      } catch (error) {
+        console.error('Error al obtener ediciones relacionadas', error);
+        return [];
+      }
+    };
 
-      const cardsData = []
-      querySnapshot.forEach((doc) => {
-        cardsData.push({ id: doc.id, ...doc.data() })
-      })
+    const fetchCards = async (name) => {
+      try {
+        if (name !== '') {
+          setLoading(true);
+          const response = await axios.get(
+            `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(name)}`
+          );
+          const cardData = response.data;
+          setCards([cardData]);
+          
+          if (cardData.prints_search_uri) {
+            const editionsData = await fetchEditions(cardData.prints_search_uri);
+            setEditions(editionsData);
+          }
+          
+          console.log('Detalles de la carta:', cardData);
+        }
+      } catch (error) {
+        console.error('Error al obtener detalles de la carta', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      setCards(cardsData)
-      console.log(cardsData)
-      setLoading(false)
-    }
+    fetchCards(searchValue);
+  }, [searchValue]);
 
-    fetchCards()
-  }, [searchValue])
-  
+  const filterNonFoil = editions.filter(edition => edition.prices.usd && edition.nonfoil && !edition.finishes.includes('etched'))
+  const filterFoil = editions.filter(edition => edition.prices.usd_foil && edition.foil && !edition.finishes.includes('etched'))
+  const filterEtched = editions.filter(edition => edition.prices.usd_etched && edition.finishes.includes('etched'))
+  console.log('No foil:', filterNonFoil)
+  console.log('Foil:', filterFoil)
+  console.log(editions)
+
+  const emptyResult = <Card><Empty description='No hay resultados' image={Empty.PRESENTED_IMAGE_SIMPLE} /></Card>;
+
   if (cards.length === 0 && !loading) {
     return (
       <Row>
-        <Col xs={24}>
-          <Empty description='No se encontraron coincidencias en Card Market'>
-            <Button type="primary" onClick={() => navigate('/')}>Volver a inicio</Button>
-          </Empty>
+        <Col xs={24} md={18}>
+          <Card>
+            <Row justify='center'>
+              <Col xs={24} md={12}>
+                <Empty description='Escribe el nombre de tu carta en el buscador para comenzar'>
+                  <Button type="primary" onClick={() => navigate('/')}>Volver a inicio</Button>
+                </Empty>
+              </Col>
+            </Row>
+          </Card>
         </Col>
       </Row>
-    )
+    );
   }
 
+  const SearchList = ({ filterCards, foil }) => {
+    return (
+      <Row gutter={[16,8]}>
+        {filterCards.length > 0 ? filterCards.map((edition) => (
+          <Col xs={24} key={edition.id}>
+            <SearchItem edition={edition} foil={foil} />
+          </Col>
+        )) : <Col xs={24}>{emptyResult}</Col>}
+      </Row>
+    );
+  }
+
+  const tabItems = [
+    {
+      key: 'non-foil',
+      label: `No Foil (${filterNonFoil.length})`,
+      children: (
+        <SearchList filterCards={filterNonFoil} foil={false} />
+      )
+    },
+    {
+      key: 'foil',
+      label: `Foil (${filterFoil.length})`,
+      children: (
+        <SearchList filterCards={filterFoil} foil={true} />
+      )
+    },
+    {
+      key: 'etched',
+      label: `Etched (${filterEtched.length})`,
+      children: (
+        <SearchList filterCards={filterEtched} foil={false} />
+      )
+    }
+  ]
+
   return (
+    <>
+      <Helmet>
+        <title>Buscador - Card Market</title>
+        <meta name="description" content={`Resultados para: ${searchValue} en Card Market`} />
+      </Helmet>
       <Row justify='center'>
         {loading ? (
           <Col xs={24}>
             <Loader tip='Buscando en Card Market' />
           </Col>
         ) : (
-          <Col xs={24} md={12}>
-            <Title level={4}>Resultados de busqueda para: {searchValue}</Title>
-            {cards.map((card) => (
-              <Link to={`/item/${card.id}`} key={card.id}>
-                <Card hoverable style={{ marginBottom: '1rem' }}>
-                  <Row gutter={16}>
-                    <Col xs={8} md={8} lg={4}>
-                      <CoverImage noTag={true} item={card}></CoverImage>
-                    </Col>
-                    <Col xs={14} lg={20}>
-                      <Row gutter={[16,16]}>
-                        <Col xs={24} lg={16}>
-                          <Flex vertical gap={16}>
-                            <div>
-                              <Title style={{ marginBottom: 0 }} level={4}>{card.name}</Title>
-                              <Text type="secondary">{card.set_name}</Text>
-                            </div>
-                            <TagsState item={card}></TagsState>
-                          </Flex>
-                        </Col>
-                        <Col xs={24} lg={8}>
-                          <Flex>
-                            <Title style={{ margin : 0 }} level={3}>${card.price}</Title>
-                          </Flex>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </Card>
-              </Link>
-            ))}
+          <Col xs={24} md={16} lg={12}>
+            <Title level={4}>Resultados para: {searchValue}</Title>
+            <Row gutter={16}>
+              <Col xs={24}>
+                <Tabs defaultActiveKey='non-foil' items={tabItems} />
+              </Col>
+            </Row>
           </Col>
         )}
       </Row>
-  )
-}
+    </>
+  );
+};
 
-export default Search
+export default Search;

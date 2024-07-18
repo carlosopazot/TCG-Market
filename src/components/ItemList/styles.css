@@ -7,6 +7,10 @@
   right: 0;
 }
 
+.slick-list {
+  padding-bottom: 0.75rem;
+}
+
 .slick-prev {
   left: 0;
   z-index: 10;

@@ -15,10 +15,12 @@ const Searchbar = () => {
     try {
       const response = await axios.get(`https://api.scryfall.com/cards/search?q=${value}`);
       const { data } = response;
-      const cardNames = data.data.map((card) => ({
-        label: card.name,
-        value: card.name,
-      }));
+      const cardNames = data.data
+        .filter((card) => !card.name.startsWith('A-'))
+        .map((card) => ({
+          label: card.name,
+          value: card.name,
+        }));
       setOptions(cardNames);
     } catch (error) {
       console.error('Error fetching card names:', error);
@@ -28,7 +30,7 @@ const Searchbar = () => {
 
   const handleSelect = (value) => {
     handleSearch(value)
-    navigate('/search')
+    navigate('/buscador')
   }
 
   return (
@@ -37,6 +39,7 @@ const Searchbar = () => {
       style={{ width: '240px' }}
       placeholder='Busca una carta'
       size='large'
+      defaultValue={null}
       onSelect={handleSelect}
       onSearch={handleSearchInput}
       notFoundContent={null}

@@ -1,5 +1,4 @@
 import { Card, Typography, Flex, Button } from 'antd'
-import SetIcon from '../UploadCard/SetIcon'
 import TagsState from '../TagsState/TagsState'
 import ItemCardDate from '../ItemCardDate/ItemCardDate'
 import ItemCardPrice from '../ItemCardPrice/ItemCardPrice'
@@ -39,7 +38,7 @@ const CardInfo = ({ item, copyLink }) => {
     >
       <Flex gap={12} vertical>
         <Flex vertical gap={4}>
-          <SetIcon setCode={item.set} setName={item.set_name}></SetIcon>
+          <Title type='secondary' level={5} style={{ margin: 0 }}>{item.set_name}</Title>
           {currentEdition ? (<SearchItemTags edition={currentEdition}></SearchItemTags>) : null}
         </Flex>
         <TagsState size={16} stock={true} item={item}></TagsState>

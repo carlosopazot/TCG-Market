@@ -2,7 +2,7 @@ import { SettingOutlined } from '@ant-design/icons'
 import { Card, Col, Typography, Dropdown, Button, Flex } from 'antd'
 import CoverImage from '../CoverImage/CoverImage'
 import ItemCardPrice from '../ItemCardPrice/ItemCardPrice'
-import QuantitySelector from '../UploadCard/QuantitySelector'
+import QuantitySelector from '../QuantitySelector/QuantitySelector'
 import { useState } from 'react'
 
 const { Text } = Typography

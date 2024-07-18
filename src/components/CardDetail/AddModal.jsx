@@ -3,7 +3,7 @@ import { useContext, useState } from "react"
 import { StoreContext } from "../../context/StoreContext"
 import { UserContext } from "../../context/UserContext"
 import { formattedClp } from "../../utils/utils"
-import QuantitySelector from "../UploadCard/QuantitySelector"
+import QuantitySelector from "../QuantitySelector/QuantitySelector"
 import { addDoc, collection, writeBatch } from "firebase/firestore"
 import { db } from "../../firebase/config"
 import { ThemeContext } from "../../context/ThemeContext"
@@ -163,12 +163,6 @@ const AddModal = ({open, item, foil, price, handleOk, handleCancel}) => {
               {formattedClp(total)}  <Text type="secondary">CLP</Text>
             </Title>
           </Flex>
-          {/* <Flex justify="space-between">
-            <Title level={4}>Total</Title>
-            <Title style={{ marginTop: 0 }} level={4}>
-              {formattedClp(total)}  <Text>CLP</Text>
-            </Title>
-          </Flex> */}
           <Divider style={{ marginTop: '0.5rem' }}></Divider>
         </Col>
       </Row>

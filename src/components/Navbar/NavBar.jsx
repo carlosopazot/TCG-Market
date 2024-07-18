@@ -1,15 +1,14 @@
 import { Layout, Flex, Button, Badge } from 'antd'
 import Searchbar from '../Searchbar/Searchbar'
-import Logo from '../../assets/images/card-games.png'
 import DarkMode from '../DarkMode/DarkMode'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { ThemeContext } from '../../context/ThemeContext'
-import { Link } from 'react-router-dom'
 import './styles.css'
 import { MenuOutlined } from '@ant-design/icons'
 import Sidebar from '../Sidebar/Sidebar'
 import AvatarProfile from '../AvatarProfile/AvatarProfile'
+import NavLogo from './NavLogo'
 
 const { Header } = Layout
 
@@ -32,9 +31,7 @@ const Navbar = () => {
     <Header className={`navbar ${isDarkMode ? 'navbar-dark' : ''} `}>
       <div className="main">
         <Flex justify='space-between' align='center' gap={12}>
-          <Link to="/" className="brand">
-            <img src={Logo} className="logo" alt="Logo" />
-          </Link>
+          <NavLogo></NavLogo>
           <Searchbar></Searchbar>
           <Flex gap={8} align="center">
             <DarkMode></DarkMode>

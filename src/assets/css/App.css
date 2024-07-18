@@ -59,3 +59,7 @@ a {
 .ant-radio-button-wrapper:not(:first-child)::before{
   display: none;
 }
+
+.ant-typography.m-0 {
+  margin: 0;
+}

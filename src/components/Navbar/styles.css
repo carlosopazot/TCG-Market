@@ -13,13 +13,18 @@
   background-color: #141414;
 }
 
-.logo {
-  width: 40px;
+.brand-iso {
+  width: 32px;
+}
+
+.ant-typography.brand-logo {
+  margin: 0;
 }
 
 .brand {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .logo-title {
@@ -46,6 +51,9 @@
 
 @media (width <= 992px) {
   .logo-title {
+    display: none;
+  }
+  .brand-logo {
     display: none;
   }
 }

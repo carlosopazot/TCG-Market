@@ -1,19 +1,23 @@
 
-import { Drawer, Menu, Flex, Result, Button, Typography, Card } from 'antd'
+import { Drawer, Menu, Flex, Button, Card, Typography } from 'antd'
 import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../context/UserContext'
-import Logo from '../../assets/images/card-games.png'
+import { ThemeContext } from '../../context/ThemeContext'
+import Logo from '../../assets/images/imagotipo.svg'
+import LogoWhite from '../../assets/images/imagotipo-white.svg'
 import './styles.css'
-import AvatarProfile from '../AvatarProfile/AvatarProfile'
 import { HomeOutlined, ShopOutlined, UserOutlined } from '@ant-design/icons'
+import SidebarUserInfo from './SidebarUserInfo'
 
-const { Title, Text } = Typography
+const { Text } = Typography
 
 const Sidebar = ({ onClose, open}) => {
 
   const navigate = useNavigate()
-  const { user, logout } = useContext(UserContext) 
+  const { user, logout } = useContext(UserContext)
+  const { isDarkMode } = useContext(ThemeContext)
+
   const [current, setCurrent] = useState('home')
 
   const items = [
@@ -38,33 +42,33 @@ const Sidebar = ({ onClose, open}) => {
     }
   ]
 
-  const others = [
-    {
-      key: 'faq',
-      label: 'Preguntas frecuentes',
-      path: '/faq',
-    },
-    {
-      key: 'soporte',
-      label: 'Soporte',
-      path: '/soporte',
-    },
-    {
-      key: 'Contacto',
-      label: 'Contacto',
-      path: '/contacto',
-    },
-    {
-      key: 'terminos',
-      label: 'Términos y condiciones',
-      path: '/terminos',
-    },
-    {
-      key: 'privacidad',
-      label: 'Política de privacidad',
-      path: '/privacidad',
-    },
-  ]
+  // const others = [
+  //   {
+  //     key: 'faq',
+  //     label: 'Preguntas frecuentes',
+  //     path: '/faq',
+  //   },
+  //   {
+  //     key: 'soporte',
+  //     label: 'Soporte',
+  //     path: '/soporte',
+  //   },
+  //   {
+  //     key: 'Contacto',
+  //     label: 'Contacto',
+  //     path: '/contacto',
+  //   },
+  //   {
+  //     key: 'terminos',
+  //     label: 'Términos y condiciones',
+  //     path: '/terminos',
+  //   },
+  //   {
+  //     key: 'privacidad',
+  //     label: 'Política de privacidad',
+  //     path: '/privacidad',
+  //   },
+  // ]
 
   const onClick = ({ key }) => {
     setCurrent(key)
@@ -83,39 +87,25 @@ const Sidebar = ({ onClose, open}) => {
   }
 
   return (
-    <Drawer onClose={onClose} open={open}>
-      {user && user.logged ? (
-        <Flex vertical gap={16}>
+    <Drawer onClose={onClose} open={open} footer={user.logged && <Button onClick={handleLogout} type='text' block >Cerrar sesión</Button>}>
+      <Flex vertical justify='center' gap={16}>
+        {user && user.logged ? (
+          <Flex vertical gap={16}>
+            <SidebarUserInfo user={user} />
+            <Menu onClick={onClick} selectedKeys={[current]} mode="vertical" items={items} />
+          </Flex>
+        ) : (
           <Card bordered={false}>
-            <Flex gap={16}>
-              <AvatarProfile size={48} item={user} />
-              <Flex vertical>
-                <Title style={{ margin: 0 }} level={4}>{user.name}</Title>
-                <Text type='secondary'>{user.email}</Text>
-              </Flex>
+            <Flex style={{ textAlign: 'center' }} justify='center' align='center' gap={16} vertical>
+              <Text>Bienvenido a</Text>
+              <img src={isDarkMode ? LogoWhite : Logo} alt="Logo" width={140} />
+              <Text type='secondary'>Empieza ahora a comprar y vender tus cartas de Magic The Gathering.</Text>
+              <Button size='large' onClick={handleLogin} block type='primary'>Ingresar ahora</Button>
             </Flex>
           </Card>
-          <Menu onClick={onClick} selectedKeys={[current]} mode="vertical" items={items} />
-          <Menu onClick={onClick} selectedKeys={[current]} mode="vertical" items={others} />
-          <Button size='large' onClick={handleLogout} type='text' block >Cerrar sesión</Button>
-        </Flex>
-      ) : (
-        <>
-          <Result
-            icon={<img src={Logo} alt="Logo" style={{ width: 100 }} />}
-            status="success"
-            title="Bienvenido a TCGMarket!"
-            subTitle="Empieza ahora a comprar y vender tus cartas de Magic The Gathering."
-            extra={[
-              <Flex gap={8} align='center' vertical justify='center' key={1}>
-                <Button onClick={handleLogin} block size='large' type="primary">
-                  Ingresar ahora
-                </Button>
-              </Flex>
-            ]}
-          />
-        </>
-      )}
+        )}
+        {/* <Menu onClick={onClick} selectedKeys={[current]} mode="vertical" items={others} /> */}
+      </Flex>
     </Drawer>
   )
 }
